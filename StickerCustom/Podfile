@@ -1,0 +1,22 @@
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '13.0'
+
+target 'StickerCustom' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for StickerCustom
+  pod 'SnapKit', '~> 5.0.0'
+  pod 'Alamofire', '~> 5.5'
+  pod 'SwiftyStoreKit'
+
+  target 'StickerCustomTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+  target 'StickerCustomUITests' do
+    # Pods for testing
+  end
+
+end

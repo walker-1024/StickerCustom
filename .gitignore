@@ -1,0 +1,6 @@
+# .gitignore
+
+xcuserdata
+xcshareddata
+.DS_Store
+
