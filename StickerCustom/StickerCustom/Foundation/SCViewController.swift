@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class SCViewController: UIViewController {
 
@@ -15,6 +16,29 @@ class SCViewController: UIViewController {
         if let navBar = navigationController?.navigationBar {
             navBar.tintColor = .white
         }
+    }
+
+    func getAppPrompt() -> UIView {
+        let box = UIView()
+        let iconView = UIImageView(image: "icon-white".localImage)
+        box.addSubview(iconView)
+        iconView.snp.makeConstraints { (make) in
+            make.width.height.equalTo(40)
+            make.leading.equalToSuperview()
+            make.top.bottom.equalToSuperview()
+        }
+        let appName = UILabel()
+        box.addSubview(appName)
+        appName.snp.makeConstraints { (make) in
+            make.leading.equalTo(iconView.snp.trailing).offset(5)
+            make.trailing.equalToSuperview()
+            make.centerY.equalTo(iconView.snp.centerY)
+        }
+        appName.text = "M e m e e t"
+        appName.textColor = .white
+        appName.backgroundColor = .clear
+        appName.font = UIFont.systemFont(ofSize: 23)
+        return box
     }
 
 }

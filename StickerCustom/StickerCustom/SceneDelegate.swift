@@ -26,7 +26,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         historyNav.tabBarItem.title = "第二页"
 //        historyNav.tabBarItem.image = "icon-file".localImage?.resizeImage(size: CGSize(width: 30, height: 30))
 
-        let userNav = UINavigationController(rootViewController: HomeViewController())
+        let userNav = UINavigationController(rootViewController: UserViewController())
         userNav.tabBarItem.title = "我的"
 //        userNav.tabBarItem.image = "icon-me".localImage?.resizeImage(size: CGSize(width: 30, height: 30))
 

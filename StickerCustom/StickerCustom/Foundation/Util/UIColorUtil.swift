@@ -20,4 +20,7 @@ extension UIColor {
     static var tintGreen:UIColor {
         return UIColor(red: 141, green: 248, blue: 159)
     }
+    static var tintDark:UIColor {
+        return UIColor(red: 16, green: 23, blue: 28)
+    }
 }

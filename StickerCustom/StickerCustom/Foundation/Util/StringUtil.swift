@@ -29,7 +29,12 @@ extension String {
         return String(self[begin..<end])
     }
 
-    var isNumber: Bool {
+    var isIntNumber: Bool {
+        let scanner = Scanner(string: self)
+        return scanner.scanInt() != nil && scanner.isAtEnd
+    }
+
+    var isFloatNumber: Bool {
         let scanner = Scanner(string: self)
         return scanner.scanFloat() != nil && scanner.isAtEnd
     }

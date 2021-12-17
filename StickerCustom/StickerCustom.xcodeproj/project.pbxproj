@@ -17,6 +17,10 @@
 		522FF54C2769C70A002E84F9 /* StickerCustomTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 522FF54B2769C70A002E84F9 /* StickerCustomTests.swift */; };
 		522FF5562769C70A002E84F9 /* StickerCustomUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 522FF5552769C70A002E84F9 /* StickerCustomUITests.swift */; };
 		522FF5582769C70A002E84F9 /* StickerCustomUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 522FF5572769C70A002E84F9 /* StickerCustomUITestsLaunchTests.swift */; };
+		5246A780276B58C5005F1BF6 /* UserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5246A77F276B58C5005F1BF6 /* UserViewController.swift */; };
+		5246A782276B8670005F1BF6 /* TemplateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5246A781276B8670005F1BF6 /* TemplateCell.swift */; };
+		5246A785276B86AD005F1BF6 /* TemplateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5246A784276B86AD005F1BF6 /* TemplateModel.swift */; };
+		5246A787276B9234005F1BF6 /* TemplateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5246A786276B9234005F1BF6 /* TemplateViewController.swift */; };
 		5268100A276A468200A8C41D /* UIColorUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52681009276A468200A8C41D /* UIColorUtil.swift */; };
 		5268100C276A469400A8C41D /* StringUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5268100B276A469400A8C41D /* StringUtil.swift */; };
 		5268100E276A469F00A8C41D /* UIImageUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5268100D276A469F00A8C41D /* UIImageUtil.swift */; };
@@ -72,6 +76,10 @@
 		522FF5512769C70A002E84F9 /* StickerCustomUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StickerCustomUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		522FF5552769C70A002E84F9 /* StickerCustomUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerCustomUITests.swift; sourceTree = "<group>"; };
 		522FF5572769C70A002E84F9 /* StickerCustomUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerCustomUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		5246A77F276B58C5005F1BF6 /* UserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewController.swift; sourceTree = "<group>"; };
+		5246A781276B8670005F1BF6 /* TemplateCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateCell.swift; sourceTree = "<group>"; };
+		5246A784276B86AD005F1BF6 /* TemplateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateModel.swift; sourceTree = "<group>"; };
+		5246A786276B9234005F1BF6 /* TemplateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateViewController.swift; sourceTree = "<group>"; };
 		52681009276A468200A8C41D /* UIColorUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorUtil.swift; sourceTree = "<group>"; };
 		5268100B276A469400A8C41D /* StringUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringUtil.swift; sourceTree = "<group>"; };
 		5268100D276A469F00A8C41D /* UIImageUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageUtil.swift; sourceTree = "<group>"; };
@@ -149,9 +157,10 @@
 			isa = PBXGroup;
 			children = (
 				52681005276A44ED00A8C41D /* Foundation */,
+				5246A77E276B579E005F1BF6 /* Home */,
+				5246A77D276B5793005F1BF6 /* User */,
 				522FF5312769C708002E84F9 /* AppDelegate.swift */,
 				522FF5332769C708002E84F9 /* SceneDelegate.swift */,
-				522FF5352769C708002E84F9 /* HomeViewController.swift */,
 				522FF5372769C708002E84F9 /* Main.storyboard */,
 				522FF53D2769C709002E84F9 /* Assets.xcassets */,
 				522FF53F2769C709002E84F9 /* LaunchScreen.storyboard */,
@@ -178,6 +187,40 @@
 			path = StickerCustomUITests;
 			sourceTree = "<group>";
 		};
+		5246A77D276B5793005F1BF6 /* User */ = {
+			isa = PBXGroup;
+			children = (
+				5246A77F276B58C5005F1BF6 /* UserViewController.swift */,
+			);
+			path = User;
+			sourceTree = "<group>";
+		};
+		5246A77E276B579E005F1BF6 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				5246A788276B923A005F1BF6 /* View */,
+				522FF5352769C708002E84F9 /* HomeViewController.swift */,
+				5246A786276B9234005F1BF6 /* TemplateViewController.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		5246A783276B867F005F1BF6 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				5246A784276B86AD005F1BF6 /* TemplateModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		5246A788276B923A005F1BF6 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				5246A781276B8670005F1BF6 /* TemplateCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		52681005276A44ED00A8C41D /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
@@ -186,6 +229,7 @@
 				52681008276A456400A8C41D /* Util */,
 				52681007276A455D00A8C41D /* Mgr */,
 				52681006276A450500A8C41D /* Network */,
+				5246A783276B867F005F1BF6 /* Model */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -486,7 +530,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5246A787276B9234005F1BF6 /* TemplateViewController.swift in Sources */,
 				52681016276A470700A8C41D /* DataUtil.swift in Sources */,
+				5246A780276B58C5005F1BF6 /* UserViewController.swift in Sources */,
 				522FF5362769C708002E84F9 /* HomeViewController.swift in Sources */,
 				5268100E276A469F00A8C41D /* UIImageUtil.swift in Sources */,
 				522FF5322769C708002E84F9 /* AppDelegate.swift in Sources */,
@@ -495,6 +541,7 @@
 				5268101C276A478F00A8C41D /* SCViewController.swift in Sources */,
 				522FF53C2769C708002E84F9 /* StickerCustom.xcdatamodeld in Sources */,
 				52681012276A46DA00A8C41D /* NotificationUtil.swift in Sources */,
+				5246A782276B8670005F1BF6 /* TemplateCell.swift in Sources */,
 				5268101E276A47A100A8C41D /* global.swift in Sources */,
 				52681026276A4F7500A8C41D /* NetworkRequest.swift in Sources */,
 				52681022276A4F5200A8C41D /* Network.swift in Sources */,
@@ -503,6 +550,7 @@
 				52681014276A46F300A8C41D /* PlistReader.swift in Sources */,
 				52681018276A473D00A8C41D /* VisitorMgr.swift in Sources */,
 				522FF5342769C708002E84F9 /* SceneDelegate.swift in Sources */,
+				5246A785276B86AD005F1BF6 /* TemplateModel.swift in Sources */,
 				5268100A276A468200A8C41D /* UIColorUtil.swift in Sources */,
 				52681020276A4F2E00A8C41D /* WebAPI.swift in Sources */,
 			);
@@ -683,10 +731,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 0.0.1;
 				DEVELOPMENT_TEAM = R8VSR434DY;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = StickerCustom/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "表情包自定义";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -698,7 +747,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = walker.StickerCustom;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -714,10 +763,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 0.0.1;
 				DEVELOPMENT_TEAM = R8VSR434DY;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = StickerCustom/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "表情包自定义";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -729,7 +779,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = walker.StickerCustom;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
