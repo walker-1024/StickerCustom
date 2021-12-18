@@ -11,4 +11,8 @@ extension Notification.Name {
     static var needRefreshProfile: Self {
         return Notification.Name("SCNotification_NeedRefreshProfile")
     }
+
+    static var tmp: Self {
+        return Notification.Name("SCNotification_tmp")
+    }
 }

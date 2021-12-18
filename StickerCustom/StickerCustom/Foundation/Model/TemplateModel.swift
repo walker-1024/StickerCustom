@@ -10,4 +10,5 @@ import UIKit
 
 struct TemplateModel: Codable {
     var image = "丢".localImage?.pngData()
+    var code: String
 }

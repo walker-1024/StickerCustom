@@ -28,4 +28,14 @@ extension UIImage {
         UIGraphicsEndImageContext()
         return resizeImage
     }
+
+    func clipToCircleImage() -> UIImage {
+        let rect = CGRect(origin: .zero, size: self.size)
+        let renderer = UIGraphicsImageRenderer(bounds: rect)
+        return renderer.image { context in
+            context.cgContext.addEllipse(in: rect)
+            context.cgContext.clip()
+            self.draw(in: rect)
+        }
+    }
 }

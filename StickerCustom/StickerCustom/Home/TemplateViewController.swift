@@ -19,6 +19,7 @@ class TemplateViewController: SCViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
+        NotificationCenter.default.addObserver(self, selector: #selector(receiveResult(notification:)), name: .tmp, object: nil)
     }
 
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -72,6 +73,23 @@ class TemplateViewController: SCViewController {
         button.layer.borderWidth = 2
         button.layer.borderColor = UIColor.tintGreen.cgColor
         button.addTarget(self, action: #selector(clickGenerate), for: .touchUpInside)
+
+        let textView = UITextView()
+        view.addSubview(textView)
+        textView.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(qqTextField)
+            make.top.equalTo(button.snp.bottom).offset(30)
+            make.bottom.equalTo(-60)
+        }
+        textView.backgroundColor = .clear
+        textView.text = template.code
+        textView.textColor = UIColor.tintGreen
+        textView.font = TextFieldFont
+        textView.layer.borderWidth = 2
+        textView.layer.borderColor = UIColor.tintGreen.cgColor
+        textView.layer.cornerRadius = 10
+        textView.layer.masksToBounds = true
+        textView.isUserInteractionEnabled = false
     }
 
     @objc private func clickGenerate(button: UIButton) {
@@ -79,32 +97,41 @@ class TemplateViewController: SCViewController {
             presentAlert(title: "请输入正确的QQ号", message: nil, on: self)
             return
         }
-        guard let url = URL(string: "http://q1.qlogo.cn/g?b=qq&nk=\(qq)&s=640") else { return }
-        button.isEnabled = false
-        DispatchQueue.global().async {
-            if let avatarData = try? Data(contentsOf: url) {
-                if let avatar = UIImage(data: avatarData)?.resizeImage(size: CGSize(width: 100, height: 100)) {
-                    let backImage = UIImage(data: self.template.image!)!
 
-                    let format = UIGraphicsImageRendererFormat()
-                    format.opaque = true
-                    let renderer = UIGraphicsImageRenderer(size: backImage.size, format: format)
-                    let newImage = renderer.image { context in
-                        backImage.draw(at: .zero)
-                        avatar.draw(at: CGPoint(x: 30, y: 200))
-                    }
-                    DispatchQueue.main.async {
-                        self.imageView.image = newImage
-                    }
-                } else {
-                    presentAlert(title: "获取头像图片失败", message: nil, on: self)
-                }
-            } else {
-                presentAlert(title: "获取头像图片失败", message: nil, on: self)
-            }
-            DispatchQueue.main.async {
-                button.isEnabled = true
-            }
+        RosParser.shared.parse(code: template.code, qqnum: qq)
+
+//        guard let url = URL(string: "http://q1.qlogo.cn/g?b=qq&nk=\(qq)&s=640") else { return }
+//        button.isEnabled = false
+//        DispatchQueue.global().async {
+//            if let avatarData = try? Data(contentsOf: url) {
+//                if let avatar = UIImage(data: avatarData)?.resizeImage(size: CGSize(width: 100, height: 100)).clipToCircleImage() {
+//                    let backImage = UIImage(data: self.template.image!)!
+//
+//                    let renderer = UIGraphicsImageRenderer(size: backImage.size)
+//                    let newImage = renderer.image { context in
+//                        backImage.draw(at: .zero)
+//                        avatar.draw(at: CGPoint(x: 30, y: 200))
+//                    }
+//                    DispatchQueue.main.async {
+//                        self.imageView.image = newImage
+//                    }
+//                } else {
+//                    presentAlert(title: "获取头像图片失败", message: nil, on: self)
+//                }
+//            } else {
+//                presentAlert(title: "获取头像图片失败", message: nil, on: self)
+//            }
+//            DispatchQueue.main.async {
+//                button.isEnabled = true
+//            }
+//        }
+    }
+
+    @objc private func receiveResult(notification: Notification) {
+        guard let userInfo = notification.userInfo else { return }
+        guard let result = userInfo["result"] as? UIImage else { return }
+        DispatchQueue.main.async {
+            self.imageView.image = result
         }
     }
 }

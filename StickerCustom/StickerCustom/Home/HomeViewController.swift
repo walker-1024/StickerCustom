@@ -9,10 +9,17 @@ import UIKit
 
 fileprivate let TemplateCellIdentifier = "TemplateCellIdentifier"
 
+let testCode = """
+{新建画板，512，512，{
+{画图片，丢，0，0}
+{画图片，{图像圆角化，头像}，30，200，100，100}
+}}
+"""
+
 class HomeViewController: SCViewController {
 
     private var cellData: [TemplateModel] = [
-        TemplateModel()
+        TemplateModel(code: testCode)
     ]
 
     private var collectionView: UICollectionView!
@@ -21,6 +28,16 @@ class HomeViewController: SCViewController {
         super.viewDidLoad()
         self.navigationItem.titleView = self.getAppPrompt()
         setup()
+
+        let a = "23532.0932405"
+        var t: Any? = nil
+        t = a
+        if let num = t as? String, let m = Double(num) {
+            print("\(m)")
+        } else {
+            print("00000")
+        }
+
         guard let url = URL(string: "http://q1.qlogo.cn/g?b=qq&nk=2064023354&s=640") else { return }
         DispatchQueue.global().async {
             let _ = try? Data(contentsOf: url)
