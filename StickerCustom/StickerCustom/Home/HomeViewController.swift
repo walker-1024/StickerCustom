@@ -19,7 +19,7 @@ let testCode = """
 class HomeViewController: SCViewController {
 
     private var cellData: [TemplateModel] = [
-        TemplateModel(code: testCode)
+        TemplateModel(templateId: "test", title: "丢", cover: "丢".localImage?.pngData(), code: testCode, auther: nil)
     ]
 
     private var collectionView: UICollectionView!

@@ -116,11 +116,11 @@ fileprivate class RosSentence {
             return (nil, .functionNameNull)
         }
         if arr[0].hasPrefix("{") {
-            // 如果按规范语法写，这里的 arr 是只有一项的
+            // 如果按规范语法写，这里的 arr 应该是只有一项的
             var allSentences: [String] = []
-            var lastIndex = 0
-            var numOfLeftBrace = 0
             for item in arr {
+                var lastIndex = 0
+                var numOfLeftBrace = 0
                 for i in 0..<item.count {
                     if item[i] == "{" {
                         numOfLeftBrace += 1
@@ -131,6 +131,9 @@ fileprivate class RosSentence {
                             lastIndex = i + 1
                         }
                     }
+                }
+                if numOfLeftBrace != 0 {
+                    return (nil, .wrongSentence)
                 }
             }
             for sentence in allSentences {

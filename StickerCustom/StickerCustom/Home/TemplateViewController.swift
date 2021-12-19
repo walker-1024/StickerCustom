@@ -34,7 +34,7 @@ class TemplateViewController: SCViewController {
             make.width.height.equalTo(200)
             make.centerX.equalToSuperview()
         }
-        imageView.image = UIImage(data: template.image!)
+        imageView.image = UIImage(data: template.cover!)
         imageView.contentMode = .scaleAspectFit
 
         view.addSubview(qqTextField)

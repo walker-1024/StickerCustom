@@ -60,8 +60,8 @@ class TemplateCell: UICollectionViewCell {
     }
 
     func setupData(data: TemplateModel) {
-        coverImageView.image = UIImage(data: data.image!)
-        titleLabel.text = "丢"
+        coverImageView.image = UIImage(data: data.cover!)
+        titleLabel.text = data.title
     }
 
     override func prepareForReuse() {
