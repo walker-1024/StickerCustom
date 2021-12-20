@@ -23,10 +23,13 @@ class RosParser {
             guard let avatar = UIImage(data: avatarData) else { return }
             let env = RosEnvironment()
             env.setVarValue("头像", value: avatar)
-            let (result, err) = RosSentence(code: code, env: env).evaluate()
-            print(result as Any)
-            print(err)
-            NotificationCenter.default.post(name: .tmp, object: self, userInfo: ["result": result as Any])
+            do {
+                let result = try RosSentence(code: code, env: env).evaluate()
+                print(result as Any)
+                NotificationCenter.default.post(name: .tmp, object: self, userInfo: ["result": result as Any])
+            } catch let err {
+                print(err)
+            }
         }
     }
 }
@@ -80,14 +83,15 @@ fileprivate class RosSentence {
         self.env = env
     }
 
-    func evaluate() -> (Any?, RosParseError?) {
+    @discardableResult
+    func evaluate() throws -> Any? {
         code.removeAll(where: { $0 == " " || $0 == "\n" })
         if !code.hasPrefix("{") || !code.hasSuffix("}") {
             // 如果是变量的话，返回变量的值
             if self.env?.isExistVar(code) ?? false {
-                return (self.env?.getVarValue(code), nil)
+                return self.env?.getVarValue(code)
             } else {
-                return (code, nil)
+                return code
             }
         }
 
@@ -112,11 +116,11 @@ fileprivate class RosSentence {
             }
         }
         if numOfLeftBrace != 0 {
-            return (nil, .wrongSentence)
+            throw RosParseError.wrongSentence
         }
         print(arr)
         if arr.count == 0 || arr[0].count == 0 {
-            return (nil, .functionNameNull)
+            throw RosParseError.functionNameNull
         }
         if arr[0].hasPrefix("{") {
             // 如果按规范语法写，这里的 arr 应该是只有一项的
@@ -136,185 +140,167 @@ fileprivate class RosSentence {
                     }
                 }
                 if numOfLeftBrace != 0 {
-                    return (nil, .wrongSentence)
+                    throw RosParseError.wrongSentence
                 }
             }
             for sentence in allSentences {
-                let (_, error) = RosSentence(code: sentence, env: self.env).evaluate()
-                if error != nil {
-                    return (nil, error)
-                }
+                try RosSentence(code: sentence, env: self.env).evaluate()
             }
-            return (nil, nil)
+            return nil
         } else {
             guard let rosFunc = RosFunctionChinese(rawValue: arr[0]) else {
-                return (nil, .funcNameNotExist)
+                throw RosParseError.funcNameNotExist
             }
             arr.removeFirst()
-            return evaluateRosFunc(rosFunc, paras: arr)
+            return try evaluateRosFunc(rosFunc, paras: arr)
         }
     }
 
-    private func evaluateRosFunc(_ rosFunc: RosFunctionChinese, paras: [String]) -> (Any?, RosParseError?) {
+    private func evaluateRosFunc(_ rosFunc: RosFunctionChinese, paras: [String]) throws -> Any? {
         switch rosFunc {
         case .Ros_for:
-            if paras.count < 2 { return (nil, .paramMissing) }
-            if paras.count > 2 { return (nil, .paramRedundant) }
-            let (num, err) = RosSentence(code: paras[0], env: self.env).evaluate()
-            if err != nil { return (nil, err) }
+            if paras.count < 2 { throw RosParseError.paramMissing }
+            if paras.count > 2 { throw RosParseError.paramRedundant }
+            let num = try RosSentence(code: paras[0], env: self.env).evaluate()
 
             guard let num = getInt(from: num) else {
-                return (nil, .paramTypeMismatch)
+                throw RosParseError.paramTypeMismatch
             }
             for _ in 0..<num {
-                let (_, error) = RosSentence(code: paras[1], env: self.env).evaluate()
-                if error != nil {
-                    return (nil, error)
-                }
+                try RosSentence(code: paras[1], env: self.env).evaluate()
             }
 
         case .Ros_createDrawBoard:
-            if paras.count < 3 { return (nil, .paramMissing) }
-            if paras.count > 3 { return (nil, .paramRedundant) }
-            let (width, err) = RosSentence(code: paras[0], env: self.env).evaluate()
-            if err != nil { return (nil, err) }
-            let (height, err2) = RosSentence(code: paras[1], env: self.env).evaluate()
-            if err2 != nil { return (nil, err2) }
+            if paras.count < 3 { throw RosParseError.paramMissing }
+            if paras.count > 3 { throw RosParseError.paramRedundant }
+            let width = try RosSentence(code: paras[0], env: self.env).evaluate()
+            let height = try RosSentence(code: paras[1], env: self.env).evaluate()
 
             guard let width = getDouble(from: width), let height = getDouble(from: height) else {
-                return (nil, .paramTypeMismatch)
+                throw RosParseError.paramTypeMismatch
             }
             var error: RosParseError?
             let renderer = UIGraphicsImageRenderer(size: CGSize(width: width, height: height))
             let image = renderer.image { context in
                 self.env?.setVarValue("_Ros_context", value: context)
-                (_, error) = RosSentence(code: paras[2], env: self.env).evaluate()
+                do {
+                    try RosSentence(code: paras[2], env: self.env).evaluate()
+                } catch let err {
+                    error = err as? RosParseError
+                }
                 self.env?.removeVarValue("_Ros_context")
             }
-            if error != nil {
-                return (nil, error)
-            }
-            return (image, nil)
+            if error != nil { throw error! }
+            return image
 
         case .Ros_drawImage:
-            if paras.count < 3 { return (nil, .paramMissing) }
-            if paras.count == 4 { return (nil, .paramNumMismatch) }
-            if paras.count > 5 { return (nil, .paramRedundant) }
-            let (image, err) = RosSentence(code: paras[0], env: self.env).evaluate()
-            if err != nil { return (nil, err) }
-            let (pointX, err2) = RosSentence(code: paras[1], env: self.env).evaluate()
-            if err2 != nil { return (nil, err2) }
-            let (pointY, err3) = RosSentence(code: paras[2], env: self.env).evaluate()
-            if err3 != nil { return (nil, err3) }
+            if paras.count < 3 { throw RosParseError.paramMissing }
+            if paras.count == 4 { throw RosParseError.paramNumMismatch }
+            if paras.count > 5 { throw RosParseError.paramRedundant }
+            let image = try RosSentence(code: paras[0], env: self.env).evaluate()
+            let pointX = try RosSentence(code: paras[1], env: self.env).evaluate()
+            let pointY = try RosSentence(code: paras[2], env: self.env).evaluate()
 
             guard let image = getUIImage(from: image) else {
-                return (nil, .paramTypeMismatch)
+                throw RosParseError.paramTypeMismatch
             }
             guard let pointX = getDouble(from: pointX) else {
-                return (nil, .paramTypeMismatch)
+                throw RosParseError.paramTypeMismatch
             }
             guard let pointY = getDouble(from: pointY) else {
-                return (nil, .paramTypeMismatch)
+                throw RosParseError.paramTypeMismatch
             }
             guard let _ = self.env?.getVarValue("_Ros_context") as? UIGraphicsImageRendererContext else {
-                return (nil, .drawBeforeCreateDrawBoard)
+                throw RosParseError.drawBeforeCreateDrawBoard
             }
 
             if paras.count == 3 {
                 image.draw(at: CGPoint(x: pointX, y: pointY))
             } else {
-                let (width, err4) = RosSentence(code: paras[3], env: self.env).evaluate()
-                if err4 != nil { return (nil, err4) }
-                let (height, err5) = RosSentence(code: paras[4], env: self.env).evaluate()
-                if err5 != nil { return (nil, err5) }
+                let width = try RosSentence(code: paras[3], env: self.env).evaluate()
+                let height = try RosSentence(code: paras[4], env: self.env).evaluate()
                 guard let width = getDouble(from: width) else {
-                    return (nil, .paramTypeMismatch)
+                    throw RosParseError.paramTypeMismatch
                 }
                 guard let height = getDouble(from: height) else {
-                    return (nil, .paramTypeMismatch)
+                    throw RosParseError.paramTypeMismatch
                 }
                 image.draw(in: CGRect(x: pointX, y: pointY, width: width, height: height))
             }
 
         case .Ros_clipToCircle:
-            if paras.count < 1 { return (nil, .paramMissing) }
-            if paras.count > 1 { return (nil, .paramRedundant) }
-            let (image, err) = RosSentence(code: paras[0], env: self.env).evaluate()
-            if err != nil { return (nil, err) }
+            if paras.count < 1 { throw RosParseError.paramMissing }
+            if paras.count > 1 { throw RosParseError.paramRedundant }
+            let image = try RosSentence(code: paras[0], env: self.env).evaluate()
 
             guard let image = getUIImage(from: image) else {
-                return (nil, .paramTypeMismatch)
+                throw RosParseError.paramTypeMismatch
             }
-            return (image.clipToCircleImage(), nil)
+            return image.clipToCircleImage()
 
         case .Ros_getImageWidth:
-            if paras.count < 1 { return (nil, .paramMissing) }
-            if paras.count > 1 { return (nil, .paramRedundant) }
-            let (image, err) = RosSentence(code: paras[0], env: self.env).evaluate()
-            if err != nil { return (nil, err) }
+            if paras.count < 1 { throw RosParseError.paramMissing }
+            if paras.count > 1 { throw RosParseError.paramRedundant }
+            let image = try RosSentence(code: paras[0], env: self.env).evaluate()
 
             guard let image = getUIImage(from: image) else {
-                return (nil, .paramTypeMismatch)
+                throw RosParseError.paramTypeMismatch
             }
-            return (image.size.width, nil)
+            return image.size.width
 
         case .Ros_getImageHeight:
-            if paras.count < 1 { return (nil, .paramMissing) }
-            if paras.count > 1 { return (nil, .paramRedundant) }
-            let (image, err) = RosSentence(code: paras[0], env: self.env).evaluate()
-            if err != nil { return (nil, err) }
+            if paras.count < 1 { throw RosParseError.paramMissing }
+            if paras.count > 1 { throw RosParseError.paramRedundant }
+            let image = try RosSentence(code: paras[0], env: self.env).evaluate()
 
             guard let image = getUIImage(from: image) else {
-                return (nil, .paramTypeMismatch)
+                throw RosParseError.paramTypeMismatch
             }
-            return (image.size.height, nil)
+            return image.size.height
 
         case .Ros_getColor:
-            if paras.count < 3 { return (nil, .paramMissing) }
-            if paras.count > 4 { return (nil, .paramRedundant) }
-            let (red, err) = RosSentence(code: paras[0], env: self.env).evaluate()
-            if err != nil { return (nil, err) }
+            if paras.count < 3 { throw RosParseError.paramMissing }
+            if paras.count > 4 { throw RosParseError.paramRedundant }
+            let red = try RosSentence(code: paras[0], env: self.env).evaluate()
+            let green = try RosSentence(code: paras[1], env: self.env).evaluate()
+            let blue = try RosSentence(code: paras[2], env: self.env).evaluate()
 
             guard let red = getInt(from: red) else {
-                return (nil, .paramTypeMismatch)
+                throw RosParseError.paramTypeMismatch
             }
             guard red >= 0, red <= 255 else {
-                return (nil, .paramIllegal)
+                throw RosParseError.paramIllegal
             }
-            let (green, err2) = RosSentence(code: paras[1], env: self.env).evaluate()
-            if err2 != nil { return (nil, err2) }
             guard let green = getInt(from: green) else {
-                return (nil, .paramTypeMismatch)
+                throw RosParseError.paramTypeMismatch
             }
             guard green >= 0, green <= 255 else {
-                return (nil, .paramIllegal)
+                throw RosParseError.paramIllegal
             }
-            let (blue, err3) = RosSentence(code: paras[2], env: self.env).evaluate()
-            if err3 != nil { return (nil, err3) }
             guard let blue = getInt(from: blue) else {
-                return (nil, .paramTypeMismatch)
+                throw RosParseError.paramTypeMismatch
             }
             guard blue >= 0, blue <= 255 else {
-                return (nil, .paramIllegal)
+                throw RosParseError.paramIllegal
             }
+
             var alpha: Double = 1
             if paras.count == 4 {
-                let (theAlpha, err4) = RosSentence(code: paras[3], env: self.env).evaluate()
-                if err4 != nil { return (nil, err4) }
+                let theAlpha = try RosSentence(code: paras[3], env: self.env).evaluate()
                 guard let theAlpha = getDouble(from: theAlpha) else {
-                    return (nil, .paramTypeMismatch)
+                    throw RosParseError.paramTypeMismatch
                 }
                 guard theAlpha >= 0, theAlpha <= 1 else {
-                    return (nil, .paramIllegal)
+                    throw RosParseError.paramIllegal
                 }
                 alpha = theAlpha
             }
             let color = UIColor(red: CGFloat(red)/255, green: CGFloat(green)/255, blue: CGFloat(blue)/255, alpha: alpha)
-            return (color, nil)
+            return color
 
         }
 
-        return (nil, nil)
+        return nil
     }
 
     private func getDouble(from value: Any?) -> Double? {
