@@ -16,6 +16,15 @@ class TemplateViewController: SCViewController {
     private let imageView = UIImageView()
     private let qqTextField = UITextField()
 
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        self.hidesBottomBarWhenPushed = true
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
@@ -99,32 +108,6 @@ class TemplateViewController: SCViewController {
         }
 
         RosParser.shared.parse(code: template.code, qqnum: qq)
-
-//        guard let url = URL(string: "http://q1.qlogo.cn/g?b=qq&nk=\(qq)&s=640") else { return }
-//        button.isEnabled = false
-//        DispatchQueue.global().async {
-//            if let avatarData = try? Data(contentsOf: url) {
-//                if let avatar = UIImage(data: avatarData)?.resizeImage(size: CGSize(width: 100, height: 100)).clipToCircleImage() {
-//                    let backImage = UIImage(data: self.template.image!)!
-//
-//                    let renderer = UIGraphicsImageRenderer(size: backImage.size)
-//                    let newImage = renderer.image { context in
-//                        backImage.draw(at: .zero)
-//                        avatar.draw(at: CGPoint(x: 30, y: 200))
-//                    }
-//                    DispatchQueue.main.async {
-//                        self.imageView.image = newImage
-//                    }
-//                } else {
-//                    presentAlert(title: "获取头像图片失败", message: nil, on: self)
-//                }
-//            } else {
-//                presentAlert(title: "获取头像图片失败", message: nil, on: self)
-//            }
-//            DispatchQueue.main.async {
-//                button.isEnabled = true
-//            }
-//        }
     }
 
     @objc private func receiveResult(notification: Notification) {

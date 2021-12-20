@@ -44,6 +44,9 @@ enum RosFunctionChinese: String {
     case Ros_createDrawBoard = "新建画板"
     case Ros_drawImage = "画图片"
     case Ros_clipToCircle = "图像圆角化"
+    case Ros_getImageWidth = "取图片宽度" // 未测试
+    case Ros_getImageHeight = "取图片高度" // 未测试
+    case Ros_getColor = "取颜色" // 未测试
 }
 
 fileprivate class RosEnvironment {
@@ -238,10 +241,76 @@ fileprivate class RosSentence {
             if paras.count > 1 { return (nil, .paramRedundant) }
             let (image, err) = RosSentence(code: paras[0], env: self.env).evaluate()
             if err != nil { return (nil, err) }
+
             guard let image = getUIImage(from: image) else {
                 return (nil, .paramTypeMismatch)
             }
             return (image.clipToCircleImage(), nil)
+
+        case .Ros_getImageWidth:
+            if paras.count < 1 { return (nil, .paramMissing) }
+            if paras.count > 1 { return (nil, .paramRedundant) }
+            let (image, err) = RosSentence(code: paras[0], env: self.env).evaluate()
+            if err != nil { return (nil, err) }
+
+            guard let image = getUIImage(from: image) else {
+                return (nil, .paramTypeMismatch)
+            }
+            return (image.size.width, nil)
+
+        case .Ros_getImageHeight:
+            if paras.count < 1 { return (nil, .paramMissing) }
+            if paras.count > 1 { return (nil, .paramRedundant) }
+            let (image, err) = RosSentence(code: paras[0], env: self.env).evaluate()
+            if err != nil { return (nil, err) }
+
+            guard let image = getUIImage(from: image) else {
+                return (nil, .paramTypeMismatch)
+            }
+            return (image.size.height, nil)
+
+        case .Ros_getColor:
+            if paras.count < 3 { return (nil, .paramMissing) }
+            if paras.count > 4 { return (nil, .paramRedundant) }
+            let (red, err) = RosSentence(code: paras[0], env: self.env).evaluate()
+            if err != nil { return (nil, err) }
+
+            guard let red = getInt(from: red) else {
+                return (nil, .paramTypeMismatch)
+            }
+            guard red >= 0, red <= 255 else {
+                return (nil, .paramIllegal)
+            }
+            let (green, err2) = RosSentence(code: paras[1], env: self.env).evaluate()
+            if err2 != nil { return (nil, err2) }
+            guard let green = getInt(from: green) else {
+                return (nil, .paramTypeMismatch)
+            }
+            guard green >= 0, green <= 255 else {
+                return (nil, .paramIllegal)
+            }
+            let (blue, err3) = RosSentence(code: paras[2], env: self.env).evaluate()
+            if err3 != nil { return (nil, err3) }
+            guard let blue = getInt(from: blue) else {
+                return (nil, .paramTypeMismatch)
+            }
+            guard blue >= 0, blue <= 255 else {
+                return (nil, .paramIllegal)
+            }
+            var alpha: Double = 1
+            if paras.count == 4 {
+                let (theAlpha, err4) = RosSentence(code: paras[3], env: self.env).evaluate()
+                if err4 != nil { return (nil, err4) }
+                guard let theAlpha = getDouble(from: theAlpha) else {
+                    return (nil, .paramTypeMismatch)
+                }
+                guard theAlpha >= 0, theAlpha <= 1 else {
+                    return (nil, .paramIllegal)
+                }
+                alpha = theAlpha
+            }
+            let color = UIColor(red: CGFloat(red)/255, green: CGFloat(green)/255, blue: CGFloat(blue)/255, alpha: alpha)
+            return (color, nil)
 
         }
 
@@ -299,6 +368,10 @@ enum RosParseError: Error {
     ///
     /// 一个函数传入的某个参数的类型无法被转换成所需要的类型
     case paramTypeMismatch
+    /// 参数大小不合法
+    ///
+    /// 比如取颜色函数的前三个参数要求是 0 ~ 255，而用户传入了此范围之外的数字
+    case paramIllegal
     /// 参数缺失
     ///
     /// 一个函数传入的参数数量少于所需数量

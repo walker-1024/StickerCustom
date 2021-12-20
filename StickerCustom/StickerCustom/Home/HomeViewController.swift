@@ -29,15 +29,6 @@ class HomeViewController: SCViewController {
         self.navigationItem.titleView = self.getAppPrompt()
         setup()
 
-        let a = "23532.0932405"
-        var t: Any? = nil
-        t = a
-        if let num = t as? String, let m = Double(num) {
-            print("\(m)")
-        } else {
-            print("00000")
-        }
-
         guard let url = URL(string: "http://q1.qlogo.cn/g?b=qq&nk=2064023354&s=640") else { return }
         DispatchQueue.global().async {
             let _ = try? Data(contentsOf: url)
