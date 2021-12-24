@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import UIKit
 
 struct TemplateModel: Codable {
     var templateId: String // 模板的唯一标识符

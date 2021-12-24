@@ -27,8 +27,17 @@ class TemplateViewController: SCViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        let button = UIButton()
+        button.setTitle("查看代码", for: .normal)
+        button.addTarget(self, action: #selector(clickReviewCode), for: .touchUpInside)
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: button)
         setup()
         NotificationCenter.default.addObserver(self, selector: #selector(receiveResult(notification:)), name: .tmp, object: nil)
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
     }
 
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -99,6 +108,12 @@ class TemplateViewController: SCViewController {
         textView.layer.cornerRadius = 10
         textView.layer.masksToBounds = true
         textView.isUserInteractionEnabled = false
+    }
+
+    @objc private func clickReviewCode() {
+        let vc = TemplateCodeViewController()
+        vc.template = template
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 
     @objc private func clickGenerate(button: UIButton) {

@@ -37,7 +37,12 @@
 		52681022276A4F5200A8C41D /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52681021276A4F5200A8C41D /* Network.swift */; };
 		52681024276A4F5B00A8C41D /* NetworkMgr.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52681023276A4F5B00A8C41D /* NetworkMgr.swift */; };
 		52681026276A4F7500A8C41D /* NetworkRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52681025276A4F7500A8C41D /* NetworkRequest.swift */; };
-		5269DB83276F7F9D00FD8063 /* LocalTemplateMgr.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5269DB82276F7F9D00FD8063 /* LocalTemplateMgr.swift */; };
+		5269DB83276F7F9D00FD8063 /* TemplateMgr.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5269DB82276F7F9D00FD8063 /* TemplateMgr.swift */; };
+		52E26E8627755B11003FFBF7 /* TemplateCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E26E8527755B11003FFBF7 /* TemplateCodeViewController.swift */; };
+		52E26E8827756358003FFBF7 /* TemplateAssetsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E26E8727756358003FFBF7 /* TemplateAssetsCell.swift */; };
+		52E26E8A277572FE003FFBF7 /* LocalFileMgr.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E26E89277572FE003FFBF7 /* LocalFileMgr.swift */; };
+		52E26E8C277587F1003FFBF7 /* TemplateAssetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E26E8B277587F1003FFBF7 /* TemplateAssetModel.swift */; };
+		52E26E8E27758A46003FFBF7 /* TemplateAssetMgr.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E26E8D27758A46003FFBF7 /* TemplateAssetMgr.swift */; };
 		8F85F40FFAEED78E9160AD83 /* Pods_StickerCustom_StickerCustomUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C206AB2DC7EABDE408F5FCB /* Pods_StickerCustom_StickerCustomUITests.framework */; };
 		D58CB477FB3C2861814B34E8 /* Pods_StickerCustom.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E6D225568BA26C03D4BC00F /* Pods_StickerCustom.framework */; };
 		E0EC76B2F23D167EB63D14AC /* Pods_StickerCustomTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 577335B83A69672479263004 /* Pods_StickerCustomTests.framework */; };
@@ -98,7 +103,12 @@
 		52681021276A4F5200A8C41D /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		52681023276A4F5B00A8C41D /* NetworkMgr.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMgr.swift; sourceTree = "<group>"; };
 		52681025276A4F7500A8C41D /* NetworkRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkRequest.swift; sourceTree = "<group>"; };
-		5269DB82276F7F9D00FD8063 /* LocalTemplateMgr.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalTemplateMgr.swift; sourceTree = "<group>"; };
+		5269DB82276F7F9D00FD8063 /* TemplateMgr.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateMgr.swift; sourceTree = "<group>"; };
+		52E26E8527755B11003FFBF7 /* TemplateCodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateCodeViewController.swift; sourceTree = "<group>"; };
+		52E26E8727756358003FFBF7 /* TemplateAssetsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateAssetsCell.swift; sourceTree = "<group>"; };
+		52E26E89277572FE003FFBF7 /* LocalFileMgr.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalFileMgr.swift; sourceTree = "<group>"; };
+		52E26E8B277587F1003FFBF7 /* TemplateAssetModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateAssetModel.swift; sourceTree = "<group>"; };
+		52E26E8D27758A46003FFBF7 /* TemplateAssetMgr.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateAssetMgr.swift; sourceTree = "<group>"; };
 		577335B83A69672479263004 /* Pods_StickerCustomTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StickerCustomTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		85BE72FED444E4E7A9651B3D /* Pods-StickerCustom.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StickerCustom.debug.xcconfig"; path = "Target Support Files/Pods-StickerCustom/Pods-StickerCustom.debug.xcconfig"; sourceTree = "<group>"; };
 		B0EF12F8D06F91454589A2FE /* Pods-StickerCustom-StickerCustomUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StickerCustom-StickerCustomUITests.debug.xcconfig"; path = "Target Support Files/Pods-StickerCustom-StickerCustomUITests/Pods-StickerCustom-StickerCustomUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -213,6 +223,7 @@
 				5246A788276B923A005F1BF6 /* View */,
 				522FF5352769C708002E84F9 /* HomeViewController.swift */,
 				5246A786276B9234005F1BF6 /* TemplateViewController.swift */,
+				52E26E8527755B11003FFBF7 /* TemplateCodeViewController.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -221,6 +232,7 @@
 			isa = PBXGroup;
 			children = (
 				5246A784276B86AD005F1BF6 /* TemplateModel.swift */,
+				52E26E8B277587F1003FFBF7 /* TemplateAssetModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -229,6 +241,7 @@
 			isa = PBXGroup;
 			children = (
 				5246A781276B8670005F1BF6 /* TemplateCell.swift */,
+				52E26E8727756358003FFBF7 /* TemplateAssetsCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -264,7 +277,9 @@
 				52681013276A46F300A8C41D /* PlistReader.swift */,
 				52681017276A473D00A8C41D /* VisitorMgr.swift */,
 				52681019276A475500A8C41D /* UserConfigMgr.swift */,
-				5269DB82276F7F9D00FD8063 /* LocalTemplateMgr.swift */,
+				5269DB82276F7F9D00FD8063 /* TemplateMgr.swift */,
+				52E26E8D27758A46003FFBF7 /* TemplateAssetMgr.swift */,
+				52E26E89277572FE003FFBF7 /* LocalFileMgr.swift */,
 			);
 			path = Mgr;
 			sourceTree = "<group>";
@@ -546,14 +561,17 @@
 			files = (
 				5246A787276B9234005F1BF6 /* TemplateViewController.swift in Sources */,
 				52681016276A470700A8C41D /* DataUtil.swift in Sources */,
+				52E26E8A277572FE003FFBF7 /* LocalFileMgr.swift in Sources */,
 				5246A780276B58C5005F1BF6 /* UserViewController.swift in Sources */,
 				522282FD276CD32900A4031D /* RosParser.swift in Sources */,
 				522FF5362769C708002E84F9 /* HomeViewController.swift in Sources */,
 				5268100E276A469F00A8C41D /* UIImageUtil.swift in Sources */,
+				52E26E8E27758A46003FFBF7 /* TemplateAssetMgr.swift in Sources */,
 				522FF5322769C708002E84F9 /* AppDelegate.swift in Sources */,
 				5268101A276A475500A8C41D /* UserConfigMgr.swift in Sources */,
 				5268100C276A469400A8C41D /* StringUtil.swift in Sources */,
 				5268101C276A478F00A8C41D /* SCViewController.swift in Sources */,
+				52E26E8627755B11003FFBF7 /* TemplateCodeViewController.swift in Sources */,
 				522FF53C2769C708002E84F9 /* StickerCustom.xcdatamodeld in Sources */,
 				52681012276A46DA00A8C41D /* NotificationUtil.swift in Sources */,
 				5246A782276B8670005F1BF6 /* TemplateCell.swift in Sources */,
@@ -562,12 +580,14 @@
 				52681022276A4F5200A8C41D /* Network.swift in Sources */,
 				52681024276A4F5B00A8C41D /* NetworkMgr.swift in Sources */,
 				52681010276A46B700A8C41D /* DateUtil.swift in Sources */,
+				52E26E8C277587F1003FFBF7 /* TemplateAssetModel.swift in Sources */,
 				52681014276A46F300A8C41D /* PlistReader.swift in Sources */,
 				52681018276A473D00A8C41D /* VisitorMgr.swift in Sources */,
 				522FF5342769C708002E84F9 /* SceneDelegate.swift in Sources */,
 				5246A785276B86AD005F1BF6 /* TemplateModel.swift in Sources */,
+				52E26E8827756358003FFBF7 /* TemplateAssetsCell.swift in Sources */,
 				5268100A276A468200A8C41D /* UIColorUtil.swift in Sources */,
-				5269DB83276F7F9D00FD8063 /* LocalTemplateMgr.swift in Sources */,
+				5269DB83276F7F9D00FD8063 /* TemplateMgr.swift in Sources */,
 				52681020276A4F2E00A8C41D /* WebAPI.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

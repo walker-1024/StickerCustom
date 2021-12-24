@@ -1,5 +1,5 @@
 //
-//  LocalTemplateMgr.swift
+//  TemplateMgr.swift
 //  StickerCustom
 //
 //  Created by 刘菁楷 on 2021/12/19.
@@ -9,9 +9,9 @@ import Foundation
 import UIKit
 import CoreData
 
-class LocalTemplateMgr {
+class TemplateMgr {
 
-    static let shared = LocalTemplateMgr()
+    static let shared = TemplateMgr()
 
     private init() { }
 

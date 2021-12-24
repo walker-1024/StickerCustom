@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19574" systemVersion="21C5045a" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="TemplateAssetEntity" representedClassName="TemplateAssetEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="assetType" optional="YES" attributeType="String"/>
+        <attribute name="data" optional="YES" attributeType="Binary"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="templateId" optional="YES" attributeType="String"/>
+        <attribute name="time" optional="YES" attributeType="String"/>
+    </entity>
     <entity name="TemplateEntity" representedClassName="TemplateEntity" syncable="YES" codeGenerationType="class">
         <attribute name="auther" optional="YES" attributeType="String"/>
         <attribute name="code" optional="YES" attributeType="String"/>
@@ -10,5 +17,6 @@
     </entity>
     <elements>
         <element name="TemplateEntity" positionX="-63" positionY="-18" width="128" height="119"/>
+        <element name="TemplateAssetEntity" positionX="-63" positionY="27" width="128" height="104"/>
     </elements>
 </model>

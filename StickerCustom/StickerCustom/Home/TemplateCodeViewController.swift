@@ -1,0 +1,335 @@
+//
+//  TemplateCodeViewController.swift
+//  StickerCustom
+//
+//  Created by 刘菁楷 on 2021/12/24.
+//
+
+import UIKit
+
+let TemplateAssetsCellIdentifier = "TemplateAssetsCellIdentifier"
+
+class TemplateCodeViewController: SCViewController, UIGestureRecognizerDelegate {
+
+    var template: TemplateModel!
+
+    var cellData: [TemplateAssetModel] = []
+
+    let previewButton = UIButton()
+    let assetsButton = UIButton()
+    let previewView = UIView()
+    var assetsCollectionView: UICollectionView!
+    let imageView = UIImageView()
+    let qqTextField = UITextField()
+    let codeTextView = UITextView()
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupTopbar()
+        setupAssetsCollectionView()
+        setupPreviewView()
+        setupCodeView()
+        // 实现在状态栏隐藏的情况下能够右划返回
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.setNavigationBarHidden(true, animated: true)
+        self.refresh()
+    }
+
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesEnded(touches, with: event)
+        qqTextField.resignFirstResponder()
+        codeTextView.resignFirstResponder()
+    }
+
+    private func setupTopbar() {
+        let topbar = UIView()
+        view.addSubview(topbar)
+        topbar.translatesAutoresizingMaskIntoConstraints = false
+        topbar.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(StatusBarH)
+            make.height.equalTo(NavBarH)
+        }
+
+        let backButton = UIButton()
+        topbar.addSubview(backButton)
+        backButton.snp.makeConstraints { make in
+            make.leading.top.bottom.equalToSuperview()
+            make.width.equalTo(60)
+        }
+        backButton.setImage("icon-back".localImage?.resizeImage(size: CGSize(width: 14, height: 25)), for: .normal)
+        backButton.imageEdgeInsets = UIEdgeInsets(top: 8, left: 15, bottom: 8, right: 31)
+        backButton.addTarget(self, action: #selector(clickBack), for: .touchUpInside)
+
+        topbar.addSubview(previewButton)
+        previewButton.snp.makeConstraints { make in
+            make.trailing.equalTo(topbar.snp.centerX).offset(-10)
+            make.width.equalTo(60)
+            make.height.equalTo(40)
+            make.centerY.equalToSuperview()
+        }
+        previewButton.setTitle("预览", for: .normal)
+        previewButton.setTitleColor(.tintGreen, for: .selected)
+        previewButton.setTitleColor(.gray, for: .normal)
+        previewButton.titleLabel?.font = UIFont.systemFont(ofSize: 18)
+        previewButton.isSelected = true
+        previewButton.tag = 1
+        previewButton.addTarget(self, action: #selector(selectButton(button:)), for: .touchUpInside)
+
+        topbar.addSubview(assetsButton)
+        assetsButton.snp.makeConstraints { make in
+            make.leading.equalTo(topbar.snp.centerX).offset(10)
+            make.width.equalTo(previewButton)
+            make.height.equalTo(previewButton)
+            make.centerY.equalToSuperview()
+        }
+        assetsButton.setTitle("素材", for: .normal)
+        assetsButton.setTitleColor(.tintGreen, for: .selected)
+        assetsButton.setTitleColor(.gray, for: .normal)
+        assetsButton.titleLabel?.font = UIFont.systemFont(ofSize: 18)
+        assetsButton.tag = 2
+        assetsButton.addTarget(self, action: #selector(selectButton(button:)), for: .touchUpInside)
+    }
+
+    private func setupAssetsCollectionView() {
+        let layout = UICollectionViewFlowLayout()
+        layout.itemSize = CGSize(width: 50, height: 70)
+        assetsCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        view.addSubview(assetsCollectionView)
+        assetsCollectionView.snp.makeConstraints { make in
+            make.leading.equalTo(30)
+            make.trailing.equalTo(-30)
+            make.top.equalTo(120)
+            make.height.equalTo(200)
+        }
+        assetsCollectionView.backgroundColor = .clear
+        assetsCollectionView.alwaysBounceVertical = true
+        assetsCollectionView.contentInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        assetsCollectionView.register(TemplateAssetsCell.self, forCellWithReuseIdentifier: TemplateAssetsCellIdentifier)
+        assetsCollectionView.delegate = self
+        assetsCollectionView.dataSource = self
+        assetsCollectionView.layer.cornerRadius = 10
+        assetsCollectionView.layer.borderColor = UIColor.tintGreen.cgColor
+        assetsCollectionView.layer.borderWidth = 2
+        assetsCollectionView.layer.masksToBounds = true
+        assetsCollectionView.isHidden = true
+        assetsCollectionView.transform = CGAffineTransform(translationX: ScreenWidth, y: 0)
+    }
+
+    private func setupPreviewView() {
+        view.addSubview(previewView)
+        previewView.snp.makeConstraints { make in
+            make.leading.equalTo(30)
+            make.trailing.equalTo(-30)
+            make.top.equalTo(120)
+            make.height.equalTo(200)
+        }
+
+        previewView.addSubview(imageView)
+        imageView.snp.makeConstraints { make in
+            make.leading.equalToSuperview()
+            make.width.height.equalTo(160)
+            make.centerY.equalToSuperview()
+        }
+        imageView.image = UIImage(data: template.cover!)
+        imageView.contentMode = .scaleAspectFit
+        imageView.layer.cornerRadius = 10
+        imageView.layer.masksToBounds = true
+
+        previewView.addSubview(qqTextField)
+        qqTextField.snp.makeConstraints { make in
+            make.trailing.equalToSuperview()
+            make.leading.equalTo(imageView.snp.trailing).offset(20)
+            make.top.equalTo(imageView)
+            make.bottom.equalTo(imageView.snp.centerY).offset(-10)
+        }
+        qqTextField.attributedPlaceholder = NSAttributedString(string: "输入QQ号", attributes: [.foregroundColor: UIColor.tintGreen])
+        qqTextField.textColor = UIColor.tintGreen
+        qqTextField.textAlignment = .center
+        qqTextField.font = UIFont.systemFont(ofSize: 18)
+        qqTextField.keyboardType = .default
+        qqTextField.returnKeyType = .done
+        qqTextField.autocorrectionType = .no
+        qqTextField.autocapitalizationType = .none
+        qqTextField.delegate = self
+        qqTextField.layer.borderWidth = 2
+        qqTextField.layer.borderColor = UIColor.tintGreen.cgColor
+        qqTextField.layer.cornerRadius = 6
+        qqTextField.layer.masksToBounds = true
+
+        let button = UIButton()
+        previewView.addSubview(button)
+        button.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(qqTextField)
+            make.top.equalTo(imageView.snp.centerY).offset(10)
+            make.bottom.equalTo(imageView)
+        }
+        button.setTitle("生成", for: .normal)
+        button.setTitleColor(UIColor.tintGreen, for: .normal)
+        button.layer.cornerRadius = 5
+        button.layer.masksToBounds = true
+        button.layer.borderWidth = 2
+        button.layer.borderColor = UIColor.tintGreen.cgColor
+        button.addTarget(self, action: #selector(clickGenerate), for: .touchUpInside)
+    }
+
+    private func setupCodeView() {
+        view.addSubview(codeTextView)
+        codeTextView.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(assetsCollectionView)
+            make.top.equalTo(assetsCollectionView.snp.bottom).offset(20)
+            make.bottom.equalTo(-20)
+        }
+        codeTextView.backgroundColor = .clear
+        codeTextView.text = template.code
+        codeTextView.textColor = UIColor.tintGreen
+        codeTextView.font = UIFont.systemFont(ofSize: 18)
+        codeTextView.alwaysBounceVertical = true
+        codeTextView.keyboardType = .default
+        codeTextView.returnKeyType = .done
+        codeTextView.autocorrectionType = .no
+        codeTextView.autocapitalizationType = .none
+        codeTextView.delegate = self
+        codeTextView.layer.borderWidth = 2
+        codeTextView.layer.borderColor = UIColor.tintGreen.cgColor
+        codeTextView.layer.cornerRadius = 10
+        codeTextView.layer.masksToBounds = true
+    }
+
+    private func refresh() {
+        DispatchQueue.global().async {
+            if var assets = TemplateAssetMgr.shared.getAllAssets(of: self.template.templateId) {
+                assets.sort { $0.time > $1.time }
+                assets.forEach { model in
+                    print(model.time)
+                }
+                DispatchQueue.main.async {
+                    self.cellData = assets
+                    self.assetsCollectionView.reloadData()
+                }
+            }
+        }
+    }
+
+    @objc private func clickGenerate() {
+        guard let qq = Int(qqTextField.text ?? "") else {
+            presentAlert(title: "请输入正确的QQ号", message: nil, on: self)
+            return
+        }
+
+        RosParser.shared.parse(code: codeTextView.text, qqnum: qq)
+    }
+
+    @objc private func clickBack() {
+        self.navigationController?.popViewController(animated: true)
+    }
+
+    @objc private func selectButton(button: UIButton) {
+        if button.tag == 1 {
+            if !previewButton.isSelected {
+                previewButton.isSelected = true
+                assetsButton.isSelected = false
+                self.previewView.isHidden = false
+                UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut) {
+                    self.previewView.transform = CGAffineTransform(translationX: 0, y: 0)
+                    self.assetsCollectionView.transform = CGAffineTransform(translationX: ScreenWidth, y: 0)
+                } completion: { _ in
+                    if !self.assetsButton.isSelected {
+                        self.assetsCollectionView.isHidden = true
+                    }
+                }
+            }
+        } else {
+            if previewButton.isSelected {
+                previewButton.isSelected = false
+                assetsButton.isSelected = true
+            }
+            self.assetsCollectionView.isHidden = false
+            UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut) {
+                self.previewView.transform = CGAffineTransform(translationX: -ScreenWidth, y: 0)
+                self.assetsCollectionView.transform = CGAffineTransform(translationX: 0, y: 0)
+            } completion: { _ in
+                if !self.previewButton.isSelected {
+                    self.previewView.isHidden = true
+                }
+            }
+        }
+    }
+
+}
+
+extension TemplateCodeViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return cellData.count + 1
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TemplateAssetsCellIdentifier, for: indexPath)
+        if let theCell = cell as? TemplateAssetsCell {
+            if indexPath.row == 0 {
+                theCell.setupData(model: nil)
+            } else {
+                theCell.setupData(model: cellData[indexPath.row - 1])
+            }
+        }
+        return cell
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if indexPath.row == 0 {
+            if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
+                let picker = UIImagePickerController()
+                picker.sourceType = .photoLibrary
+                picker.allowsEditing = true
+                picker.delegate = self
+                self.present(picker, animated: true, completion: nil)
+            }
+        } else {
+            print(indexPath.row)
+        }
+        collectionView.deselectItem(at: indexPath, animated: true)
+    }
+}
+
+extension TemplateCodeViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let imageData = (info[UIImagePickerController.InfoKey.editedImage] as? UIImage)?.pngData() {
+            for i in 0...cellData.count {
+                if !cellData.contains(where: { $0.name == String(i) }) {
+                    let asset = TemplateAssetModel(templateId: template.templateId, name: String(i), data: imageData, assetType: .png)
+                    TemplateAssetMgr.shared.add(templateAsset: asset)
+                    self.refresh()
+                    break
+                }
+            }
+        }
+        picker.dismiss(animated: true, completion: nil)
+    }
+
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
+    }
+}
+
+extension TemplateCodeViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        return string.isIntNumber || string.count == 0
+    }
+}
+
+extension TemplateCodeViewController: UITextViewDelegate {
+
+}
