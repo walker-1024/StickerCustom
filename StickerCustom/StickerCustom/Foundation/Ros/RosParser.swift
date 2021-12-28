@@ -14,7 +14,7 @@ class RosParser {
 
     private init() { }
 
-    func parse(code: String, qqnum: Int) {
+    func parse(code: String, qqnum: Int, templateId: UUID) {
         guard let url = URL(string: "http://q1.qlogo.cn/g?b=qq&nk=\(qqnum)&s=640") else {
             return
         }
@@ -23,6 +23,12 @@ class RosParser {
             guard let avatar = UIImage(data: avatarData) else { return }
             let env = RosEnvironment()
             env.setVarValue("头像", value: avatar)
+            let assets = TemplateAssetMgr.shared.getAllAssets(of: templateId)
+            for item in assets ?? [] {
+                if let image = UIImage(data: item.data) {
+                    env.setVarValue(item.name, value: image)
+                }
+            }
             do {
                 let result = try RosSentence(code: code, env: env).evaluate()
                 print(result as Any)

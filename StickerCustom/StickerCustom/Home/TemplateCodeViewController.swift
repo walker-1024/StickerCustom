@@ -31,6 +31,7 @@ class TemplateCodeViewController: SCViewController, UIGestureRecognizerDelegate 
         setupCodeView()
         // 实现在状态栏隐藏的情况下能够右划返回
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+        NotificationCenter.default.addObserver(self, selector: #selector(receiveResult(notification:)), name: .tmp, object: nil)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -218,7 +219,7 @@ class TemplateCodeViewController: SCViewController, UIGestureRecognizerDelegate 
             return
         }
 
-        RosParser.shared.parse(code: codeTextView.text, qqnum: qq)
+        RosParser.shared.parse(code: codeTextView.text, qqnum: qq, templateId: self.template.templateId)
     }
 
     @objc private func clickBack() {
@@ -257,6 +258,13 @@ class TemplateCodeViewController: SCViewController, UIGestureRecognizerDelegate 
         }
     }
 
+    @objc private func receiveResult(notification: Notification) {
+        guard let userInfo = notification.userInfo else { return }
+        guard let result = userInfo["result"] as? UIImage else { return }
+        DispatchQueue.main.async {
+            self.imageView.image = result
+        }
+    }
 }
 
 extension TemplateCodeViewController: UICollectionViewDelegate, UICollectionViewDataSource {

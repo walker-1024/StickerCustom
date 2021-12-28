@@ -60,7 +60,7 @@ class TemplateViewController: SCViewController {
             make.width.equalTo(300)
             make.height.equalTo(60)
             make.centerX.equalToSuperview()
-            make.top.equalTo(imageView.snp.bottom).offset(30)
+            make.top.equalTo(imageView.snp.bottom).offset(40)
         }
         qqTextField.attributedPlaceholder = NSAttributedString(string: "输入QQ号", attributes: [.foregroundColor: UIColor.tintGreen])
         qqTextField.textColor = UIColor.tintGreen
@@ -91,23 +91,6 @@ class TemplateViewController: SCViewController {
         button.layer.borderWidth = 2
         button.layer.borderColor = UIColor.tintGreen.cgColor
         button.addTarget(self, action: #selector(clickGenerate), for: .touchUpInside)
-
-        let textView = UITextView()
-        view.addSubview(textView)
-        textView.snp.makeConstraints { make in
-            make.leading.trailing.equalTo(qqTextField)
-            make.top.equalTo(button.snp.bottom).offset(30)
-            make.bottom.equalTo(-60)
-        }
-        textView.backgroundColor = .clear
-        textView.text = template.code
-        textView.textColor = UIColor.tintGreen
-        textView.font = TextFieldFont
-        textView.layer.borderWidth = 2
-        textView.layer.borderColor = UIColor.tintGreen.cgColor
-        textView.layer.cornerRadius = 10
-        textView.layer.masksToBounds = true
-        textView.isUserInteractionEnabled = false
     }
 
     @objc private func clickReviewCode() {
@@ -122,7 +105,7 @@ class TemplateViewController: SCViewController {
             return
         }
 
-        RosParser.shared.parse(code: template.code, qqnum: qq)
+        RosParser.shared.parse(code: template.code, qqnum: qq, templateId: self.template.templateId)
     }
 
     @objc private func receiveResult(notification: Notification) {

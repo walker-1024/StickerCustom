@@ -9,13 +9,24 @@ import Foundation
 import UIKit
 import CoreData
 
+let testCode = """
+{新建画板，512，512，{
+{画图片，丢，0，0}
+{画图片，{图像圆角化，头像}，30，200，100，100}
+}}
+"""
+
 class TemplateMgr {
 
     static let shared = TemplateMgr()
 
     private let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext
 
-    private init() { }
+    private init() {
+        if self.getAllTemplates()?.count == 0 {
+            self.add(template: TemplateModel(title: "丢", code: testCode, cover: "icon-white".localImage?.pngData(), auther: nil))
+        }
+    }
 
     func getAllTemplates() -> [TemplateModel]? {
         guard let context = context else {
