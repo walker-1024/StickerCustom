@@ -204,9 +204,6 @@ class TemplateCodeViewController: SCViewController, UIGestureRecognizerDelegate 
         DispatchQueue.global().async {
             if var assets = TemplateAssetMgr.shared.getAllAssets(of: self.template.templateId) {
                 assets.sort { $0.time > $1.time }
-                assets.forEach { model in
-                    print(model.time)
-                }
                 DispatchQueue.main.async {
                     self.cellData = assets
                     self.assetsCollectionView.reloadData()
@@ -293,7 +290,9 @@ extension TemplateCodeViewController: UICollectionViewDelegate, UICollectionView
                 self.present(picker, animated: true, completion: nil)
             }
         } else {
-            print(indexPath.row)
+            let vc = AssetDetailViewController()
+            vc.asset = self.cellData[indexPath.row - 1]
+            self.navigationController?.pushViewController(vc, animated: true)
         }
         collectionView.deselectItem(at: indexPath, animated: true)
     }

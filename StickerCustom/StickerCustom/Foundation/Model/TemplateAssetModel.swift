@@ -12,7 +12,8 @@ struct TemplateAssetModel: Codable {
         case png
         case gif
     }
-    var templateId: String // 所属模板的 ID
+    var assetId: UUID = UUID() // asset 唯一标识符
+    var templateId: UUID // 所属模板的 ID
     var name: String // 用户给文件的命名
     var data: Data // 文件数据
     var assetType: AssetType // 文件类型

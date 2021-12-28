@@ -17,7 +17,7 @@ class TemplateAssetMgr {
 
     private init() { }
 
-    func getAllAssets(of templateId: String) -> [TemplateAssetModel]? {
+    func getAllAssets(of templateId: UUID) -> [TemplateAssetModel]? {
         guard let context = context else {
             return nil
         }
@@ -29,12 +29,20 @@ class TemplateAssetMgr {
             fetchRequest.predicate = predicate
             let result = try context.fetch(fetchRequest)
             for item in result {
+                guard let assetId = item.assetId else { continue }
                 guard let templateId = item.templateId else { continue }
                 guard let name = item.name else { continue }
                 guard let data = item.data else { continue }
                 guard let assetType = TemplateAssetModel.AssetType(rawValue: item.assetType ?? "") else { continue }
                 guard let time = item.time else { continue }
-                let asset = TemplateAssetModel(templateId: templateId, name: name, data: data, assetType: assetType, time: time)
+                let asset = TemplateAssetModel(
+                    assetId: assetId,
+                    templateId: templateId,
+                    name: name,
+                    data: data,
+                    assetType: assetType,
+                    time: time
+                )
                 files.append(asset)
             }
         } catch {
@@ -51,6 +59,7 @@ class TemplateAssetMgr {
         guard let item = NSEntityDescription.insertNewObject(forEntityName: "TemplateAssetEntity", into: context) as? TemplateAssetEntity else {
             return
         }
+        item.assetId = theTemplateAsset.assetId
         item.templateId = theTemplateAsset.templateId
         item.name = theTemplateAsset.name
         item.data = theTemplateAsset.data
@@ -60,7 +69,21 @@ class TemplateAssetMgr {
     }
 
     func modify(templateAsset theTemplateAsset: TemplateAssetModel) {
-
+        guard let context = context else {
+            return
+        }
+        let fetchRequest = NSFetchRequest<TemplateAssetEntity>(entityName: "TemplateAssetEntity")
+        let predicate = NSPredicate(format: "assetId == \"\(theTemplateAsset.assetId)\"")
+        fetchRequest.predicate = predicate
+        guard let result = try? context.fetch(fetchRequest) else { return }
+        guard result.count > 0 else { return }
+        result[0].name = theTemplateAsset.name
+        // 目前应该只会改名字？
+        //result[0].templateId = theTemplateAsset.templateId
+        //result[0].data = theTemplateAsset.data
+        //result[0].assetType = theTemplateAsset.assetType.rawValue
+        //result[0].time = theTemplateAsset.time
+        try? context.save()
     }
 
     func delete(templateAsset theTemplateAsset: TemplateAssetModel) {
@@ -68,7 +91,7 @@ class TemplateAssetMgr {
             return
         }
         let fetchRequest = NSFetchRequest<TemplateAssetEntity>(entityName: "TemplateAssetEntity")
-        let predicate = NSPredicate(format: "templateId == \"\(theTemplateAsset.templateId)\" && name == \"\(theTemplateAsset.name)\" && assetType == \"\(theTemplateAsset.assetType.rawValue)\" && time == \"\(theTemplateAsset.time)\"")
+        let predicate = NSPredicate(format: "assetId == \"\(theTemplateAsset.assetId)\"")
         fetchRequest.predicate = predicate
         guard let result = try? context.fetch(fetchRequest) else { return }
         guard result.count > 0 else { return }

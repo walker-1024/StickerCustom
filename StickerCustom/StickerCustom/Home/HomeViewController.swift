@@ -19,7 +19,7 @@ let testCode = """
 class HomeViewController: SCViewController {
 
     private var cellData: [TemplateModel] = [
-        TemplateModel(templateId: "test", title: "丢", cover: "丢".localImage?.pngData(), code: testCode, auther: nil)
+        TemplateModel(title: "丢", code: testCode, cover: "icon-white".localImage?.pngData(), auther: nil)
     ]
 
     private var collectionView: UICollectionView!
@@ -28,6 +28,19 @@ class HomeViewController: SCViewController {
         super.viewDidLoad()
         self.navigationItem.titleView = self.getAppPrompt()
         setup()
+
+        let renderer = UIGraphicsImageRenderer(size: CGSize(width: 100, height: 100))
+        let data = renderer.pngData { context in
+            let label = UILabel()
+            label.text = "你好你好"
+            label.drawText(in: CGRect(x: 0, y: 0, width: 40, height: 50))
+        }
+        try? data.write(to: URL(fileURLWithPath: "/Users/macbookpro/Desktop/test.png"))
+        print(data.md5.count)
+
+        let a = UUID()
+        print(a.uuidString)
+
 
         guard let url = URL(string: "http://q1.qlogo.cn/g?b=qq&nk=2064023354&s=640") else { return }
         DispatchQueue.global().async {
