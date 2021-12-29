@@ -15,13 +15,20 @@ class TemplateCodeViewController: SCViewController, UIGestureRecognizerDelegate 
 
     var cellData: [TemplateAssetModel] = []
 
-    let previewButton = UIButton()
-    let assetsButton = UIButton()
-    let previewView = UIView()
-    var assetsCollectionView: UICollectionView!
-    let imageView = UIImageView()
-    let qqTextField = UITextField()
-    let codeTextView = UITextView()
+    private var isEdited: Bool = false {
+        didSet {
+            saveButton.isHidden = !isEdited
+        }
+    }
+
+    private let previewButton = UIButton()
+    private let assetsButton = UIButton()
+    private let previewView = UIView()
+    private var assetsCollectionView: UICollectionView!
+    private let imageView = UIImageView()
+    private let qqTextField = UITextField()
+    private let codeTextView = UITextView()
+    private let saveButton = UIButton()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -68,7 +75,7 @@ class TemplateCodeViewController: SCViewController, UIGestureRecognizerDelegate 
         topbar.addSubview(previewButton)
         previewButton.snp.makeConstraints { make in
             make.trailing.equalTo(topbar.snp.centerX).offset(-10)
-            make.width.equalTo(60)
+            make.width.equalTo(50)
             make.height.equalTo(40)
             make.centerY.equalToSuperview()
         }
@@ -93,6 +100,17 @@ class TemplateCodeViewController: SCViewController, UIGestureRecognizerDelegate 
         assetsButton.titleLabel?.font = UIFont.systemFont(ofSize: 18)
         assetsButton.tag = 2
         assetsButton.addTarget(self, action: #selector(selectButton(button:)), for: .touchUpInside)
+
+        topbar.addSubview(saveButton)
+        saveButton.snp.makeConstraints { make in
+            make.width.equalTo(60)
+            make.top.bottom.equalToSuperview()
+            make.trailing.equalToSuperview()
+        }
+        saveButton.setTitle("保存", for: .normal)
+        saveButton.setTitleColor(.tintGreen, for: .normal)
+        saveButton.addTarget(self, action: #selector(clickSave), for: .touchUpInside)
+        saveButton.isHidden = true
     }
 
     private func setupAssetsCollectionView() {
@@ -276,6 +294,15 @@ class TemplateCodeViewController: SCViewController, UIGestureRecognizerDelegate 
             }
         }
     }
+
+    @objc private func clickSave() {
+        guard var theTemplate = self.template else { return }
+        theTemplate.code = codeTextView.text
+        TemplateMgr.shared.modify(template: theTemplate)
+        self.template = theTemplate
+        self.isEdited = false
+        codeTextView.resignFirstResponder()
+    }
 }
 
 extension TemplateCodeViewController: UICollectionViewDelegate, UICollectionViewDataSource {
@@ -349,5 +376,7 @@ extension TemplateCodeViewController: UITextFieldDelegate {
 }
 
 extension TemplateCodeViewController: UITextViewDelegate {
-
+    func textViewDidChange(_ textView: UITextView) {
+        self.isEdited = true
+    }
 }
