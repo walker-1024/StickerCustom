@@ -14,7 +14,7 @@ class RosParser {
 
     private init() { }
 
-    func parse(code: String, qqnum: Int, templateId: UUID) {
+    func parse(code: String, qqnum: Int, templateId: UUID, completion: ((Any?, RosParseError?) -> Void)?) {
         guard let url = URL(string: "http://q1.qlogo.cn/g?b=qq&nk=\(qqnum)&s=640") else {
             return
         }
@@ -32,9 +32,9 @@ class RosParser {
             do {
                 let result = try RosSentence(code: code, env: env).evaluate()
                 print(result as Any)
-                NotificationCenter.default.post(name: .tmp, object: self, userInfo: ["result": result as Any])
+                completion?(result, nil)
             } catch let err {
-                print(err)
+                completion?(nil, err as? RosParseError)
             }
         }
     }

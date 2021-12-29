@@ -31,7 +31,6 @@ class TemplateCodeViewController: SCViewController, UIGestureRecognizerDelegate 
         setupCodeView()
         // 实现在状态栏隐藏的情况下能够右划返回
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
-        NotificationCenter.default.addObserver(self, selector: #selector(receiveResult(notification:)), name: .tmp, object: nil)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -219,7 +218,27 @@ class TemplateCodeViewController: SCViewController, UIGestureRecognizerDelegate 
             return
         }
 
-        RosParser.shared.parse(code: codeTextView.text, qqnum: qq, templateId: self.template.templateId)
+        let alert = UIAlertController(title: "正在生成", message: nil, preferredStyle: .alert)
+        self.present(alert, animated: true, completion: nil)
+        RosParser.shared.parse(code: codeTextView.text, qqnum: qq, templateId: self.template.templateId) { (result, rosError) in
+            DispatchQueue.main.async {
+                let ok = UIAlertAction(title: "确定", style: .default, handler: nil)
+                guard rosError == nil else {
+                    alert.title = "生成失败"
+                    alert.message = rosError?.localizedDescription
+                    alert.addAction(ok)
+                    return
+                }
+                guard let result = result as? UIImage else {
+                    alert.title = "生成失败"
+                    alert.message = "未知错误"
+                    alert.addAction(ok)
+                    return
+                }
+                alert.dismiss(animated: true, completion: nil)
+                self.imageView.image = result
+            }
+        }
     }
 
     @objc private func clickBack() {
@@ -255,14 +274,6 @@ class TemplateCodeViewController: SCViewController, UIGestureRecognizerDelegate 
                     self.previewView.isHidden = true
                 }
             }
-        }
-    }
-
-    @objc private func receiveResult(notification: Notification) {
-        guard let userInfo = notification.userInfo else { return }
-        guard let result = userInfo["result"] as? UIImage else { return }
-        DispatchQueue.main.async {
-            self.imageView.image = result
         }
     }
 }
