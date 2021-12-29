@@ -59,6 +59,28 @@ class TemplateMgr {
         return models
     }
 
+    func getTemplate(withId templateId: UUID) -> TemplateModel? {
+        guard let context = context else {
+            return nil
+        }
+        let fetchRequest = NSFetchRequest<TemplateEntity>(entityName: "TemplateEntity")
+        let predicate = NSPredicate(format: "templateId == \"\(templateId)\"")
+        fetchRequest.predicate = predicate
+        guard let result = try? context.fetch(fetchRequest) else { return nil }
+        guard result.count > 0 else { return nil }
+        guard let templateId = result[0].templateId else { return nil }
+        guard let title = result[0].title else { return nil }
+        guard let code = result[0].code else { return nil }
+        let template = TemplateModel(
+            templateId: templateId,
+            title: title,
+            code: code,
+            cover: result[0].cover,
+            auther: result[0].auther
+        )
+        return template
+    }
+
     func add(template theTemplate: TemplateModel) {
         guard let context = context else {
             return
@@ -88,6 +110,7 @@ class TemplateMgr {
         result[0].cover = theTemplate.cover
         result[0].code = theTemplate.code
         result[0].auther = theTemplate.auther
+        try? context.save()
     }
 
     // 采取标记删除的方式

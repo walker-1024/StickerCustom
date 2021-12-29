@@ -231,6 +231,8 @@ class TemplateCodeViewController: SCViewController, UIGestureRecognizerDelegate 
     }
 
     @objc private func clickGenerate() {
+        qqTextField.resignFirstResponder()
+        codeTextView.resignFirstResponder()
         guard let qq = Int(qqTextField.text ?? "") else {
             presentAlert(title: "请输入正确的QQ号", message: nil, on: self)
             return

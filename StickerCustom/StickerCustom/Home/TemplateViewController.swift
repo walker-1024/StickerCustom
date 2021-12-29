@@ -37,6 +37,7 @@ class TemplateViewController: SCViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.setNavigationBarHidden(false, animated: true)
+        self.refresh()
     }
 
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -51,7 +52,6 @@ class TemplateViewController: SCViewController {
             make.width.height.equalTo(200)
             make.centerX.equalToSuperview()
         }
-        imageView.image = UIImage(data: template.cover!)
         imageView.contentMode = .scaleAspectFit
 
         view.addSubview(qqTextField)
@@ -92,6 +92,17 @@ class TemplateViewController: SCViewController {
         button.addTarget(self, action: #selector(clickGenerate), for: .touchUpInside)
     }
 
+    private func refresh() {
+        DispatchQueue.global().async {
+            if let template = TemplateMgr.shared.getTemplate(withId: self.template.templateId) {
+                DispatchQueue.main.async {
+                    self.template = template
+                    self.imageView.image = UIImage(data: template.cover!)
+                }
+            }
+        }
+    }
+
     @objc private func clickReviewCode() {
         let vc = TemplateCodeViewController()
         vc.template = template
@@ -99,6 +110,7 @@ class TemplateViewController: SCViewController {
     }
 
     @objc private func clickGenerate(button: UIButton) {
+        qqTextField.resignFirstResponder()
         guard let qq = Int(qqTextField.text ?? "") else {
             presentAlert(title: "请输入正确的QQ号", message: nil, on: self)
             return
