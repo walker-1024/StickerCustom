@@ -9,7 +9,7 @@
         <attribute name="time" optional="YES" attributeType="String"/>
     </entity>
     <entity name="TemplateEntity" representedClassName="TemplateEntity" syncable="YES" codeGenerationType="class">
-        <attribute name="auther" optional="YES" attributeType="String"/>
+        <attribute name="author" optional="YES" attributeType="String"/>
         <attribute name="code" optional="YES" attributeType="String"/>
         <attribute name="cover" optional="YES" attributeType="Binary"/>
         <attribute name="isDelete" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>

@@ -32,8 +32,10 @@ class HomeViewController: SCViewController {
             label.text = "你好你好"
             label.drawText(in: CGRect(x: 0, y: 0, width: 40, height: 50))
         }
-        try? data.write(to: URL(fileURLWithPath: "/Users/macbookpro/Desktop/test.png"))
+//        try? data.write(to: URL(fileURLWithPath: "/Users/macbookpro/Desktop/test.png"))
         print(data.md5.count)
+
+//        LocalFileManager.shared.downloadTemplate(withId: UUID(), url: URL(string: "https://mp.walker-walker.top/mine/windows.zip")!, completion: nil)
 
         guard let url = URL(string: "http://q1.qlogo.cn/g?b=qq&nk=2064023354&s=640") else { return }
         DispatchQueue.global().async {

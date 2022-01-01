@@ -34,7 +34,7 @@ class WebAPIMgr {
 
     private init() { }
 
-    private let domain = "http://139.196.90.131:8422"
+    private let domain = "http://139.196.90.131:8500"
 
     func getAPI(in subspec: String, for function: String) -> WebAPI? {
 

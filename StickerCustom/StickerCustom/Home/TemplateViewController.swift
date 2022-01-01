@@ -27,10 +27,16 @@ class TemplateViewController: SCViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        let upload = UIButton()
+        upload.setTitle("上传", for: .normal)
+        upload.addTarget(self, action: #selector(clickUpload), for: .touchUpInside)
         let button = UIButton()
         button.setTitle("查看代码", for: .normal)
         button.addTarget(self, action: #selector(clickReviewCode), for: .touchUpInside)
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: button)
+        self.navigationItem.rightBarButtonItems = [
+            UIBarButtonItem(customView: button),
+            UIBarButtonItem(customView: upload)
+        ]
         setup()
     }
 
@@ -97,7 +103,46 @@ class TemplateViewController: SCViewController {
             if let template = TemplateMgr.shared.getTemplate(withId: self.template.templateId) {
                 DispatchQueue.main.async {
                     self.template = template
-                    self.imageView.image = UIImage(data: template.cover!)
+                    self.imageView.image = UIImage(data: template.cover)
+                }
+            }
+        }
+    }
+
+    @objc private func clickUpload() {
+        let alert = UIAlertController(title: "上传中", message: nil, preferredStyle: .alert)
+        self.present(alert, animated: true, completion: nil)
+        LocalFileManager.shared.archiveTemplate(withId: self.template.templateId) { archiveData, errMsg in
+            guard let archiveData = archiveData else {
+                alert.title = "上传失败"
+                alert.message = errMsg
+                alert.addAction(UIAlertAction(title: "确定", style: .default, handler: nil))
+                return
+            }
+
+            let config = WebAPIConfig(subspec: "template", function: "uploadTemplate")
+            let paras = [
+                "templateID": self.template.templateId.uuidString,
+                "title": self.template.title,
+                "code": self.template.code,
+                "author": self.template.author
+            ]
+            let coverFile = UploadFile(key: "cover", data: self.template.cover, fileName: "cover", mimeType: "image/png")
+            let archiveFile = UploadFile(key: "file", data: archiveData, fileName: "file", mimeType: "application/zip")
+            NetworkMgr.shared.upload(config: config, parameters: paras, files: [coverFile, archiveFile], headers: ["Content-Type": "multipart/form-data"]) { (result: NetworkResult<BackDataWrapper<CommonBackData>>) in
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success(let model):
+                        if model.code == 0 {
+                            alert.title = "上传成功"
+                        } else {
+                            alert.title = "上传失败"
+                            alert.message = model.msg
+                        }
+                    case .failure(_):
+                        alert.title = "网络请求失败"
+                    }
+                    alert.addAction(UIAlertAction(title: "确定", style: .default, handler: nil))
                 }
             }
         }

@@ -60,7 +60,7 @@ class TemplateCell: UICollectionViewCell {
     }
 
     func setupData(data: TemplateModel) {
-        coverImageView.image = UIImage(data: data.cover!)
+        coverImageView.image = UIImage(data: data.cover)
         titleLabel.text = data.title
     }
 

@@ -18,4 +18,13 @@ struct TemplateAssetModel: Codable {
     var data: Data // 文件数据
     var assetType: AssetType // 文件类型
     var time: String = Date().formatString // 此文件被添加的时间，格式为 YYYY-MM-dd HH:mm:ss
+
+    func getFileName() -> String {
+        switch self.assetType {
+        case .png:
+            return assetId.uuidString + ".png"
+        case .gif:
+            return assetId.uuidString + ".gif"
+        }
+    }
 }

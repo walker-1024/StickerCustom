@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SSZipArchive
 
 class LocalFileManager {
 
@@ -15,12 +16,16 @@ class LocalFileManager {
     private let avatarPath = NSHomeDirectory() + "/Documents/avatar.png"
     private let coverDirPath = NSHomeDirectory() + "/tmp/cover/"
     private let shareFileDirPath = NSHomeDirectory() + "/tmp/shareFile/"
+    private let templateDirPath = NSHomeDirectory() + "/tmp/template/"
+    private let templateZipDirPath = NSHomeDirectory() + "/tmp/templateZip/"
     private let fileManager = FileManager()
 
     private init() {
         do {
             try fileManager.createDirectory(atPath: coverDirPath, withIntermediateDirectories: true, attributes: nil)
             try fileManager.createDirectory(atPath: shareFileDirPath, withIntermediateDirectories: true, attributes: nil)
+            try fileManager.createDirectory(atPath: templateDirPath, withIntermediateDirectories: true, attributes: nil)
+            try fileManager.createDirectory(atPath: templateZipDirPath, withIntermediateDirectories: true, attributes: nil)
         } catch {
         }
     }
@@ -39,6 +44,90 @@ class LocalFileManager {
         let data = try? Data(contentsOf: URL(fileURLWithPath: avatarPath))
         if data?.md5 == md5 { return false }
         return true
+    }
+
+    func archiveTemplate(withId templateId: UUID, completion: ((Data?, String?) -> Void)?) {
+        guard let template = TemplateMgr.shared.getTemplate(withId: templateId) else {
+            completion?(nil, "模板不存在")
+            return
+        }
+        guard let assets = TemplateAssetMgr.shared.getAllAssets(of: templateId) else {
+            completion?(nil, "模板素材不存在")
+            return
+        }
+
+        let basePath = templateDirPath + templateId.uuidString + "/"
+        try? fileManager.removeItem(atPath: basePath)
+        try? fileManager.createDirectory(atPath: basePath, withIntermediateDirectories: true, attributes: nil)
+        let assetsPath = basePath + "assets/"
+        try? fileManager.createDirectory(atPath: assetsPath, withIntermediateDirectories: true, attributes: nil)
+
+        var assetList: [[String: Any]] = []
+        for asset in assets {
+            fileManager.createFile(atPath: assetsPath + asset.getFileName(), contents: asset.data, attributes: nil)
+            let dic: [String: Any] = [
+                "assetId": asset.assetId.uuidString,
+                "templateId": asset.templateId.uuidString,
+                "name": asset.name,
+                "assetType": asset.assetType.rawValue,
+                "time": asset.time
+            ]
+            assetList.append(dic)
+        }
+
+        fileManager.createFile(atPath: basePath + "cover.png", contents: template.cover, attributes: nil)
+        let coverMd5 = template.cover.md5
+        let dic: [String : Any] = [
+            "templateId": template.templateId.uuidString,
+            "title": template.title,
+            "code": template.code,
+            "author": template.author,
+            "coverMd5": coverMd5,
+            "assetList": assetList
+        ]
+
+        // 注意必须先用 isValidJSONObject 判断是否能够 JSON 序列化，如果不能，那么到时候即使用 try? 也会 crash
+        guard JSONSerialization.isValidJSONObject(dic) else {
+            completion?(nil, "失败")
+            return
+        }
+        guard let jsonData = try? JSONSerialization.data(withJSONObject: dic, options: .prettyPrinted) else {
+            completion?(nil, "失败")
+            return
+        }
+        fileManager.createFile(atPath: basePath + "Contents.json", contents: jsonData, attributes: nil)
+
+        let zipPath = templateZipDirPath + templateId.uuidString + ".zip"
+        guard SSZipArchive.createZipFile(atPath: zipPath, withContentsOfDirectory: basePath, keepParentDirectory: true) else {
+            completion?(nil, "压缩文件失败")
+            return
+        }
+        guard let result = try? Data(contentsOf: URL(fileURLWithPath: zipPath)) else {
+            completion?(nil, "压缩文件失败")
+            return
+        }
+
+        completion?(result, nil)
+    }
+
+    func downloadTemplate(withId templateId: UUID, url: URL, completion: ((TemplateModel?, String?) -> Void)?) {
+        guard let templateData = try? Data(contentsOf: url) else {
+            completion?(nil, "下载文件失败")
+            return
+        }
+        let zipPath = templateZipDirPath + templateId.uuidString + ".zip"
+        fileManager.createFile(atPath: zipPath, contents: templateData, attributes: nil)
+        guard SSZipArchive.unzipFile(atPath: zipPath, toDestination: templateDirPath) else {
+            completion?(nil, "解压文件失败")
+            return
+        }
+        print("yes")
+        let contentDirPath = templateDirPath + templateId.uuidString + "/"
+        guard let allContent = try? fileManager.contentsOfDirectory(atPath: contentDirPath) else {
+            completion?(nil, "获取文件内容失败")
+            return
+        }
+        print(allContent)
     }
 
 }
