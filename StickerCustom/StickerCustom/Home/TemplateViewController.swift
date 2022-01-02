@@ -27,17 +27,8 @@ class TemplateViewController: SCViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        let upload = UIButton()
-        upload.setTitle("上传", for: .normal)
-        upload.addTarget(self, action: #selector(clickUpload), for: .touchUpInside)
-        let button = UIButton()
-        button.setTitle("查看代码", for: .normal)
-        button.addTarget(self, action: #selector(clickReviewCode), for: .touchUpInside)
-        self.navigationItem.rightBarButtonItems = [
-            UIBarButtonItem(customView: button),
-            UIBarButtonItem(customView: upload)
-        ]
         setup()
+        setupButtons()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -54,17 +45,21 @@ class TemplateViewController: SCViewController {
     private func setup() {
         view.addSubview(imageView)
         imageView.snp.makeConstraints { make in
-            make.top.equalTo(150)
+            make.top.equalTo(StatusBarH + NavBarH + 20)
             make.width.height.equalTo(200)
             make.centerX.equalToSuperview()
         }
         imageView.contentMode = .scaleAspectFit
+        imageView.isUserInteractionEnabled = true
+        let ges = UITapGestureRecognizer(target: self, action: #selector(tempfunc))
+        ges.numberOfTapsRequired = 1
+        imageView.addGestureRecognizer(ges)
 
         view.addSubview(qqTextField)
         qqTextField.snp.makeConstraints { make in
-            make.width.equalTo(300)
+            make.leading.equalTo(35)
+            make.trailing.equalTo(view.snp.centerX).offset(-5)
             make.height.equalTo(60)
-            make.centerX.equalToSuperview()
             make.top.equalTo(imageView.snp.bottom).offset(40)
         }
         qqTextField.attributedPlaceholder = NSAttributedString(string: "输入QQ号", attributes: [.foregroundColor: UIColor.tintGreen])
@@ -84,10 +79,10 @@ class TemplateViewController: SCViewController {
         let button = UIButton()
         view.addSubview(button)
         button.snp.makeConstraints { make in
-            make.width.equalTo(150)
-            make.height.equalTo(60)
-            make.centerX.equalToSuperview()
-            make.top.equalTo(qqTextField.snp.bottom).offset(30)
+            make.leading.equalTo(view.snp.centerX).offset(5)
+            make.trailing.equalTo(-35)
+            make.height.equalTo(qqTextField)
+            make.top.equalTo(qqTextField)
         }
         button.setTitle("生成", for: .normal)
         button.setTitleColor(UIColor.tintGreen, for: .normal)
@@ -96,6 +91,72 @@ class TemplateViewController: SCViewController {
         button.layer.borderWidth = 2
         button.layer.borderColor = UIColor.tintGreen.cgColor
         button.addTarget(self, action: #selector(clickGenerate), for: .touchUpInside)
+    }
+
+    private func setupButtons() {
+        let editButton = UIButton()
+        view.addSubview(editButton)
+        editButton.snp.makeConstraints { make in
+            make.width.height.equalTo(80)
+            make.top.equalTo(qqTextField.snp.bottom).offset(50)
+            make.trailing.equalTo(view.snp.centerX).offset(-40)
+        }
+        editButton.setImage("icon-edit".localImage, for: .normal)
+        editButton.addTarget(self, action: #selector(clickEditTemplate), for: .touchUpInside)
+
+        let codeButton = UIButton()
+        view.addSubview(codeButton)
+        codeButton.snp.makeConstraints { make in
+            make.width.height.equalTo(editButton)
+            make.top.equalTo(editButton)
+            make.leading.equalTo(view.snp.centerX).offset(40)
+        }
+        codeButton.setImage("icon-code".localImage, for: .normal)
+        codeButton.addTarget(self, action: #selector(clickReviewCode), for: .touchUpInside)
+
+        let releaseButton = UIButton()
+        view.addSubview(releaseButton)
+        releaseButton.snp.makeConstraints { make in
+            make.width.height.equalTo(editButton)
+            make.top.equalTo(editButton.snp.bottom).offset(60)
+            make.trailing.equalTo(editButton)
+        }
+        releaseButton.setImage("icon-release".localImage, for: .normal)
+        releaseButton.addTarget(self, action: #selector(clickRelease), for: .touchUpInside)
+
+        let deleteButton = UIButton()
+        view.addSubview(deleteButton)
+        deleteButton.snp.makeConstraints { make in
+            make.width.height.equalTo(editButton)
+            make.top.equalTo(releaseButton)
+            make.leading.equalTo(codeButton)
+        }
+        deleteButton.setImage("icon-delete".localImage, for: .normal)
+        deleteButton.addTarget(self, action: #selector(clickDelete), for: .touchUpInside)
+
+        let textArr = ["编辑模板信息", "编辑模板代码", "发布到广场", "删除模板"]
+        let buttonArr = [editButton, codeButton, releaseButton, deleteButton]
+        for i in 0..<buttonArr.count {
+            let button = buttonArr[i]
+            button.imageEdgeInsets = UIEdgeInsets(top: 80 * 0.2, left: 80 * 0.2, bottom: 80 * 0.2, right: 80 * 0.2)
+            button.layer.borderWidth = 2
+            button.layer.borderColor = UIColor.tintGreen.cgColor
+            button.layer.cornerRadius = 80 * 0.5
+            button.layer.masksToBounds = true
+
+            let label = UILabel()
+            view.addSubview(label)
+            label.snp.makeConstraints { make in
+                make.top.equalTo(button.snp.bottom)
+                make.centerX.equalTo(button)
+                make.height.equalTo(35)
+            }
+            label.text = textArr[i]
+            label.textColor = UIColor.tintGreen
+            label.textAlignment = .center
+            label.font = UIFont.systemFont(ofSize: 14)
+            label.numberOfLines = 1
+        }
     }
 
     private func refresh() {
@@ -109,7 +170,29 @@ class TemplateViewController: SCViewController {
         }
     }
 
-    @objc private func clickUpload() {
+    @objc private func tempfunc() {
+        if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
+            let picker = UIImagePickerController()
+            picker.sourceType = .photoLibrary
+            picker.allowsEditing = true
+            picker.delegate = self
+            self.present(picker, animated: true, completion: nil)
+        }
+    }
+
+    @objc private func clickEditTemplate() {
+        let vc = EditTemplateViewController()
+        vc.template = self.template
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+
+    @objc private func clickReviewCode() {
+        let vc = TemplateCodeViewController()
+        vc.template = template
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+
+    @objc private func clickRelease() {
         let alert = UIAlertController(title: "上传中", message: nil, preferredStyle: .alert)
         self.present(alert, animated: true, completion: nil)
         LocalFileManager.shared.archiveTemplate(withId: self.template.templateId) { archiveData, errMsg in
@@ -148,10 +231,15 @@ class TemplateViewController: SCViewController {
         }
     }
 
-    @objc private func clickReviewCode() {
-        let vc = TemplateCodeViewController()
-        vc.template = template
-        self.navigationController?.pushViewController(vc, animated: true)
+    @objc private func clickDelete() {
+        let alert = UIAlertController(title: "删除模板", message: "删除后将无法恢复", preferredStyle: .alert)
+        let ok = UIAlertAction(title: "删除", style: .destructive) { _ in
+            TemplateMgr.shared.delete(templateIds: [self.template.templateId])
+        }
+        let cancel = UIAlertAction(title: "取消", style: .cancel, handler: nil)
+        alert.addAction(ok)
+        alert.addAction(cancel)
+        self.present(alert, animated: true, completion: nil)
     }
 
     @objc private func clickGenerate(button: UIButton) {
@@ -193,5 +281,20 @@ extension TemplateViewController: UITextFieldDelegate {
 
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         return string.isIntNumber || string.count == 0
+    }
+}
+
+extension TemplateViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let imageData = (info[UIImagePickerController.InfoKey.editedImage] as? UIImage)?.pngData() {
+            self.template.cover = imageData
+            TemplateMgr.shared.modify(template: self.template)
+            self.imageView.image = UIImage(data: imageData)
+        }
+        picker.dismiss(animated: true, completion: nil)
+    }
+
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
     }
 }

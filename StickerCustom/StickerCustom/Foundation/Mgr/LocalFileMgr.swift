@@ -111,6 +111,10 @@ class LocalFileManager {
     }
 
     func downloadTemplate(withId templateId: UUID, url: URL, completion: ((TemplateModel?, String?) -> Void)?) {
+        if TemplateMgr.shared.getTemplate(withId: templateId) != nil {
+            completion?(nil, "模板已存在")
+            return
+        }
         guard let templateData = try? Data(contentsOf: url) else {
             completion?(nil, "下载文件失败")
             return
@@ -121,13 +125,81 @@ class LocalFileManager {
             completion?(nil, "解压文件失败")
             return
         }
-        print("yes")
         let contentDirPath = templateDirPath + templateId.uuidString + "/"
         guard let allContent = try? fileManager.contentsOfDirectory(atPath: contentDirPath) else {
             completion?(nil, "获取文件内容失败")
             return
         }
-        print(allContent)
+
+        guard allContent.contains("Contents.json"), allContent.contains("cover.png"), allContent.contains("assets") else {
+            completion?(nil, "文件数据缺失")
+            return
+        }
+
+        guard let jsonData = try? Data(contentsOf: URL(fileURLWithPath: contentDirPath + "Contents.json")) else {
+            completion?(nil, "读文件失败")
+            return
+        }
+
+        guard let dic = try? JSONSerialization.jsonObject(with: jsonData, options: .mutableContainers) as? [String: Any] else {
+            completion?(nil, "文件信息错误")
+            return
+        }
+        guard let templateId = UUID(uuidString: dic["templateId"] as? String ?? ""),
+        let title = dic["title"] as? String,
+        let code = dic["code"] as? String,
+        let author = dic["author"] as? String,
+        let coverMd5 = dic["coverMd5"] as? String,
+        let assetList = dic["assetList"] as? [[String: Any]]
+        else {
+            completion?(nil, "文件信息错误")
+            return
+        }
+
+        guard let coverData = try? Data(contentsOf: URL(fileURLWithPath: contentDirPath + "cover.png")) else {
+            completion?(nil, "读文件失败")
+            return
+        }
+        guard coverData.md5 == coverMd5 else {
+            completion?(nil, "文件校验失败")
+            return
+        }
+
+        for assetDic in assetList {
+            guard let assetId = UUID(uuidString: assetDic["assetId"] as? String ?? ""),
+            templateId.uuidString == assetDic["templateId"] as? String,
+            let name = assetDic["name"] as? String,
+            let assetType = TemplateAssetModel.AssetType(rawValue: assetDic["assetType"] as? String ?? ""),
+            let time = assetDic["time"] as? String
+            else {
+                completion?(nil, "文件信息错误")
+                return
+            }
+            guard let assetData = try? Data(contentsOf: URL(fileURLWithPath: contentDirPath + "assets/" + TemplateAssetModel.getFileName(assetId: assetId, assetType: assetType))) else {
+                completion?(nil, "读文件失败")
+                return
+            }
+            let asset = TemplateAssetModel(
+                assetId: assetId,
+                templateId: templateId,
+                name: name,
+                data: assetData,
+                assetType: assetType,
+                time: time
+            )
+            TemplateAssetMgr.shared.add(templateAsset: asset)
+        }
+
+        let template = TemplateModel(
+            templateId: templateId,
+            title: title,
+            code: code,
+            cover: coverData,
+            author: author
+        )
+        TemplateMgr.shared.add(template: template)
+
+        completion?(template, nil)
     }
 
 }

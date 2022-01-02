@@ -15,6 +15,12 @@ class SCViewController: UIViewController {
         view.backgroundColor = UIColor.backgroundDark
         if let navBar = navigationController?.navigationBar {
             navBar.tintColor = .white
+
+            let navBarAppearance = UINavigationBarAppearance()
+            navBarAppearance.backgroundColor = UIColor.backgroundDark
+            navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.white, .font: UIFont.systemFont(ofSize: 20)]
+            navBar.scrollEdgeAppearance = navBarAppearance
+            navBar.standardAppearance = navBarAppearance
         }
     }
 

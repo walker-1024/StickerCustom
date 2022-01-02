@@ -13,7 +13,7 @@ class TemplateCodeViewController: SCViewController, UIGestureRecognizerDelegate 
 
     var template: TemplateModel!
 
-    var cellData: [TemplateAssetModel] = []
+    private var cellData: [TemplateAssetModel] = []
 
     private var isEdited: Bool = false {
         didSet {
@@ -30,6 +30,15 @@ class TemplateCodeViewController: SCViewController, UIGestureRecognizerDelegate 
     private let codeTextView = UITextView()
     private let saveButton = UIButton()
 
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        self.hidesBottomBarWhenPushed = true
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTopbar()
@@ -37,7 +46,7 @@ class TemplateCodeViewController: SCViewController, UIGestureRecognizerDelegate 
         setupPreviewView()
         setupCodeView()
         // 实现在状态栏隐藏的情况下能够右划返回
-        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+        // self.navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -203,7 +212,7 @@ class TemplateCodeViewController: SCViewController, UIGestureRecognizerDelegate 
             make.bottom.equalTo(-20)
         }
         codeTextView.backgroundColor = .clear
-        codeTextView.text = template.code
+        codeTextView.text = self.template?.code
         codeTextView.textColor = UIColor.tintGreen
         codeTextView.font = UIFont.systemFont(ofSize: 18)
         codeTextView.alwaysBounceVertical = true
@@ -261,10 +270,6 @@ class TemplateCodeViewController: SCViewController, UIGestureRecognizerDelegate 
         }
     }
 
-    @objc private func clickBack() {
-        self.navigationController?.popViewController(animated: true)
-    }
-
     @objc private func selectButton(button: UIButton) {
         if button.tag == 1 {
             if !previewButton.isSelected {
@@ -297,12 +302,31 @@ class TemplateCodeViewController: SCViewController, UIGestureRecognizerDelegate 
         }
     }
 
+    @objc private func clickBack() {
+        if isEdited {
+            let alertC = UIAlertController(title: "是否保存修改", message: nil, preferredStyle: .alert)
+            let notSave = UIAlertAction(title: "不保存", style: .default) { _ in
+                self.navigationController?.popViewController(animated: true)
+            }
+            let save = UIAlertAction(title: "保存", style: .default) { _ in
+                self.clickSave()
+                self.navigationController?.popViewController(animated: true)
+            }
+            alertC.addAction(notSave)
+            alertC.addAction(save)
+            self.present(alertC, animated: true, completion: nil)
+        } else {
+            self.navigationController?.popViewController(animated: true)
+        }
+    }
+
     @objc private func clickSave() {
         guard var theTemplate = self.template else { return }
         theTemplate.code = codeTextView.text
         TemplateMgr.shared.modify(template: theTemplate)
         self.template = theTemplate
         self.isEdited = false
+        qqTextField.resignFirstResponder()
         codeTextView.resignFirstResponder()
     }
 }

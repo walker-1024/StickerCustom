@@ -22,8 +22,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         homeNav.tabBarItem.title = "主页"
 //        homeNav.tabBarItem.image = "icon-index".localImage?.resizeImage(size: CGSize(width: 30, height: 30))
 
-        let historyNav = UINavigationController(rootViewController: DocumentViewController())
-        historyNav.tabBarItem.title = "文档"
+        let squareNav = UINavigationController(rootViewController: SquareViewController())
+        squareNav.tabBarItem.title = "广场"
+
+        let documentNav = UINavigationController(rootViewController: DocumentViewController())
+        documentNav.tabBarItem.title = "文档"
 //        historyNav.tabBarItem.image = "icon-file".localImage?.resizeImage(size: CGSize(width: 30, height: 30))
 
         let userNav = UINavigationController(rootViewController: UserViewController())
@@ -31,8 +34,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //        userNav.tabBarItem.image = "icon-me".localImage?.resizeImage(size: CGSize(width: 30, height: 30))
 
         let tab = UITabBarController()
-        tab.viewControllers = [homeNav, historyNav, userNav]
-//        tab.tabBar.tintColor = .blue
+        tab.viewControllers = [homeNav, squareNav, documentNav, userNav]
+        tab.tabBar.tintColor = .tintGreen
+
+        let tabBarAppearance = UITabBarAppearance()
+        tabBarAppearance.backgroundColor = UIColor.backgroundDark
+        if #available(iOS 15.0, *) {
+            tab.tabBar.scrollEdgeAppearance = tabBarAppearance
+        }
+        tab.tabBar.standardAppearance = tabBarAppearance
 
         window?.rootViewController = tab
     }

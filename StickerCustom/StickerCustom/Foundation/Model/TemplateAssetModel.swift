@@ -27,4 +27,13 @@ struct TemplateAssetModel: Codable {
             return assetId.uuidString + ".gif"
         }
     }
+
+    static func getFileName(assetId: UUID, assetType: AssetType) -> String {
+        switch assetType {
+        case .png:
+            return assetId.uuidString + ".png"
+        case .gif:
+            return assetId.uuidString + ".gif"
+        }
+    }
 }

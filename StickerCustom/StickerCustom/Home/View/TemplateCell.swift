@@ -47,7 +47,7 @@ class TemplateCell: UICollectionViewCell {
             make.leading.trailing.bottom.equalToSuperview()
             make.top.equalTo(coverImageView.snp.bottom)
         }
-        titleBackgroundView.backgroundColor = .tintDark
+        titleBackgroundView.backgroundColor = .templateCellTitleBackgroundDark
 
         titleBackgroundView.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in

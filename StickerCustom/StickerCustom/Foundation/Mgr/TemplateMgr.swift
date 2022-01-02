@@ -9,24 +9,13 @@ import Foundation
 import UIKit
 import CoreData
 
-let testCode = """
-{新建画板，512，512，{
-{画图片，丢，0，0}
-{画图片，{图像圆角化，头像}，30，200，100，100}
-}}
-"""
-
 class TemplateMgr {
 
     static let shared = TemplateMgr()
 
     private let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext
 
-    private init() {
-        if self.getAllTemplates()?.count == 0 {
-            self.add(template: TemplateModel(title: "丢", code: testCode, cover: "icon-white".localImage!.pngData()!, author: "nil"))
-        }
-    }
+    private init() { }
 
     func getAllTemplates() -> [TemplateModel]? {
         guard let context = context else {
@@ -66,7 +55,7 @@ class TemplateMgr {
             return nil
         }
         let fetchRequest = NSFetchRequest<TemplateEntity>(entityName: "TemplateEntity")
-        let predicate = NSPredicate(format: "templateId == \"\(templateId)\"")
+        let predicate = NSPredicate(format: "templateId == \"\(templateId)\" && isDelete == false")
         fetchRequest.predicate = predicate
         guard let result = try? context.fetch(fetchRequest) else { return nil }
         guard result.count > 0 else { return nil }
@@ -85,12 +74,20 @@ class TemplateMgr {
         return template
     }
 
-    func add(template theTemplate: TemplateModel) {
+    @discardableResult
+    func add(template theTemplate: TemplateModel) -> Bool {
         guard let context = context else {
-            return
+            return false
         }
+        // 判断此模板是否已存在
+        let fetchRequest = NSFetchRequest<TemplateEntity>(entityName: "TemplateEntity")
+        let predicate = NSPredicate(format: "templateId == \"\(theTemplate.templateId)\" && isDelete == false")
+        fetchRequest.predicate = predicate
+        guard let result = try? context.fetch(fetchRequest) else { return false }
+        guard result.count == 0 else { return false }
+
         guard let item = NSEntityDescription.insertNewObject(forEntityName: "TemplateEntity", into: context) as? TemplateEntity else {
-            return
+            return false
         }
         item.templateId = theTemplate.templateId
         item.title = theTemplate.title
@@ -99,6 +96,7 @@ class TemplateMgr {
         item.author = theTemplate.author
         item.isDelete = false
         try? context.save()
+        return true
     }
 
     func modify(template theTemplate: TemplateModel) {
@@ -106,7 +104,7 @@ class TemplateMgr {
             return
         }
         let fetchRequest = NSFetchRequest<TemplateEntity>(entityName: "TemplateEntity")
-        let predicate = NSPredicate(format: "templateId == \"\(theTemplate.templateId)\"")
+        let predicate = NSPredicate(format: "templateId == \"\(theTemplate.templateId)\" && isDelete == false")
         fetchRequest.predicate = predicate
         guard let result = try? context.fetch(fetchRequest) else { return }
         guard result.count > 0 else { return }
@@ -122,13 +120,13 @@ class TemplateMgr {
         guard let context = context else {
             return
         }
-        let fetchRequest = NSFetchRequest<TemplateEntity>(entityName: "TemplateEntity")
-        guard let result = try? context.fetch(fetchRequest) else { return }
-        for item in result {
-            guard let templateId = item.templateId else { continue }
-            if deleteTemplateIds.contains(templateId) {
-                item.isDelete = true
-            }
+        for deleteTemplateId in deleteTemplateIds {
+            let fetchRequest = NSFetchRequest<TemplateEntity>(entityName: "TemplateEntity")
+            let predicate = NSPredicate(format: "templateId == \"\(deleteTemplateId)\" && isDelete == false")
+            fetchRequest.predicate = predicate
+            guard let result = try? context.fetch(fetchRequest) else { continue }
+            guard result.count > 0 else { continue }
+            result[0].isDelete = true
         }
         try? context.save()
     }

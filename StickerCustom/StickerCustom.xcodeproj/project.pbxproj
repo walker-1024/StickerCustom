@@ -39,6 +39,9 @@
 		52681026276A4F7500A8C41D /* NetworkRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52681025276A4F7500A8C41D /* NetworkRequest.swift */; };
 		5269DB83276F7F9D00FD8063 /* TemplateMgr.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5269DB82276F7F9D00FD8063 /* TemplateMgr.swift */; };
 		52A04529277CBFCF005CEC46 /* DocumentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52A04528277CBFCF005CEC46 /* DocumentViewController.swift */; };
+		52DCF0242781909E00F08D7A /* SquareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52DCF0232781909E00F08D7A /* SquareViewController.swift */; };
+		52DCF0262781BA2600F08D7A /* EditTemplateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52DCF0252781BA2600F08D7A /* EditTemplateViewController.swift */; };
+		52DCF0282781F45B00F08D7A /* SquareTemplateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52DCF0272781F45B00F08D7A /* SquareTemplateViewController.swift */; };
 		52E26E8627755B11003FFBF7 /* TemplateCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E26E8527755B11003FFBF7 /* TemplateCodeViewController.swift */; };
 		52E26E8827756358003FFBF7 /* TemplateAssetsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E26E8727756358003FFBF7 /* TemplateAssetsCell.swift */; };
 		52E26E8A277572FE003FFBF7 /* LocalFileMgr.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E26E89277572FE003FFBF7 /* LocalFileMgr.swift */; };
@@ -108,6 +111,9 @@
 		52681025276A4F7500A8C41D /* NetworkRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkRequest.swift; sourceTree = "<group>"; };
 		5269DB82276F7F9D00FD8063 /* TemplateMgr.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateMgr.swift; sourceTree = "<group>"; };
 		52A04528277CBFCF005CEC46 /* DocumentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentViewController.swift; sourceTree = "<group>"; };
+		52DCF0232781909E00F08D7A /* SquareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SquareViewController.swift; sourceTree = "<group>"; };
+		52DCF0252781BA2600F08D7A /* EditTemplateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTemplateViewController.swift; sourceTree = "<group>"; };
+		52DCF0272781F45B00F08D7A /* SquareTemplateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SquareTemplateViewController.swift; sourceTree = "<group>"; };
 		52E26E8527755B11003FFBF7 /* TemplateCodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateCodeViewController.swift; sourceTree = "<group>"; };
 		52E26E8727756358003FFBF7 /* TemplateAssetsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateAssetsCell.swift; sourceTree = "<group>"; };
 		52E26E89277572FE003FFBF7 /* LocalFileMgr.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalFileMgr.swift; sourceTree = "<group>"; };
@@ -187,6 +193,7 @@
 			children = (
 				52681005276A44ED00A8C41D /* Foundation */,
 				5246A77E276B579E005F1BF6 /* Home */,
+				52DCF0222781908400F08D7A /* Square */,
 				52A04527277CBFA8005CEC46 /* Document */,
 				5246A77D276B5793005F1BF6 /* User */,
 				522FF5312769C708002E84F9 /* AppDelegate.swift */,
@@ -231,6 +238,7 @@
 				5246A788276B923A005F1BF6 /* View */,
 				522FF5352769C708002E84F9 /* HomeViewController.swift */,
 				5246A786276B9234005F1BF6 /* TemplateViewController.swift */,
+				52DCF0252781BA2600F08D7A /* EditTemplateViewController.swift */,
 				52E26E8527755B11003FFBF7 /* TemplateCodeViewController.swift */,
 				52E26E8F277B02B7003FFBF7 /* AssetDetailViewController.swift */,
 			);
@@ -312,6 +320,15 @@
 				52A04528277CBFCF005CEC46 /* DocumentViewController.swift */,
 			);
 			path = Document;
+			sourceTree = "<group>";
+		};
+		52DCF0222781908400F08D7A /* Square */ = {
+			isa = PBXGroup;
+			children = (
+				52DCF0232781909E00F08D7A /* SquareViewController.swift */,
+				52DCF0272781F45B00F08D7A /* SquareTemplateViewController.swift */,
+			);
+			path = Square;
 			sourceTree = "<group>";
 		};
 		52F95F3E27808B54007AA2BA /* resource */ = {
@@ -596,6 +613,7 @@
 				52E26E8E27758A46003FFBF7 /* TemplateAssetMgr.swift in Sources */,
 				522FF5322769C708002E84F9 /* AppDelegate.swift in Sources */,
 				5268101A276A475500A8C41D /* UserConfigMgr.swift in Sources */,
+				52DCF0242781909E00F08D7A /* SquareViewController.swift in Sources */,
 				5268100C276A469400A8C41D /* StringUtil.swift in Sources */,
 				5268101C276A478F00A8C41D /* SCViewController.swift in Sources */,
 				52E26E8627755B11003FFBF7 /* TemplateCodeViewController.swift in Sources */,
@@ -608,6 +626,8 @@
 				52681024276A4F5B00A8C41D /* NetworkMgr.swift in Sources */,
 				52A04529277CBFCF005CEC46 /* DocumentViewController.swift in Sources */,
 				52681010276A46B700A8C41D /* DateUtil.swift in Sources */,
+				52DCF0262781BA2600F08D7A /* EditTemplateViewController.swift in Sources */,
+				52DCF0282781F45B00F08D7A /* SquareTemplateViewController.swift in Sources */,
 				52E26E8C277587F1003FFBF7 /* TemplateAssetModel.swift in Sources */,
 				52681014276A46F300A8C41D /* PlistReader.swift in Sources */,
 				52681018276A473D00A8C41D /* VisitorMgr.swift in Sources */,

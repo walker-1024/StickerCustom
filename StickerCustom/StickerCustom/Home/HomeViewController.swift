@@ -20,10 +20,6 @@ class HomeViewController: SCViewController {
         self.navigationItem.titleView = self.getAppPrompt()
         setup()
 
-        if let templates = TemplateMgr.shared.getAllTemplates() {
-            cellData = templates
-        }
-
         TemplateAssetMgr.shared
 
         let renderer = UIGraphicsImageRenderer(size: CGSize(width: 100, height: 100))
@@ -35,11 +31,17 @@ class HomeViewController: SCViewController {
 //        try? data.write(to: URL(fileURLWithPath: "/Users/macbookpro/Desktop/test.png"))
         print(data.md5.count)
 
-//        LocalFileManager.shared.downloadTemplate(withId: UUID(), url: URL(string: "https://mp.walker-walker.top/mine/windows.zip")!, completion: nil)
-
         guard let url = URL(string: "http://q1.qlogo.cn/g?b=qq&nk=2064023354&s=640") else { return }
         DispatchQueue.global().async {
             let _ = try? Data(contentsOf: url)
+        }
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if let templates = TemplateMgr.shared.getAllTemplates() {
+            cellData = templates
+            collectionView.reloadData()
         }
     }
 
@@ -59,9 +61,44 @@ class HomeViewController: SCViewController {
         collectionView.register(TemplateCell.self, forCellWithReuseIdentifier: TemplateCellIdentifier)
         collectionView.delegate = self
         collectionView.dataSource = self
+
+        let addButton = UIButton()
+        view.addSubview(addButton)
+        addButton.snp.makeConstraints { make in
+            make.width.height.equalTo(60)
+            make.trailing.equalTo(-35)
+            make.bottom.equalTo(-90)
+        }
+        addButton.backgroundColor = UIColor.buttonBackgroundDark
+        addButton.setImage("icon-add-template".localImage, for: .normal)
+        addButton.addTarget(self, action: #selector(clickAdd), for: .touchUpInside)
+        addButton.layer.cornerRadius = 30
+        addButton.layer.masksToBounds = true
     }
 
-
+    @objc private func clickAdd() {
+        let alert = UIAlertController(title: "新建模板", message: nil, preferredStyle: .alert)
+        alert.addTextField { textField in
+            textField.placeholder = "输入新建模板标题"
+        }
+        let ok = UIAlertAction(title: "确定", style: .default) { _ in
+            guard let title = alert.textFields?.first?.text else { return }
+            let template = TemplateModel(
+                title: title,
+                code: "// 在这里编辑代码",
+                cover: "icon-default-cover".localImage!.pngData()!,
+                author: "nil"
+            )
+            TemplateMgr.shared.add(template: template)
+            let vc = TemplateViewController()
+            vc.template = template
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
+        let cancel = UIAlertAction(title: "取消", style: .cancel, handler: nil)
+        alert.addAction(ok)
+        alert.addAction(cancel)
+        self.present(alert, animated: true, completion: nil)
+    }
 
 }
 
