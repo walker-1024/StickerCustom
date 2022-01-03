@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Photos
 
 fileprivate let TextFieldFont = UIFont.systemFont(ofSize: 18)
 
@@ -51,16 +52,29 @@ class TemplateViewController: SCViewController {
         }
         imageView.contentMode = .scaleAspectFit
         imageView.isUserInteractionEnabled = true
-        let ges = UITapGestureRecognizer(target: self, action: #selector(tempfunc))
+        let ges = UITapGestureRecognizer(target: self, action: #selector(saveImage))
         ges.numberOfTapsRequired = 1
         imageView.addGestureRecognizer(ges)
+
+        let tipLabel = UILabel()
+        view.addSubview(tipLabel)
+        tipLabel.snp.makeConstraints { make in
+            make.top.equalTo(imageView.snp.bottom)
+            make.height.equalTo(40)
+            make.centerX.equalToSuperview()
+        }
+        tipLabel.text = "点击图片快速保存"
+        tipLabel.textColor = .tintGreen
+        tipLabel.textAlignment = .center
+        tipLabel.font = UIFont.systemFont(ofSize: 15)
+        tipLabel.numberOfLines = 1
 
         view.addSubview(qqTextField)
         qqTextField.snp.makeConstraints { make in
             make.leading.equalTo(35)
             make.trailing.equalTo(view.snp.centerX).offset(-5)
             make.height.equalTo(60)
-            make.top.equalTo(imageView.snp.bottom).offset(40)
+            make.top.equalTo(tipLabel.snp.bottom).offset(30)
         }
         qqTextField.attributedPlaceholder = NSAttributedString(string: "输入QQ号", attributes: [.foregroundColor: UIColor.tintGreen])
         qqTextField.textColor = UIColor.tintGreen
@@ -102,7 +116,7 @@ class TemplateViewController: SCViewController {
             make.trailing.equalTo(view.snp.centerX).offset(-40)
         }
         editButton.setImage("icon-edit".localImage, for: .normal)
-        editButton.addTarget(self, action: #selector(clickEditTemplate), for: .touchUpInside)
+        editButton.addTarget(self, action: #selector(tempfunc), for: .touchUpInside)
 
         let codeButton = UIButton()
         view.addSubview(codeButton)
@@ -165,6 +179,25 @@ class TemplateViewController: SCViewController {
                 DispatchQueue.main.async {
                     self.template = template
                     self.imageView.image = UIImage(data: template.cover)
+                }
+            }
+        }
+    }
+
+    @objc private func saveImage() {
+        guard let image = imageView.image else { return }
+        PHPhotoLibrary.shared().performChanges {
+            PHAssetChangeRequest.creationRequestForAsset(from: image)
+        } completionHandler: { isSuccess, error in
+            DispatchQueue.main.async {
+                if isSuccess {
+                    let alert = UIAlertController(title: "保存成功", message: nil, preferredStyle: .alert)
+                    self.present(alert, animated: false, completion: nil)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                        alert.dismiss(animated: true, completion: nil)
+                    }
+                } else {
+                    presentAlert(title: "保存失败", message: nil, on: self)
                 }
             }
         }

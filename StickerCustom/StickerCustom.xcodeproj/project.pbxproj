@@ -42,6 +42,7 @@
 		52DCF0242781909E00F08D7A /* SquareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52DCF0232781909E00F08D7A /* SquareViewController.swift */; };
 		52DCF0262781BA2600F08D7A /* EditTemplateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52DCF0252781BA2600F08D7A /* EditTemplateViewController.swift */; };
 		52DCF0282781F45B00F08D7A /* SquareTemplateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52DCF0272781F45B00F08D7A /* SquareTemplateViewController.swift */; };
+		52DCF02A2783248500F08D7A /* GifProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52DCF0292783248500F08D7A /* GifProcessor.swift */; };
 		52E26E8627755B11003FFBF7 /* TemplateCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E26E8527755B11003FFBF7 /* TemplateCodeViewController.swift */; };
 		52E26E8827756358003FFBF7 /* TemplateAssetsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E26E8727756358003FFBF7 /* TemplateAssetsCell.swift */; };
 		52E26E8A277572FE003FFBF7 /* LocalFileMgr.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E26E89277572FE003FFBF7 /* LocalFileMgr.swift */; };
@@ -114,6 +115,7 @@
 		52DCF0232781909E00F08D7A /* SquareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SquareViewController.swift; sourceTree = "<group>"; };
 		52DCF0252781BA2600F08D7A /* EditTemplateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTemplateViewController.swift; sourceTree = "<group>"; };
 		52DCF0272781F45B00F08D7A /* SquareTemplateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SquareTemplateViewController.swift; sourceTree = "<group>"; };
+		52DCF0292783248500F08D7A /* GifProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GifProcessor.swift; sourceTree = "<group>"; };
 		52E26E8527755B11003FFBF7 /* TemplateCodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateCodeViewController.swift; sourceTree = "<group>"; };
 		52E26E8727756358003FFBF7 /* TemplateAssetsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateAssetsCell.swift; sourceTree = "<group>"; };
 		52E26E89277572FE003FFBF7 /* LocalFileMgr.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalFileMgr.swift; sourceTree = "<group>"; };
@@ -297,6 +299,7 @@
 				5269DB82276F7F9D00FD8063 /* TemplateMgr.swift */,
 				52E26E8D27758A46003FFBF7 /* TemplateAssetMgr.swift */,
 				52E26E89277572FE003FFBF7 /* LocalFileMgr.swift */,
+				52DCF0292783248500F08D7A /* GifProcessor.swift */,
 			);
 			path = Mgr;
 			sourceTree = "<group>";
@@ -609,6 +612,7 @@
 				522282FD276CD32900A4031D /* RosParser.swift in Sources */,
 				52E26E90277B02B7003FFBF7 /* AssetDetailViewController.swift in Sources */,
 				522FF5362769C708002E84F9 /* HomeViewController.swift in Sources */,
+				52DCF02A2783248500F08D7A /* GifProcessor.swift in Sources */,
 				5268100E276A469F00A8C41D /* UIImageUtil.swift in Sources */,
 				52E26E8E27758A46003FFBF7 /* TemplateAssetMgr.swift in Sources */,
 				522FF5322769C708002E84F9 /* AppDelegate.swift in Sources */,

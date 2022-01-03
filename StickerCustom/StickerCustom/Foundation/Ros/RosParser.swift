@@ -16,11 +16,18 @@ class RosParser {
 
     func parse(code: String, qqnum: Int, templateId: UUID, completion: ((Any?, RosParseError?) -> Void)?) {
         guard let url = URL(string: "http://q1.qlogo.cn/g?b=qq&nk=\(qqnum)&s=640") else {
+            completion?(nil, RosParseError.fetchQQAvatarFail)
             return
         }
         DispatchQueue.global().async {
-            guard let avatarData = try? Data(contentsOf: url) else { return }
-            guard let avatar = UIImage(data: avatarData) else { return }
+            guard let avatarData = try? Data(contentsOf: url) else {
+                completion?(nil, RosParseError.fetchQQAvatarFail)
+                return
+            }
+            guard let avatar = UIImage(data: avatarData) else {
+                completion?(nil, RosParseError.fetchQQAvatarFail)
+                return
+            }
             let env = RosEnvironment()
             env.setVarValue("头像", value: avatar)
             let assets = TemplateAssetMgr.shared.getAllAssets(of: templateId)
@@ -377,9 +384,6 @@ fileprivate class RosSentence {
     private func getUIImage(from value: Any?) -> UIImage? {
         if let img = value as? UIImage {
             return img
-        } else if let str = value as? String {
-            // TODO: 封装一个图片管理系统给用户使用
-            return str.localImage
         }
         return nil
     }

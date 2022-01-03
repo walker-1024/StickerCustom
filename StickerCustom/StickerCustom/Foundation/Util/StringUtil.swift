@@ -40,7 +40,8 @@ extension String {
     }
 
     func firstIndex(of string: String) -> Int {
-        guard string.count > 0 else { return -1 }
+        guard self.count > 0, string.count > 0 else { return -1 }
+        guard self.count >= string.count else { return -1 }
         for i in 0...(self.count - string.count) {
             if self[i] == string[0] {
                 var flag = true
