@@ -38,4 +38,23 @@ extension String {
         let scanner = Scanner(string: self)
         return scanner.scanFloat() != nil && scanner.isAtEnd
     }
+
+    func firstIndex(of string: String) -> Int {
+        guard string.count > 0 else { return -1 }
+        for i in 0...(self.count - string.count) {
+            if self[i] == string[0] {
+                var flag = true
+                for index in 1..<string.count {
+                    if self[i + index] != string[index] {
+                        flag = false
+                        break
+                    }
+                }
+                if flag {
+                    return i
+                }
+            }
+        }
+        return -1
+    }
 }

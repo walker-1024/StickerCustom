@@ -107,6 +107,7 @@ class AssetDetailViewController: SCViewController {
             self.asset.name = newName
             TemplateAssetMgr.shared.modify(templateAsset: self.asset)
             self.nameButton.setTitle("图片名：\(newName)", for: .normal)
+            self.navigationItem.title = newName
         }
         let cancel = UIAlertAction(title: "取消", style: .cancel, handler: nil)
         alert.addAction(ok)

@@ -94,6 +94,16 @@ fileprivate class RosSentence {
 
     @discardableResult
     func evaluate() throws -> Any? {
+        // 删去注释
+        var lines = code.split(separator: "\n").compactMap({ String($0) })
+        for i in 0..<lines.count {
+            let index = lines[i].firstIndex(of: "//")
+            if index != -1 {
+                lines[i] = lines[i][0..<index]
+            }
+        }
+        code = lines.joined()
+
         code.removeAll(where: { $0 == " " || $0 == "\n" })
         if !code.hasPrefix("{") || !code.hasSuffix("}") {
             // 如果是变量的话，返回变量的值
