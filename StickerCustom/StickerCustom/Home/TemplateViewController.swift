@@ -229,7 +229,6 @@ class TemplateViewController: SCViewController {
         if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
             let picker = UIImagePickerController()
             picker.sourceType = .photoLibrary
-            picker.allowsEditing = true
             picker.delegate = self
             self.present(picker, animated: true, completion: nil)
         }
@@ -331,6 +330,7 @@ class TemplateViewController: SCViewController {
         let alert = UIAlertController(title: "删除模板", message: "删除后将无法恢复", preferredStyle: .alert)
         let ok = UIAlertAction(title: "删除", style: .destructive) { _ in
             TemplateMgr.shared.delete(templateIds: [self.template.templateId])
+            self.navigationController?.popViewController(animated: true)
         }
         let cancel = UIAlertAction(title: "取消", style: .cancel, handler: nil)
         alert.addAction(ok)
@@ -352,7 +352,7 @@ class TemplateViewController: SCViewController {
                 let ok = UIAlertAction(title: "确定", style: .default, handler: nil)
                 guard rosError == nil else {
                     alert.title = "生成失败"
-                    alert.message = rosError?.localizedDescription
+                    alert.message = rosError.debugDescription
                     alert.addAction(ok)
                     return
                 }
@@ -382,7 +382,7 @@ extension TemplateViewController: UITextFieldDelegate {
 
 extension TemplateViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        if let imageData = (info[UIImagePickerController.InfoKey.editedImage] as? UIImage)?.pngData() {
+        if let imageData = (info[UIImagePickerController.InfoKey.originalImage] as? UIImage)?.pngData() {
             self.template.cover = imageData
             TemplateMgr.shared.modify(template: self.template)
             self.imageView.image = UIImage(data: imageData)

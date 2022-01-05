@@ -24,7 +24,7 @@ class RosParser {
                 completion?(nil, RosParseError.fetchQQAvatarFail)
                 return
             }
-            guard let avatar = UIImage(data: avatarData) else {
+            guard let avatar = UIImage(data: avatarData)?.clipToCircleImage() else {
                 completion?(nil, RosParseError.fetchQQAvatarFail)
                 return
             }

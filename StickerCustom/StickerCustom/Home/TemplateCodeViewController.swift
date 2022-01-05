@@ -357,7 +357,6 @@ extension TemplateCodeViewController: UICollectionViewDelegate, UICollectionView
             if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
                 let picker = UIImagePickerController()
                 picker.sourceType = .photoLibrary
-                picker.allowsEditing = true
                 picker.delegate = self
                 self.present(picker, animated: true, completion: nil)
             }
@@ -372,7 +371,7 @@ extension TemplateCodeViewController: UICollectionViewDelegate, UICollectionView
 
 extension TemplateCodeViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        if let imageData = (info[UIImagePickerController.InfoKey.editedImage] as? UIImage)?.pngData() {
+        if let imageData = (info[UIImagePickerController.InfoKey.originalImage] as? UIImage)?.pngData() {
             for i in 0...cellData.count {
                 if !cellData.contains(where: { $0.name == "图片\(i)" }) {
                     let asset = TemplateAssetModel(templateId: template.templateId, name: "图片\(i)", data: imageData, assetType: .png)
