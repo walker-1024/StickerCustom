@@ -237,29 +237,70 @@ class TemplateViewController: SCViewController {
             }
 
             let config = WebAPIConfig(subspec: "template", function: "uploadTemplate")
-            let paras = [
+            let param = [
                 "templateID": self.template.templateId.uuidString,
                 "title": self.template.title,
                 "code": self.template.code,
                 "author": self.template.author
             ]
+            guard let paramData = try? JSONEncoder().encode(param) else {
+                alert.title = "上传失败"
+                alert.message = "未知错误"
+                alert.addAction(UIAlertAction(title: "确定", style: .default, handler: nil))
+                return
+            }
+
+            let paramUploadData = UploadData(key: "param", data: paramData)
             let coverFile = UploadFile(key: "cover", data: self.template.cover, fileName: "cover", mimeType: "image/png")
             let archiveFile = UploadFile(key: "file", data: archiveData, fileName: "file", mimeType: "application/zip")
-            NetworkMgr.shared.upload(config: config, parameters: paras, files: [coverFile, archiveFile], headers: ["Content-Type": "multipart/form-data"]) { (result: NetworkResult<BackDataWrapper<CommonBackData>>) in
+            NetworkMgr.shared.upload(config: config, parameters: [paramUploadData], files: [coverFile, archiveFile], headers: ["Content-Type": "multipart/form-data"]) { (result: NetworkResult<BackDataWrapper<CommonBackData>>) in
                 DispatchQueue.main.async {
                     switch result {
                     case .success(let model):
                         if model.code == 0 {
                             alert.title = "上传成功"
+                            alert.addAction(UIAlertAction(title: "确定", style: .default, handler: nil))
+                        } else if model.code == 2001 {
+                            alert.title = "模板已存在"
+                            alert.message = "是否覆盖上传"
+                            let overwrite = UIAlertAction(title: "是", style: .destructive) { _ in
+                                self.overwriteRelease(paramUploadData, coverFile, archiveFile)
+                            }
+                            let cancel = UIAlertAction(title: "取消", style: .cancel, handler: nil)
+                            alert.addAction(overwrite)
+                            alert.addAction(cancel)
                         } else {
                             alert.title = "上传失败"
                             alert.message = model.msg
+                            alert.addAction(UIAlertAction(title: "确定", style: .default, handler: nil))
                         }
                     case .failure(_):
                         alert.title = "网络请求失败"
+                        alert.addAction(UIAlertAction(title: "确定", style: .default, handler: nil))
                     }
-                    alert.addAction(UIAlertAction(title: "确定", style: .default, handler: nil))
                 }
+            }
+        }
+    }
+
+    private func overwriteRelease(_ paramUploadData: UploadData, _ coverFile: UploadFile, _ archiveFile: UploadFile) {
+        let alert = UIAlertController(title: "上传中", message: nil, preferredStyle: .alert)
+        self.present(alert, animated: true, completion: nil)
+        let config = WebAPIConfig(subspec: "template", function: "modifyTemplate")
+        NetworkMgr.shared.upload(config: config, parameters: [paramUploadData], files: [coverFile, archiveFile], headers: ["Content-Type": "multipart/form-data"]) { (result: NetworkResult<BackDataWrapper<CommonBackData>>) in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let model):
+                    if model.code == 0 {
+                        alert.title = "上传成功"
+                    } else {
+                        alert.title = "上传失败"
+                        alert.message = model.msg
+                    }
+                case .failure(_):
+                    alert.title = "网络请求失败"
+                }
+                alert.addAction(UIAlertAction(title: "确定", style: .default, handler: nil))
             }
         }
     }

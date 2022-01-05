@@ -37,9 +37,21 @@ class RosParser {
                 }
             }
             do {
-                let result = try RosSentence(code: code, env: env).evaluate()
-                print(result as Any)
-                completion?(result, nil)
+                let trueCode = "{\(code)}"
+                try RosSentence(code: trueCode, env: env).evaluate()
+                let result = env.getVarValue("_Ros_finalResult")
+                if let image = result as? UIImage {
+                    completion?(image, nil)
+                } else if let result = result as? [UIImage] {
+                    let eachDuration = env.getVarValue("_Ros_gifFrameDuration") as? Double ?? 0.1
+                    if let image = UIImage.animatedImage(with: result, duration: eachDuration * Double(result.count)) {
+                        completion?(image, nil)
+                    } else {
+                        completion?(nil, RosParseError.createGifFail)
+                    }
+                } else {
+                    completion?(nil, RosParseError.noResult)
+                }
             } catch let err {
                 completion?(nil, err as? RosParseError)
             }
@@ -47,9 +59,12 @@ class RosParser {
     }
 }
 
+// 打算把 _Ros_ 开头的都设为保留的关键字，不允许用户定义为变量名
 let RosReservedWords: [String] = [
-    "_Ros_context", // 打算把 _Ros_ 开头的都设为保留的关键字，不允许用户定义为变量名
+    "_Ros_context",
     "_Ros_gifFrames",
+    "_Ros_finalResult",
+    "_Ros_gifFrameDuration",
 ]
 
 enum RosFunctionEnglish: String {
@@ -64,8 +79,9 @@ enum RosFunctionChinese: String {
     case Ros_getImageWidth = "取图片宽度" // 未测试
     case Ros_getImageHeight = "取图片高度" // 未测试
     case Ros_getColor = "取颜色" // 未测试
-    case Ros_createGif = "创建动图" // 未测试
-    case Ros_appendFrame = "添加帧" // 未测试
+    case Ros_createGif = "创建动图"
+    case Ros_appendFrame = "添加帧"
+    case Ros_setGifFrameDuration = "设置帧延迟"
 }
 
 fileprivate class RosEnvironment {
@@ -217,6 +233,7 @@ fileprivate class RosSentence {
                 self.env?.removeVarValue("_Ros_context")
             }
             if error != nil { throw error! }
+            self.env?.setVarValue("_Ros_finalResult", value: image)
             return image
 
         case .Ros_drawImage:
@@ -325,21 +342,15 @@ fileprivate class RosSentence {
             return color
 
         case .Ros_createGif:
-            if paras.count < 3 { throw RosParseError.paramMissing }
-            if paras.count > 3 { throw RosParseError.paramRedundant }
-            let width = try RosSentence(code: paras[0], env: self.env).evaluate()
-            let height = try RosSentence(code: paras[1], env: self.env).evaluate()
-
-            // TODO: 这里还要研究下
-            guard let width = getDouble(from: width), let height = getDouble(from: height) else {
-                throw RosParseError.paramTypeMismatch
-            }
+            if paras.count < 1 { throw RosParseError.paramMissing }
+            if paras.count > 1 { throw RosParseError.paramRedundant }
 
             self.env?.setVarValue("_Ros_gifFrames", value: [UIImage]())
-            try RosSentence(code: paras[2], env: self.env).evaluate()
+            try RosSentence(code: paras[0], env: self.env).evaluate()
             guard let gifFrames = self.env?.getVarValue("_Ros_gifFrames") as? [UIImage] else {
                 throw RosParseError.getGifFramesFail
             }
+            self.env?.setVarValue("_Ros_finalResult", value: gifFrames)
             return gifFrames
 
         case .Ros_appendFrame:
@@ -356,6 +367,16 @@ fileprivate class RosSentence {
 
             gifFrames.append(image)
             self.env?.setVarValue("_Ros_gifFrames", value: gifFrames)
+
+        case .Ros_setGifFrameDuration:
+            if paras.count < 1 { throw RosParseError.paramMissing }
+            if paras.count > 1 { throw RosParseError.paramRedundant }
+            let duration = try RosSentence(code: paras[0], env: self.env).evaluate()
+
+            guard let duration = getDouble(from: duration) else {
+                throw RosParseError.paramTypeMismatch
+            }
+            self.env?.setVarValue("_Ros_gifFrameDuration", value: duration)
 
 
         }
@@ -439,5 +460,17 @@ enum RosParseError: Error {
     ///
     /// 直接原因是在「添加帧」时获取 gifFrames 失败
     case appendFrameBeforeCreateGif
+    /// 未获取到结果
+    ///
+    /// 用户没有进行任何「新建画板」或「创建动图」的操作
+    case noResult
+    /// 「创建动图」里没有添加任何帧
+    ///
+    ///
+    case noFrameInGif
+    /// 使用 UIImage 数组创建 gif 失败了
+    ///
+    /// 一般不会出现此问题
+    case createGifFail
     case placeholder
 }

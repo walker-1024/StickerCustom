@@ -74,12 +74,13 @@ class NetworkMgr {
         return request(API: API, parameters: parameters, headers: headers)
     }
 
-    func upload<Model: Codable>(API: WebAPI, parameters: [String: String]? = nil, files: [UploadFile]? = nil, headers: [String: String]? = nil, completion: @escaping (NetworkResult<Model>) -> Void) {
+    // 故意把传的类型分为了 UploadData 和 UploadFile，因为文件的 fileName 不能设 nil，否则会请求失败
+    func upload<Model: Codable>(API: WebAPI, parameters: [UploadData]? = nil, files: [UploadFile]? = nil, headers: [String: String]? = nil, completion: @escaping (NetworkResult<Model>) -> Void) {
         let urlRequest = URLRequest(url: URL(string: API.path)!, method: API.method, headers: headers)
         AF.upload(multipartFormData: { multiPart in
-            if let paras = parameters {
-                for (key, value) in paras {
-                    multiPart.append(value.data(using: .utf8)!, withName: key)
+            if let params = parameters {
+                for para in params {
+                    multiPart.append(para.data, withName: para.key)
                 }
             }
             if let files = files {
@@ -101,7 +102,7 @@ class NetworkMgr {
         }
     }
 
-    func upload<Model: Codable>(config: WebAPIConfig, parameters: [String: String]? = nil, files: [UploadFile]? = nil, headers: [String: String]? = nil, completion: @escaping (NetworkResult<Model>) -> Void) {
+    func upload<Model: Codable>(config: WebAPIConfig, parameters: [UploadData]? = nil, files: [UploadFile]? = nil, headers: [String: String]? = nil, completion: @escaping (NetworkResult<Model>) -> Void) {
         guard let API = WebAPIMgr.shared.getAPI(in: config.subspec, for: config.function) else {
             completion(.failure(.badConfig))
             return
@@ -126,10 +127,15 @@ extension URLRequest {
     }
 }
 
+struct UploadData: Codable {
+    var key: String
+    var data: Data
+}
+
 struct UploadFile: Codable {
     var key: String
     var data: Data
-    // 注意不要被AF骗了，如果 upload 时候文件的 fileName 设 nil，会请求失败，报错如下
+    // 注意，如果是一个文件，upload 时候文件的 fileName 不能设 nil，否则会请求失败，报错如下
     // Alamofire.AFError.ResponseSerializationFailureReason.inputDataNilOrZeroLength)
     var fileName: String
     var mimeType: String?

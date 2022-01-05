@@ -254,7 +254,7 @@ class TemplateCodeViewController: SCViewController, UIGestureRecognizerDelegate 
                 let ok = UIAlertAction(title: "确定", style: .default, handler: nil)
                 guard rosError == nil else {
                     alert.title = "生成失败"
-                    alert.message = rosError?.localizedDescription
+                    alert.message = rosError.debugDescription
                     alert.addAction(ok)
                     return
                 }
@@ -374,8 +374,8 @@ extension TemplateCodeViewController: UIImagePickerControllerDelegate, UINavigat
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let imageData = (info[UIImagePickerController.InfoKey.editedImage] as? UIImage)?.pngData() {
             for i in 0...cellData.count {
-                if !cellData.contains(where: { $0.name == String(i) }) {
-                    let asset = TemplateAssetModel(templateId: template.templateId, name: String(i), data: imageData, assetType: .png)
+                if !cellData.contains(where: { $0.name == "图片\(i)" }) {
+                    let asset = TemplateAssetModel(templateId: template.templateId, name: "图片\(i)", data: imageData, assetType: .png)
                     TemplateAssetMgr.shared.add(templateAsset: asset)
                     self.refresh()
                     break

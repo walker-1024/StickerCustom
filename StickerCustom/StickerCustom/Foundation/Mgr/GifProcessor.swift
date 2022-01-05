@@ -48,7 +48,7 @@ class GifProcessor {
         // 添加每帧图片
         let cgImageProperties = [
             kCGImagePropertyGIFDictionary as String: [
-                kCGImagePropertyGIFDelayTime as String: eachDuration // 每帧之间播放时间
+                kCGImagePropertyGIFDelayTime as String: eachDuration // 每帧之间播放时间，单位是秒
             ]
         ]
         for image in allImages {

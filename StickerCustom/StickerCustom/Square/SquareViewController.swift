@@ -39,6 +39,7 @@ class SquareViewController: SCViewController {
             make.edges.equalToSuperview()
         }
         collectionView.backgroundColor = .clear
+        // TODO: 设置了contentInset后导致下拉刷新的图标偏右
         collectionView.contentInset = UIEdgeInsets(top: 20, left: 15, bottom: 0, right: 15)
         collectionView.alwaysBounceVertical = true
         collectionView.register(TemplateCell.self, forCellWithReuseIdentifier: TemplateCellIdentifier)
