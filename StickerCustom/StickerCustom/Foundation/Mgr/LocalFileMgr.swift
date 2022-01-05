@@ -18,6 +18,7 @@ class LocalFileManager {
     private let shareFileDirPath = NSHomeDirectory() + "/tmp/shareFile/"
     private let templateDirPath = NSHomeDirectory() + "/tmp/template/"
     private let templateZipDirPath = NSHomeDirectory() + "/tmp/templateZip/"
+    private let tempImageDirPath = NSHomeDirectory() + "/tmp/tempImage/"
     private let fileManager = FileManager()
 
     private init() {
@@ -26,6 +27,7 @@ class LocalFileManager {
             try fileManager.createDirectory(atPath: shareFileDirPath, withIntermediateDirectories: true, attributes: nil)
             try fileManager.createDirectory(atPath: templateDirPath, withIntermediateDirectories: true, attributes: nil)
             try fileManager.createDirectory(atPath: templateZipDirPath, withIntermediateDirectories: true, attributes: nil)
+            try fileManager.createDirectory(atPath: tempImageDirPath, withIntermediateDirectories: true, attributes: nil)
         } catch {
         }
     }
@@ -44,6 +46,11 @@ class LocalFileManager {
         let data = try? Data(contentsOf: URL(fileURLWithPath: avatarPath))
         if data?.md5 == md5 { return false }
         return true
+    }
+
+    func getTempPath() -> String {
+        let now = Date().timeIntervalSince1970
+        return tempImageDirPath + "\(now)"
     }
 
     func archiveTemplate(withId templateId: UUID, completion: ((Data?, String?) -> Void)?) {

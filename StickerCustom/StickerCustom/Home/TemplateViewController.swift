@@ -186,18 +186,40 @@ class TemplateViewController: SCViewController {
 
     @objc private func saveImage() {
         guard let image = imageView.image else { return }
-        PHPhotoLibrary.shared().performChanges {
-            PHAssetChangeRequest.creationRequestForAsset(from: image)
-        } completionHandler: { isSuccess, error in
-            DispatchQueue.main.async {
-                if isSuccess {
-                    let alert = UIAlertController(title: "保存成功", message: nil, preferredStyle: .alert)
-                    self.present(alert, animated: false, completion: nil)
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                        alert.dismiss(animated: true, completion: nil)
+        if let allImages = image.images {
+            PHPhotoLibrary.shared().performChanges {
+                let gifPath = LocalFileManager.shared.getTempPath() + ".gif"
+                let eachDuration = image.duration / Double(allImages.count)
+                GifProcessor.shared.createGif(with: allImages, eachDuration: eachDuration, savePath: gifPath)
+
+                PHAssetChangeRequest.creationRequestForAssetFromImage(atFileURL: URL(fileURLWithPath: gifPath))
+            } completionHandler: { isSuccess, error in
+                DispatchQueue.main.async {
+                    if isSuccess {
+                        let alert = UIAlertController(title: "保存成功", message: nil, preferredStyle: .alert)
+                        self.present(alert, animated: false, completion: nil)
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                            alert.dismiss(animated: true, completion: nil)
+                        }
+                    } else {
+                        presentAlert(title: "保存失败", message: nil, on: self)
                     }
-                } else {
-                    presentAlert(title: "保存失败", message: nil, on: self)
+                }
+            }
+        } else {
+            PHPhotoLibrary.shared().performChanges {
+                PHAssetChangeRequest.creationRequestForAsset(from: image)
+            } completionHandler: { isSuccess, error in
+                DispatchQueue.main.async {
+                    if isSuccess {
+                        let alert = UIAlertController(title: "保存成功", message: nil, preferredStyle: .alert)
+                        self.present(alert, animated: false, completion: nil)
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                            alert.dismiss(animated: true, completion: nil)
+                        }
+                    } else {
+                        presentAlert(title: "保存失败", message: nil, on: self)
+                    }
                 }
             }
         }

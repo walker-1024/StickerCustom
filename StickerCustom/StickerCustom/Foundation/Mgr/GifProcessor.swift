@@ -40,10 +40,22 @@ class GifProcessor {
         return (allImages, gifDuration)
     }
 
+    @discardableResult
     func createGif(with allImages: [UIImage], eachDuration: Double, savePath gifPath: String) -> Data? {
         guard let cfUrl = CFURLCreateWithFileSystemPath(kCFAllocatorDefault, gifPath as CFString, CFURLPathStyle.cfurlposixPathStyle, false) else { return nil }
         // 创建一个图片的目标对象，这个目标对象中描述了构成当前图片目标对象的一系列参数，如图片的URL地址、图片类型、图片帧数、配置参数等
         guard let gifDestination = CGImageDestinationCreateWithURL(cfUrl, kUTTypeGIF, allImages.count, nil) else { return nil }
+
+        // 为gif图像设置属性（这一步操作必须写在添加每帧图片的前面，否则是无效的，且运行时会有 Error Log）
+        let gifDestinationProperties = [
+            kCGImagePropertyGIFDictionary as String: [
+                kCGImagePropertyColorModel as String: kCGImagePropertyColorModelRGB, // 图像的颜色模式
+                kCGImagePropertyDepth as String: 16, // 图像的颜色深度
+                kCGImagePropertyGIFLoopCount as String: 0, // gif 循环次数，0 为无限次循环
+                kCGImagePropertyGIFHasGlobalColorMap as String: NSNumber(booleanLiteral: true)
+            ]
+        ]
+        CGImageDestinationSetProperties(gifDestination, gifDestinationProperties as CFDictionary)
 
         // 添加每帧图片
         let cgImageProperties = [
@@ -54,17 +66,6 @@ class GifProcessor {
         for image in allImages {
             CGImageDestinationAddImage(gifDestination, image.cgImage!, cgImageProperties as CFDictionary)
         }
-
-        // 为gif图像设置属性
-        let gifDestinationProperties = [
-            kCGImagePropertyGIFDictionary as String: [
-                kCGImagePropertyColorModel as String: kCGImagePropertyColorModelRGB, // 图像的颜色模式
-                kCGImagePropertyDepth as String: 16, // 图像的颜色深度
-                kCGImagePropertyGIFLoopCount as String: 0, // gif 循环次数，0 为无限次循环
-                kCGImagePropertyGIFHasGlobalColorMap as String: NSNumber(booleanLiteral: true)
-            ]
-        ]
-        CGImageDestinationSetProperties(gifDestination, gifDestinationProperties as CFDictionary)
 
         // 最后释放目标对象
         CGImageDestinationFinalize(gifDestination)
