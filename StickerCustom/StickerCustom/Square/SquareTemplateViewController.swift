@@ -62,11 +62,15 @@ class SquareTemplateViewController: SCViewController {
         guard let url = self.template.downloadUrl else { return }
         let alert = UIAlertController(title: "正在下载", message: nil, preferredStyle: .alert)
         self.present(alert, animated: true, completion: nil)
-        LocalFileManager.shared.downloadTemplate(withId: self.template.templateId, url: url) { model, errMessage in
-            alert.title = model != nil ? "下载成功" : "下载失败"
-            alert.message = errMessage
-            let ok = UIAlertAction(title: "确定", style: .default, handler: nil)
-            alert.addAction(ok)
+        DispatchQueue.global().async {
+            LocalFileManager.shared.downloadTemplate(withId: self.template.templateId, url: url) { model, errMessage in
+                DispatchQueue.main.async {
+                    alert.title = model != nil ? "下载成功" : "下载失败"
+                    alert.message = errMessage
+                    let ok = UIAlertAction(title: "确定", style: .default, handler: nil)
+                    alert.addAction(ok)
+                }
+            }
         }
     }
 }
