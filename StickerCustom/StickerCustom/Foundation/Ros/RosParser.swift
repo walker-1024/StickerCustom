@@ -133,7 +133,42 @@ fileprivate class RosSentence {
             if self.env?.isExistVar(code) ?? false {
                 return self.env?.getVarValue(code)
             } else {
-                return code
+                // 在这种情况下，需要把类似 图片{i} 的语句转换为 图片0 的语句
+                var arr: [String] = []
+                var leftIndex = 0
+                var numOfLeftBrace = 0
+                for i in 0..<code.count {
+                    if code[i] == "{" {
+                        numOfLeftBrace += 1
+                        if numOfLeftBrace == 1 {
+                            arr.append(code[leftIndex..<i])
+                            leftIndex = i
+                        }
+                    } else if code[i] == "}" {
+                        numOfLeftBrace -= 1
+                        if numOfLeftBrace < 0 {
+                            throw RosParseError.wrongSentence
+                        } else if numOfLeftBrace == 0 {
+                            let value = try RosSentence(code: code[leftIndex..<i + 1], env: self.env).evaluate()
+                            arr.append("\(value ?? "")")
+                            leftIndex = i + 1
+                        }
+                    }
+                }
+                if numOfLeftBrace != 0 {
+                    throw RosParseError.wrongSentence
+                }
+
+                if arr.count == 0 {
+                    return code
+                } else {
+                    let res = arr.joined()
+                    if self.env?.isExistVar(res) ?? false {
+                        return self.env?.getVarValue(res)
+                    } else {
+                        return res
+                    }
+                }
             }
         }
 
@@ -145,6 +180,9 @@ fileprivate class RosSentence {
                 numOfLeftBrace += 1
             } else if code[i] == "}" {
                 numOfLeftBrace -= 1
+                if numOfLeftBrace < 0 {
+                    throw RosParseError.wrongSentence
+                }
             } else if numOfLeftBrace == 0 {
                 if code[i] == "," || code[i] == "，" {
                     arr.append(code[lastIndex..<i])
@@ -165,6 +203,7 @@ fileprivate class RosSentence {
             throw RosParseError.functionNameNull
         }
         if arr[0].hasPrefix("{") {
+            // 这种情况表明这个 Ros 语句是一个包含多个 Ros 语句的代码块
             // 如果按规范语法写，这里的 arr 应该是只有一项的
             var allSentences: [String] = []
             for item in arr {
@@ -189,7 +228,15 @@ fileprivate class RosSentence {
                 try RosSentence(code: sentence, env: self.env).evaluate()
             }
             return nil
+        } else if arr.count == 1 {
+            // 这种情况表明这个 Ros 语句其实是一个变量
+            if self.env?.isExistVar(arr[0]) ?? false {
+                return self.env?.getVarValue(arr[0])
+            } else {
+                throw RosParseError.varNameNotExist
+            }
         } else {
+            // 这种情况表明这个 Ros 语句是一个普通的函数
             guard let rosFunc = RosFunctionChinese(rawValue: arr[0]) else {
                 throw RosParseError.funcNameNotExist
             }
@@ -202,14 +249,23 @@ fileprivate class RosSentence {
         switch rosFunc {
         case .Ros_for:
             if paras.count < 2 { throw RosParseError.paramMissing }
-            if paras.count > 2 { throw RosParseError.paramRedundant }
+            if paras.count > 3 { throw RosParseError.paramRedundant }
             let num = try RosSentence(code: paras[0], env: self.env).evaluate()
-
             guard let num = getInt(from: num) else {
                 throw RosParseError.paramTypeMismatch
             }
-            for _ in 0..<num {
-                try RosSentence(code: paras[1], env: self.env).evaluate()
+
+            if paras.count == 2 {
+                for _ in 0..<num {
+                    try RosSentence(code: paras[1], env: self.env).evaluate()
+                }
+            } else {
+                let name = paras[1]
+                for i in 0..<num {
+                    self.env?.setVarValue(name, value: i)
+                    try RosSentence(code: paras[2], env: self.env).evaluate()
+                }
+                self.env?.removeVarValue(name)
             }
 
         case .Ros_createDrawBoard:
@@ -472,5 +528,9 @@ enum RosParseError: Error {
     ///
     /// 一般不会出现此问题
     case createGifFail
+    /// 变量不存在
+    ///
+    /// 用户使用 {xxx} 的方式去获取一个不存在的变量的值
+    case varNameNotExist
     case placeholder
 }
