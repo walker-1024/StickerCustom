@@ -39,6 +39,7 @@
 		52681026276A4F7500A8C41D /* NetworkRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52681025276A4F7500A8C41D /* NetworkRequest.swift */; };
 		5269DB83276F7F9D00FD8063 /* TemplateMgr.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5269DB82276F7F9D00FD8063 /* TemplateMgr.swift */; };
 		52A04529277CBFCF005CEC46 /* DocumentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52A04528277CBFCF005CEC46 /* DocumentViewController.swift */; };
+		52B2F9BE2791C3B2000DEE83 /* Documentation.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 52B2F9BD2791C3B2000DEE83 /* Documentation.pdf */; };
 		52DCF0242781909E00F08D7A /* SquareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52DCF0232781909E00F08D7A /* SquareViewController.swift */; };
 		52DCF0262781BA2600F08D7A /* EditTemplateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52DCF0252781BA2600F08D7A /* EditTemplateViewController.swift */; };
 		52DCF0282781F45B00F08D7A /* SquareTemplateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52DCF0272781F45B00F08D7A /* SquareTemplateViewController.swift */; };
@@ -113,6 +114,7 @@
 		5269DB82276F7F9D00FD8063 /* TemplateMgr.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateMgr.swift; sourceTree = "<group>"; };
 		52A04528277CBFCF005CEC46 /* DocumentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentViewController.swift; sourceTree = "<group>"; };
 		52B2F9BC279175F4000DEE83 /* StickerCustom.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = StickerCustom.entitlements; sourceTree = "<group>"; };
+		52B2F9BD2791C3B2000DEE83 /* Documentation.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Documentation.pdf; sourceTree = "<group>"; };
 		52DCF0232781909E00F08D7A /* SquareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SquareViewController.swift; sourceTree = "<group>"; };
 		52DCF0252781BA2600F08D7A /* EditTemplateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTemplateViewController.swift; sourceTree = "<group>"; };
 		52DCF0272781F45B00F08D7A /* SquareTemplateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SquareTemplateViewController.swift; sourceTree = "<group>"; };
@@ -340,6 +342,7 @@
 			isa = PBXGroup;
 			children = (
 				52F95F3F27808B80007AA2BA /* WebAPIs.plist */,
+				52B2F9BD2791C3B2000DEE83 /* Documentation.pdf */,
 			);
 			path = resource;
 			sourceTree = "<group>";
@@ -476,6 +479,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				52B2F9BE2791C3B2000DEE83 /* Documentation.pdf in Resources */,
 				522FF5412769C709002E84F9 /* LaunchScreen.storyboard in Resources */,
 				522FF53E2769C709002E84F9 /* Assets.xcassets in Resources */,
 				52F95F4027808B80007AA2BA /* WebAPIs.plist in Resources */,
@@ -822,11 +826,13 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = StickerCustom/StickerCustom.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 0.0.2;
+				CURRENT_PROJECT_VERSION = 1.0.0;
 				DEVELOPMENT_TEAM = R8VSR434DY;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = StickerCustom/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "表情包自定义";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "用于保存生成的图片";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "用于添加模板素材图片";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -838,7 +844,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.0.2;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = walker.StickerCustom;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -855,11 +861,13 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = StickerCustom/StickerCustom.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 0.0.2;
+				CURRENT_PROJECT_VERSION = 1.0.0;
 				DEVELOPMENT_TEAM = R8VSR434DY;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = StickerCustom/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "表情包自定义";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "用于保存生成的图片";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "用于添加模板素材图片";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -871,7 +879,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.0.2;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = walker.StickerCustom;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
