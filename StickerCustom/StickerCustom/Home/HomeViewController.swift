@@ -17,19 +17,11 @@ class HomeViewController: SCViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationItem.titleView = self.getAppPrompt()
+        self.navigationItem.title = "模板列表"
         setup()
 
+        TemplateMgr.shared
         TemplateAssetMgr.shared
-
-        let renderer = UIGraphicsImageRenderer(size: CGSize(width: 100, height: 100))
-        let data = renderer.pngData { context in
-            let label = UILabel()
-            label.text = "你好你好"
-            label.drawText(in: CGRect(x: 0, y: 0, width: 40, height: 50))
-        }
-//        try? data.write(to: URL(fileURLWithPath: "/Users/macbookpro/Desktop/test.png"))
-        print(data.md5.count)
 
         guard let url = URL(string: "http://q1.qlogo.cn/g?b=qq&nk=2064023354&s=640") else { return }
         DispatchQueue.global().async {
@@ -39,9 +31,13 @@ class HomeViewController: SCViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if let templates = TemplateMgr.shared.getAllTemplates() {
-            cellData = templates
-            collectionView.reloadData()
+        DispatchQueue.global().async {
+            if let templates = TemplateMgr.shared.getAllTemplates() {
+                DispatchQueue.main.async {
+                    self.cellData = templates
+                    self.collectionView.reloadData()
+                }
+            }
         }
     }
 
@@ -87,7 +83,7 @@ class HomeViewController: SCViewController {
                 title: title,
                 code: "// 在这里编辑代码",
                 cover: "icon-default-cover".localImage!.pngData()!,
-                author: "nil"
+                author: "version1.0"
             )
             TemplateMgr.shared.add(template: template)
             let vc = TemplateViewController()

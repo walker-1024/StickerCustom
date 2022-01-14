@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import WebKit
 
 fileprivate let DocumentCellIdentifier = "DocumentCellIdentifier"
 
@@ -13,18 +14,36 @@ class DocumentViewController: SCViewController {
 
     private var cellData: [String] = []
 
+    private let webView = WKWebView()
     private let tableView = UITableView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationItem.title = "迷迭语文档"
-        setupDocumentData()
-        setup()
+        self.navigationItem.title = "开发文档"
+        tempSetup()
+//        setupDocumentData()
+//        setup()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.setNavigationBarHidden(false, animated: true)
+        // 不知道为啥，切到其他界面再回来会发现文档变成一片白了，必须重新加载才行
+        guard let filePath = Bundle.main.path(forResource: "Documentation", ofType: "pdf") else {
+            return
+        }
+        webView.load(URLRequest(url: URL(fileURLWithPath: filePath)))
+    }
+
+    // 临时这样糊弄一下
+    private func tempSetup() {
+        view.addSubview(webView)
+        webView.snp.makeConstraints { make in
+            make.top.equalTo(StatusBarH + NavBarH)
+            make.leading.trailing.bottom.equalToSuperview()
+        }
+        webView.uiDelegate = self
+        webView.navigationDelegate = self
     }
 
     private func setupDocumentData() {
@@ -81,5 +100,20 @@ extension DocumentViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
+    }
+}
+
+extension DocumentViewController: WKUIDelegate, WKNavigationDelegate {
+    func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+        print("页面开始加载")
+    }
+    func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+        print("页面加载失败")
+    }
+    func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
+        print("内容开始返回")
+    }
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        print("页面加载完成")
     }
 }

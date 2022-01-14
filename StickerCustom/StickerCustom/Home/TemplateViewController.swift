@@ -116,7 +116,7 @@ class TemplateViewController: SCViewController {
             make.trailing.equalTo(view.snp.centerX).offset(-40)
         }
         editButton.setImage("icon-edit".localImage, for: .normal)
-        editButton.addTarget(self, action: #selector(tempfunc), for: .touchUpInside)
+        editButton.addTarget(self, action: #selector(clickEditTemplate), for: .touchUpInside)
 
         let codeButton = UIButton()
         view.addSubview(codeButton)
@@ -225,15 +225,6 @@ class TemplateViewController: SCViewController {
         }
     }
 
-    @objc private func tempfunc() {
-        if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
-            let picker = UIImagePickerController()
-            picker.sourceType = .photoLibrary
-            picker.delegate = self
-            self.present(picker, animated: true, completion: nil)
-        }
-    }
-
     @objc private func clickEditTemplate() {
         let vc = EditTemplateViewController()
         vc.template = self.template
@@ -247,6 +238,8 @@ class TemplateViewController: SCViewController {
     }
 
     @objc private func clickRelease() {
+        presentAlert(title: "功能暂未开放", message: nil, on: self)
+        return
         let alert = UIAlertController(title: "上传中", message: nil, preferredStyle: .alert)
         self.present(alert, animated: true, completion: nil)
         LocalFileManager.shared.archiveTemplate(withId: self.template.templateId) { archiveData, errMsg in

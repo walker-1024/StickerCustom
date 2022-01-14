@@ -26,7 +26,8 @@ class SquareViewController: SCViewController {
     private func setup() {
 
         refreshControl = UIRefreshControl()
-        refreshControl.attributedTitle = NSAttributedString(string: "下拉刷新")
+        refreshControl.attributedTitle = NSAttributedString(string: "下拉刷新", attributes: [.foregroundColor: UIColor.tintGreen])
+        refreshControl.tintColor = .tintGreen
         refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
 
         let width = (ScreenWidth - 15 * 2 - 8) / 2
@@ -39,7 +40,6 @@ class SquareViewController: SCViewController {
             make.edges.equalToSuperview()
         }
         collectionView.backgroundColor = .clear
-        // TODO: 设置了contentInset后导致下拉刷新的图标偏右
         collectionView.contentInset = UIEdgeInsets(top: 20, left: 15, bottom: 0, right: 15)
         collectionView.alwaysBounceVertical = true
         collectionView.register(TemplateCell.self, forCellWithReuseIdentifier: TemplateCellIdentifier)
@@ -49,6 +49,9 @@ class SquareViewController: SCViewController {
     }
 
     @objc private func refresh() {
+        if !refreshControl.isRefreshing {
+            refreshControl.beginRefreshing()
+        }
         let config = WebAPIConfig(subspec: "template", function: "getAllTemplate")
         NetworkMgr.shared.request(config: config).responseModel { (result: NetworkResult<BackDataWrapper<TemplateBackData>>) in
             switch result {
@@ -56,6 +59,8 @@ class SquareViewController: SCViewController {
                 if model.code == 0, let backTemplates = model.data?.templates {
                     var allTemplates: [TemplateModel] = []
                     for item in backTemplates {
+                        // TODO: TODO
+                        if item.author == "nil" { continue }
                         guard let templateId = UUID(uuidString: item.templateID) else { continue }
                         guard let coverUrl = URL(string: item.cover) else { continue }
                         guard let coverData = try? Data(contentsOf: coverUrl) else { continue }

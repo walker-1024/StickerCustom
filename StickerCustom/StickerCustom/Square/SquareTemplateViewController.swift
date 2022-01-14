@@ -42,11 +42,24 @@ class SquareTemplateViewController: SCViewController {
         imageView.image = UIImage(data: template.cover)
         imageView.contentMode = .scaleAspectFit
 
+        let tipLabel = UILabel()
+        view.addSubview(tipLabel)
+        tipLabel.snp.makeConstraints { make in
+            make.top.equalTo(imageView.snp.bottom)
+            make.centerX.equalToSuperview()
+            make.height.equalTo(45)
+        }
+        tipLabel.text = "下载后才可体验"
+        tipLabel.textColor = .tintGreen
+        tipLabel.textAlignment = .center
+        tipLabel.font = UIFont.systemFont(ofSize: 15)
+        tipLabel.numberOfLines = 1
+
         let button = UIButton()
         view.addSubview(button)
         button.snp.makeConstraints { make in
             make.width.height.equalTo(90)
-            make.top.equalTo(imageView.snp.bottom).offset(50)
+            make.top.equalTo(imageView.snp.bottom).offset(80)
             make.centerX.equalToSuperview()
         }
         button.setTitle("下载", for: .normal)
