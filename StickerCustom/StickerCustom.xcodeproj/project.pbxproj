@@ -112,6 +112,7 @@
 		52681025276A4F7500A8C41D /* NetworkRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkRequest.swift; sourceTree = "<group>"; };
 		5269DB82276F7F9D00FD8063 /* TemplateMgr.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateMgr.swift; sourceTree = "<group>"; };
 		52A04528277CBFCF005CEC46 /* DocumentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentViewController.swift; sourceTree = "<group>"; };
+		52B2F9BC279175F4000DEE83 /* StickerCustom.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = StickerCustom.entitlements; sourceTree = "<group>"; };
 		52DCF0232781909E00F08D7A /* SquareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SquareViewController.swift; sourceTree = "<group>"; };
 		52DCF0252781BA2600F08D7A /* EditTemplateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTemplateViewController.swift; sourceTree = "<group>"; };
 		52DCF0272781F45B00F08D7A /* SquareTemplateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SquareTemplateViewController.swift; sourceTree = "<group>"; };
@@ -193,6 +194,7 @@
 		522FF5302769C708002E84F9 /* StickerCustom */ = {
 			isa = PBXGroup;
 			children = (
+				52B2F9BC279175F4000DEE83 /* StickerCustom.entitlements */,
 				52681005276A44ED00A8C41D /* Foundation */,
 				5246A77E276B579E005F1BF6 /* Home */,
 				52DCF0222781908400F08D7A /* Square */,
@@ -818,6 +820,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = StickerCustom/StickerCustom.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 0.0.2;
 				DEVELOPMENT_TEAM = R8VSR434DY;
@@ -850,6 +853,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = StickerCustom/StickerCustom.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 0.0.2;
 				DEVELOPMENT_TEAM = R8VSR434DY;

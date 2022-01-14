@@ -76,8 +76,8 @@ enum RosFunctionChinese: String {
     case Ros_createDrawBoard = "新建画板"
     case Ros_drawImage = "画图片"
     case Ros_clipToCircle = "图像圆角化"
-    case Ros_getImageWidth = "取图片宽度" // 未测试
-    case Ros_getImageHeight = "取图片高度" // 未测试
+    case Ros_getImageWidth = "取图片宽度"
+    case Ros_getImageHeight = "取图片高度"
     case Ros_getColor = "取颜色" // 未测试
     case Ros_createGif = "创建动图"
     case Ros_appendFrame = "添加帧"
