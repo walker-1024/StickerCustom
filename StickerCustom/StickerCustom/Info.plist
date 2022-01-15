@@ -11,7 +11,7 @@
 			<string>walker.StickerCustom</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>StickerCustom</string>
+				<string>tencent101992634</string>
 			</array>
 		</dict>
 	</array>
@@ -39,5 +39,36 @@
 			</array>
 		</dict>
 	</dict>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>tim</string>
+		<string>mqq</string>
+		<string>mqqapi</string>
+		<string>mqqbrowser</string>
+		<string>mttbrowser</string>
+		<string>mqqOpensdkSSoLogin</string>
+		<string>mqqopensdkapiV2</string>
+		<string>mqqopensdkapiV4</string>
+		<string>mqzone</string>
+		<string>mqzoneopensdk</string>
+		<string>mqzoneopensdkapi</string>
+		<string>mqzoneopensdkapi19</string>
+		<string>mqzoneopensdkapiV2</string>
+		<string>mqqapiwallet</string>
+		<string>mqqopensdkfriend</string>
+		<string>mqqopensdkavatar</string>
+		<string>mqqopensdkminiapp</string>
+		<string>mqqopensdkdataline</string>
+		<string>mqqgamebindinggroup</string>
+		<string>mqqopensdkgrouptribeshare</string>
+		<string>tencentapi.qq.reqContent</string>
+		<string>tencentapi.qzone.reqContent</string>
+		<string>mqqthirdappgroup</string>
+		<string>mqqopensdklaunchminiapp</string>
+		<string>mqqopensdkproxylogin</string>
+		<string>mqqopensdknopasteboard</string>
+		<string>mqqopensdkcheckauth</string>
+		<string>mqqguild</string>
+	</array>
 </dict>
 </plist>

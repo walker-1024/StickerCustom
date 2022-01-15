@@ -39,7 +39,9 @@
 		52681026276A4F7500A8C41D /* NetworkRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52681025276A4F7500A8C41D /* NetworkRequest.swift */; };
 		5269DB83276F7F9D00FD8063 /* TemplateMgr.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5269DB82276F7F9D00FD8063 /* TemplateMgr.swift */; };
 		52A04529277CBFCF005CEC46 /* DocumentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52A04528277CBFCF005CEC46 /* DocumentViewController.swift */; };
+		52A81D672792B8B800E92C44 /* TencentOpenAPITool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52A81D662792B8B800E92C44 /* TencentOpenAPITool.swift */; };
 		52B2F9BE2791C3B2000DEE83 /* Documentation.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 52B2F9BD2791C3B2000DEE83 /* Documentation.pdf */; };
+		52B2F9C02792A051000DEE83 /* TencentOpenAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52B2F9BF2792A051000DEE83 /* TencentOpenAPI.framework */; };
 		52DCF0242781909E00F08D7A /* SquareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52DCF0232781909E00F08D7A /* SquareViewController.swift */; };
 		52DCF0262781BA2600F08D7A /* EditTemplateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52DCF0252781BA2600F08D7A /* EditTemplateViewController.swift */; };
 		52DCF0282781F45B00F08D7A /* SquareTemplateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52DCF0272781F45B00F08D7A /* SquareTemplateViewController.swift */; };
@@ -113,8 +115,11 @@
 		52681025276A4F7500A8C41D /* NetworkRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkRequest.swift; sourceTree = "<group>"; };
 		5269DB82276F7F9D00FD8063 /* TemplateMgr.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateMgr.swift; sourceTree = "<group>"; };
 		52A04528277CBFCF005CEC46 /* DocumentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentViewController.swift; sourceTree = "<group>"; };
+		52A81D652792AD8700E92C44 /* TencentOpenAPI-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TencentOpenAPI-Bridging-Header.h"; sourceTree = "<group>"; };
+		52A81D662792B8B800E92C44 /* TencentOpenAPITool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TencentOpenAPITool.swift; sourceTree = "<group>"; };
 		52B2F9BC279175F4000DEE83 /* StickerCustom.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = StickerCustom.entitlements; sourceTree = "<group>"; };
 		52B2F9BD2791C3B2000DEE83 /* Documentation.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Documentation.pdf; sourceTree = "<group>"; };
+		52B2F9BF2792A051000DEE83 /* TencentOpenAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TencentOpenAPI.framework; sourceTree = "<group>"; };
 		52DCF0232781909E00F08D7A /* SquareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SquareViewController.swift; sourceTree = "<group>"; };
 		52DCF0252781BA2600F08D7A /* EditTemplateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTemplateViewController.swift; sourceTree = "<group>"; };
 		52DCF0272781F45B00F08D7A /* SquareTemplateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SquareTemplateViewController.swift; sourceTree = "<group>"; };
@@ -140,6 +145,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D58CB477FB3C2861814B34E8 /* Pods_StickerCustom.framework in Frameworks */,
+				52B2F9C02792A051000DEE83 /* TencentOpenAPI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -274,6 +280,7 @@
 			children = (
 				5268101B276A478F00A8C41D /* SCViewController.swift */,
 				5268101D276A47A000A8C41D /* global.swift */,
+				52A81D652792AD8700E92C44 /* TencentOpenAPI-Bridging-Header.h */,
 				52681008276A456400A8C41D /* Util */,
 				52681007276A455D00A8C41D /* Mgr */,
 				52681006276A450500A8C41D /* Network */,
@@ -304,6 +311,7 @@
 				52E26E8D27758A46003FFBF7 /* TemplateAssetMgr.swift */,
 				52E26E89277572FE003FFBF7 /* LocalFileMgr.swift */,
 				52DCF0292783248500F08D7A /* GifProcessor.swift */,
+				52A81D662792B8B800E92C44 /* TencentOpenAPITool.swift */,
 			);
 			path = Mgr;
 			sourceTree = "<group>";
@@ -350,6 +358,7 @@
 		D85FFC5F41A36E8175C198EF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				52B2F9BF2792A051000DEE83 /* TencentOpenAPI.framework */,
 				0E6D225568BA26C03D4BC00F /* Pods_StickerCustom.framework */,
 				3C206AB2DC7EABDE408F5FCB /* Pods_StickerCustom_StickerCustomUITests.framework */,
 				577335B83A69672479263004 /* Pods_StickerCustomTests.framework */,
@@ -645,6 +654,7 @@
 				5246A785276B86AD005F1BF6 /* TemplateModel.swift in Sources */,
 				52E26E8827756358003FFBF7 /* TemplateAssetsCell.swift in Sources */,
 				5268100A276A468200A8C41D /* UIColorUtil.swift in Sources */,
+				52A81D672792B8B800E92C44 /* TencentOpenAPITool.swift in Sources */,
 				5269DB83276F7F9D00FD8063 /* TemplateMgr.swift in Sources */,
 				52681020276A4F2E00A8C41D /* WebAPI.swift in Sources */,
 			);
@@ -828,6 +838,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1.0.0;
 				DEVELOPMENT_TEAM = R8VSR434DY;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = StickerCustom/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "表情包自定义";
@@ -845,9 +859,28 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-l\"iconv\"",
+					"-l\"z\"",
+					"-framework",
+					"\"Alamofire\"",
+					"-framework",
+					"\"CFNetwork\"",
+					"-framework",
+					"\"SSZipArchive\"",
+					"-framework",
+					"\"Security\"",
+					"-framework",
+					"\"SnapKit\"",
+					"-framework",
+					"\"SwiftyStoreKit\"",
+					"-fobjc-arc",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = walker.StickerCustom;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "StickerCustom/Foundation/TencentOpenAPI-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -863,6 +896,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1.0.0;
 				DEVELOPMENT_TEAM = R8VSR434DY;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = StickerCustom/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "表情包自定义";
@@ -880,9 +917,28 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-l\"iconv\"",
+					"-l\"z\"",
+					"-framework",
+					"\"Alamofire\"",
+					"-framework",
+					"\"CFNetwork\"",
+					"-framework",
+					"\"SSZipArchive\"",
+					"-framework",
+					"\"Security\"",
+					"-framework",
+					"\"SnapKit\"",
+					"-framework",
+					"\"SwiftyStoreKit\"",
+					"-fobjc-arc",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = walker.StickerCustom;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "StickerCustom/Foundation/TencentOpenAPI-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

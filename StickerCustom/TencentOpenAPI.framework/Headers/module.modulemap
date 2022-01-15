@@ -1,0 +1,21 @@
+//module TencentOpenApi{
+//    umbrella header "TencentOpenApiUmbrellaHeader.h"
+//    export *
+//}
+
+
+// 真草 -- by 刘菁楷
+// https://www.jianshu.com/p/20b216ab9ef7
+framework module TencentOpenAPI {
+    header "QQApiInterface.h"
+
+    header "QQApiInterfaceObject.h"
+
+    header "TencentOAuth.h"
+
+    header "TencentOpenApiUmbrellaHeader.h"
+
+    header "sdkdef.h"
+
+    export *
+}

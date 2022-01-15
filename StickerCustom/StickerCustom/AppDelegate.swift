@@ -77,5 +77,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
+    // MARK: - Open App With Url Scheme
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        let urlKey = options[.sourceApplication] as! String
+        print("================")
+        print(urlKey)
+        print("================")
+        if urlKey == "com.tencent.mqq" {
+            return TencentOAuth.handleOpen(url)
+        }
+        return true
+    }
+
+    // MARK: - Open App With Universal Link
+    func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
+        guard let url = userActivity.webpageURL else { return false }
+        return TencentOAuth.handleUniversalLink(url)
+    }
+
 }
 
