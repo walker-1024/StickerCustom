@@ -78,6 +78,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         (UIApplication.shared.delegate as? AppDelegate)?.saveContext()
     }
 
+    // MARK: - Open App With Universal Link
+    func scene(_ scene: UIScene, continue userActivity: NSUserActivity) {
+        guard let url = userActivity.webpageURL else { return }
+        TencentOAuth.handleUniversalLink(url)
+    }
 
 }
 
