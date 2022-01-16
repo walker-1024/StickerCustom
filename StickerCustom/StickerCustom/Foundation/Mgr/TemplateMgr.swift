@@ -15,7 +15,27 @@ class TemplateMgr {
 
     private let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext
 
-    private init() { }
+    private init() {
+        guard let context = context else {
+            return
+        }
+        let fetchRequest = NSFetchRequest<TemplateEntity>(entityName: "TemplateEntity")
+        guard let result = try? context.fetch(fetchRequest) else { return }
+        if result.count == 0 {
+            DispatchQueue.global().async {
+                for item in [
+                    "FE806C52-056E-45F4-B7E0-2CC604F4A4F9",
+                    "E6922DC4-6C37-4EBC-A203-67BEC27BC58E",
+                    "8E640886-2637-49BC-8C8E-FD96DCC3194D",
+                ] {
+                    guard let templateId = UUID(uuidString: item) else { continue }
+                    guard let path = Bundle.main.path(forResource: item, ofType: "zip") else { continue }
+                    LocalFileManager.shared.downloadTemplate(withId: templateId, url: URL(fileURLWithPath: path), completion: nil)
+                }
+                NotificationCenter.default.post(name: .needRefreshTemplateList, object: self)
+            }
+        }
+    }
 
     func getAllTemplates() -> [TemplateModel]? {
         guard let context = context else {

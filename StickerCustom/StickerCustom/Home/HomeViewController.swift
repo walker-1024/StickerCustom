@@ -20,13 +20,15 @@ class HomeViewController: SCViewController {
         self.navigationItem.title = "模板列表"
         setup()
 
+        NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: .needRefreshTemplateList, object: nil)
+
         TemplateMgr.shared
         TemplateAssetMgr.shared
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-            let permissions = [kOPEN_PERMISSION_GET_USER_INFO, kOPEN_PERMISSION_GET_SIMPLE_USER_INFO]
-            TencentOpenAPITool.shared.tencentOAuth.authorize(permissions)
-        }
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+//            let permissions = [kOPEN_PERMISSION_GET_USER_INFO, kOPEN_PERMISSION_GET_SIMPLE_USER_INFO]
+//            TencentOpenAPITool.shared.tencentOAuth.authorize(permissions)
+//        }
 
         guard let url = URL(string: "http://q1.qlogo.cn/g?b=qq&nk=2064023354&s=640") else { return }
         DispatchQueue.global().async {
@@ -36,14 +38,7 @@ class HomeViewController: SCViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        DispatchQueue.global().async {
-            if let templates = TemplateMgr.shared.getAllTemplates() {
-                DispatchQueue.main.async {
-                    self.cellData = templates
-                    self.collectionView.reloadData()
-                }
-            }
-        }
+        refresh()
     }
 
     private func setup() {
@@ -102,6 +97,16 @@ class HomeViewController: SCViewController {
         self.present(alert, animated: true, completion: nil)
     }
 
+    @objc private func refresh() {
+        DispatchQueue.global().async {
+            if let templates = TemplateMgr.shared.getAllTemplates() {
+                DispatchQueue.main.async {
+                    self.cellData = templates
+                    self.collectionView.reloadData()
+                }
+            }
+        }
+    }
 }
 
 extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource {

@@ -40,6 +40,9 @@
 		5269DB83276F7F9D00FD8063 /* TemplateMgr.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5269DB82276F7F9D00FD8063 /* TemplateMgr.swift */; };
 		52A04529277CBFCF005CEC46 /* DocumentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52A04528277CBFCF005CEC46 /* DocumentViewController.swift */; };
 		52A81D672792B8B800E92C44 /* TencentOpenAPITool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52A81D662792B8B800E92C44 /* TencentOpenAPITool.swift */; };
+		52A81DC82794452000E92C44 /* FE806C52-056E-45F4-B7E0-2CC604F4A4F9.zip in Resources */ = {isa = PBXBuildFile; fileRef = 52A81DC72794451F00E92C44 /* FE806C52-056E-45F4-B7E0-2CC604F4A4F9.zip */; };
+		52A81DCA2794452800E92C44 /* E6922DC4-6C37-4EBC-A203-67BEC27BC58E.zip in Resources */ = {isa = PBXBuildFile; fileRef = 52A81DC92794452800E92C44 /* E6922DC4-6C37-4EBC-A203-67BEC27BC58E.zip */; };
+		52A81DCC2794453000E92C44 /* 8E640886-2637-49BC-8C8E-FD96DCC3194D.zip in Resources */ = {isa = PBXBuildFile; fileRef = 52A81DCB2794453000E92C44 /* 8E640886-2637-49BC-8C8E-FD96DCC3194D.zip */; };
 		52B2F9BE2791C3B2000DEE83 /* Documentation.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 52B2F9BD2791C3B2000DEE83 /* Documentation.pdf */; };
 		52B2F9C02792A051000DEE83 /* TencentOpenAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52B2F9BF2792A051000DEE83 /* TencentOpenAPI.framework */; };
 		52DCF0242781909E00F08D7A /* SquareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52DCF0232781909E00F08D7A /* SquareViewController.swift */; };
@@ -117,6 +120,9 @@
 		52A04528277CBFCF005CEC46 /* DocumentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentViewController.swift; sourceTree = "<group>"; };
 		52A81D652792AD8700E92C44 /* TencentOpenAPI-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TencentOpenAPI-Bridging-Header.h"; sourceTree = "<group>"; };
 		52A81D662792B8B800E92C44 /* TencentOpenAPITool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TencentOpenAPITool.swift; sourceTree = "<group>"; };
+		52A81DC72794451F00E92C44 /* FE806C52-056E-45F4-B7E0-2CC604F4A4F9.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = "FE806C52-056E-45F4-B7E0-2CC604F4A4F9.zip"; sourceTree = "<group>"; };
+		52A81DC92794452800E92C44 /* E6922DC4-6C37-4EBC-A203-67BEC27BC58E.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = "E6922DC4-6C37-4EBC-A203-67BEC27BC58E.zip"; sourceTree = "<group>"; };
+		52A81DCB2794453000E92C44 /* 8E640886-2637-49BC-8C8E-FD96DCC3194D.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = "8E640886-2637-49BC-8C8E-FD96DCC3194D.zip"; sourceTree = "<group>"; };
 		52B2F9BC279175F4000DEE83 /* StickerCustom.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = StickerCustom.entitlements; sourceTree = "<group>"; };
 		52B2F9BD2791C3B2000DEE83 /* Documentation.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Documentation.pdf; sourceTree = "<group>"; };
 		52B2F9BF2792A051000DEE83 /* TencentOpenAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TencentOpenAPI.framework; sourceTree = "<group>"; };
@@ -351,6 +357,9 @@
 			children = (
 				52F95F3F27808B80007AA2BA /* WebAPIs.plist */,
 				52B2F9BD2791C3B2000DEE83 /* Documentation.pdf */,
+				52A81DC72794451F00E92C44 /* FE806C52-056E-45F4-B7E0-2CC604F4A4F9.zip */,
+				52A81DC92794452800E92C44 /* E6922DC4-6C37-4EBC-A203-67BEC27BC58E.zip */,
+				52A81DCB2794453000E92C44 /* 8E640886-2637-49BC-8C8E-FD96DCC3194D.zip */,
 			);
 			path = resource;
 			sourceTree = "<group>";
@@ -493,6 +502,9 @@
 				522FF53E2769C709002E84F9 /* Assets.xcassets in Resources */,
 				52F95F4027808B80007AA2BA /* WebAPIs.plist in Resources */,
 				522FF5392769C708002E84F9 /* Main.storyboard in Resources */,
+				52A81DCA2794452800E92C44 /* E6922DC4-6C37-4EBC-A203-67BEC27BC58E.zip in Resources */,
+				52A81DCC2794453000E92C44 /* 8E640886-2637-49BC-8C8E-FD96DCC3194D.zip in Resources */,
+				52A81DC82794452000E92C44 /* FE806C52-056E-45F4-B7E0-2CC604F4A4F9.zip in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -836,7 +848,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = StickerCustom/StickerCustom.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.0.0;
+				CURRENT_PROJECT_VERSION = 1.0.0.1;
 				DEVELOPMENT_TEAM = R8VSR434DY;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -853,6 +865,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -894,7 +907,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = StickerCustom/StickerCustom.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.0.0;
+				CURRENT_PROJECT_VERSION = 1.0.0.1;
 				DEVELOPMENT_TEAM = R8VSR434DY;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -911,6 +924,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
