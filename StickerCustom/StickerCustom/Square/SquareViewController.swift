@@ -40,6 +40,7 @@ class SquareViewController: SCViewController {
             make.edges.equalToSuperview()
         }
         collectionView.backgroundColor = .clear
+        // TODO: 设置了这个contentInset后发现在iOS14真机上下拉刷新文字和旋转图标偏右，iOS15模拟器无此问题
         collectionView.contentInset = UIEdgeInsets(top: 20, left: 15, bottom: 0, right: 15)
         collectionView.alwaysBounceVertical = true
         collectionView.register(TemplateCell.self, forCellWithReuseIdentifier: TemplateCellIdentifier)
