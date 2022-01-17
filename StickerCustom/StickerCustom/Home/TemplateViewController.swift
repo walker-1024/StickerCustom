@@ -257,8 +257,7 @@ class TemplateViewController: SCViewController {
                 let param = [
                     "templateID": self.template.templateId.uuidString,
                     "title": self.template.title,
-                    "code": self.template.code,
-                    "author": self.template.author
+                    "code": self.template.code
                 ]
                 guard let paramData = try? JSONEncoder().encode(param) else {
                     DispatchQueue.main.async {

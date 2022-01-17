@@ -41,6 +41,10 @@ class HomeViewController: SCViewController {
         refresh()
     }
 
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
     private func setup() {
         let width = (ScreenWidth - 15 * 2 - 8) / 2
         let layout = UICollectionViewFlowLayout()

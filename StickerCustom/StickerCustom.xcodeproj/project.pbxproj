@@ -45,6 +45,8 @@
 		52A81DCC2794453000E92C44 /* 8E640886-2637-49BC-8C8E-FD96DCC3194D.zip in Resources */ = {isa = PBXBuildFile; fileRef = 52A81DCB2794453000E92C44 /* 8E640886-2637-49BC-8C8E-FD96DCC3194D.zip */; };
 		52B2F9BE2791C3B2000DEE83 /* Documentation.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 52B2F9BD2791C3B2000DEE83 /* Documentation.pdf */; };
 		52B2F9C02792A051000DEE83 /* TencentOpenAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52B2F9BF2792A051000DEE83 /* TencentOpenAPI.framework */; };
+		52BA3ACA2795AB7800B8762E /* VersionLogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52BA3AC92795AB7800B8762E /* VersionLogViewController.swift */; };
+		52BA3ACC2795B2C200B8762E /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52BA3ACB2795B2C200B8762E /* LoginViewController.swift */; };
 		52DCF0242781909E00F08D7A /* SquareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52DCF0232781909E00F08D7A /* SquareViewController.swift */; };
 		52DCF0262781BA2600F08D7A /* EditTemplateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52DCF0252781BA2600F08D7A /* EditTemplateViewController.swift */; };
 		52DCF0282781F45B00F08D7A /* SquareTemplateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52DCF0272781F45B00F08D7A /* SquareTemplateViewController.swift */; };
@@ -126,6 +128,8 @@
 		52B2F9BC279175F4000DEE83 /* StickerCustom.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = StickerCustom.entitlements; sourceTree = "<group>"; };
 		52B2F9BD2791C3B2000DEE83 /* Documentation.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Documentation.pdf; sourceTree = "<group>"; };
 		52B2F9BF2792A051000DEE83 /* TencentOpenAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TencentOpenAPI.framework; sourceTree = "<group>"; };
+		52BA3AC92795AB7800B8762E /* VersionLogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VersionLogViewController.swift; sourceTree = "<group>"; };
+		52BA3ACB2795B2C200B8762E /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		52DCF0232781909E00F08D7A /* SquareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SquareViewController.swift; sourceTree = "<group>"; };
 		52DCF0252781BA2600F08D7A /* EditTemplateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTemplateViewController.swift; sourceTree = "<group>"; };
 		52DCF0272781F45B00F08D7A /* SquareTemplateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SquareTemplateViewController.swift; sourceTree = "<group>"; };
@@ -246,6 +250,8 @@
 			isa = PBXGroup;
 			children = (
 				5246A77F276B58C5005F1BF6 /* UserViewController.swift */,
+				52BA3ACB2795B2C200B8762E /* LoginViewController.swift */,
+				52BA3AC92795AB7800B8762E /* VersionLogViewController.swift */,
 			);
 			path = User;
 			sourceTree = "<group>";
@@ -656,8 +662,10 @@
 				52681022276A4F5200A8C41D /* Network.swift in Sources */,
 				52681024276A4F5B00A8C41D /* NetworkMgr.swift in Sources */,
 				52A04529277CBFCF005CEC46 /* DocumentViewController.swift in Sources */,
+				52BA3ACC2795B2C200B8762E /* LoginViewController.swift in Sources */,
 				52681010276A46B700A8C41D /* DateUtil.swift in Sources */,
 				52DCF0262781BA2600F08D7A /* EditTemplateViewController.swift in Sources */,
+				52BA3ACA2795AB7800B8762E /* VersionLogViewController.swift in Sources */,
 				52DCF0282781F45B00F08D7A /* SquareTemplateViewController.swift in Sources */,
 				52E26E8C277587F1003FFBF7 /* TemplateAssetModel.swift in Sources */,
 				52681014276A46F300A8C41D /* PlistReader.swift in Sources */,
