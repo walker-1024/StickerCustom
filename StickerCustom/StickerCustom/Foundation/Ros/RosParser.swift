@@ -406,6 +406,9 @@ fileprivate class RosSentence {
             guard let gifFrames = self.env?.getVarValue("_Ros_gifFrames") as? [UIImage] else {
                 throw RosParseError.getGifFramesFail
             }
+            guard gifFrames.count > 0 else {
+                throw RosParseError.noFrameInGif
+            }
             self.env?.setVarValue("_Ros_finalResult", value: gifFrames)
             return gifFrames
 

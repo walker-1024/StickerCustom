@@ -40,11 +40,10 @@ class GifProcessor {
         return (allImages, gifDuration)
     }
 
-    @discardableResult
-    func createGif(with allImages: [UIImage], eachDuration: Double, savePath gifPath: String) -> Data? {
-        guard let cfUrl = CFURLCreateWithFileSystemPath(kCFAllocatorDefault, gifPath as CFString, CFURLPathStyle.cfurlposixPathStyle, false) else { return nil }
+    func createGif(with allImages: [UIImage], eachDuration: Double, savePath gifPath: String) {
+        guard let cfUrl = CFURLCreateWithFileSystemPath(kCFAllocatorDefault, gifPath as CFString, CFURLPathStyle.cfurlposixPathStyle, false) else { return }
         // 创建一个图片的目标对象，这个目标对象中描述了构成当前图片目标对象的一系列参数，如图片的URL地址、图片类型、图片帧数、配置参数等
-        guard let gifDestination = CGImageDestinationCreateWithURL(cfUrl, kUTTypeGIF, allImages.count, nil) else { return nil }
+        guard let gifDestination = CGImageDestinationCreateWithURL(cfUrl, kUTTypeGIF, allImages.count, nil) else { return }
 
         // 为gif图像设置属性（这一步操作必须写在添加每帧图片的前面，否则是无效的，且运行时会有 Error Log）
         let gifDestinationProperties = [
@@ -69,7 +68,5 @@ class GifProcessor {
 
         // 最后释放目标对象
         CGImageDestinationFinalize(gifDestination)
-
-        return try? Data(contentsOf: URL(fileURLWithPath: gifPath))
     }
 }
