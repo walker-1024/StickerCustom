@@ -21,3 +21,16 @@ extension Notification.Name {
         return Notification.Name("SCNotification_NeedRefreshTemplateList")
     }
 }
+
+extension Notification {
+    // 获取软键盘高度
+    func getKeyBoardHeight() -> CGFloat? {
+        if let userInfo = self.userInfo {
+            if let value = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+                let size = value.cgRectValue.size
+                return UIInterfaceOrientation.portrait.isLandscape ? size.width : size.height
+            }
+        }
+        return nil
+    }
+}

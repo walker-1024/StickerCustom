@@ -47,6 +47,8 @@ class TemplateCodeViewController: SCViewController, UIGestureRecognizerDelegate 
         setupCodeView()
         // 实现在状态栏隐藏的情况下能够右划返回
         // self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -59,6 +61,10 @@ class TemplateCodeViewController: SCViewController, UIGestureRecognizerDelegate 
         super.touchesEnded(touches, with: event)
         qqTextField.resignFirstResponder()
         codeTextView.resignFirstResponder()
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     private func setupTopbar() {
@@ -208,7 +214,7 @@ class TemplateCodeViewController: SCViewController, UIGestureRecognizerDelegate 
         view.addSubview(codeTextView)
         codeTextView.snp.makeConstraints { make in
             make.leading.trailing.equalTo(assetsCollectionView)
-            make.top.equalTo(assetsCollectionView.snp.bottom).offset(20)
+            make.top.equalTo(assetsCollectionView.snp.bottom).offset(10)
             make.bottom.equalTo(-20)
         }
         codeTextView.backgroundColor = .clear
@@ -328,6 +334,19 @@ class TemplateCodeViewController: SCViewController, UIGestureRecognizerDelegate 
         self.isEdited = false
         qqTextField.resignFirstResponder()
         codeTextView.resignFirstResponder()
+    }
+
+    @objc func keyboardWillShow(notification: Notification) {
+        guard let keyBoardHeight = notification.getKeyBoardHeight() else { return }
+        codeTextView.snp.updateConstraints { make in
+            make.bottom.equalTo(-keyBoardHeight)
+        }
+    }
+
+    @objc func keyboardWillHide(notification: Notification) {
+        codeTextView.snp.updateConstraints { make in
+            make.bottom.equalTo(-20)
+        }
     }
 }
 
