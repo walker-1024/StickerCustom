@@ -8,8 +8,13 @@
 import Foundation
 
 extension Notification.Name {
-    static var needRefreshProfile: Self {
-        return Notification.Name("SCNotification_NeedRefreshProfile")
+
+    static var qqLoginSuccess: Self {
+        return Notification.Name("SCNotification_QQLoginSuccess")
+    }
+
+    static var getQQUserInfoSuccess: Self {
+        return Notification.Name("SCNotification_GetQQUserInfoSuccess")
     }
 
     static var needRefreshTemplateList: Self {

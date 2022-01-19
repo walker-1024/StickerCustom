@@ -12,13 +12,13 @@ class UserViewController: SCViewController {
     private let profileView = UIView()
     private let avatarImageView = UIImageView()
     private let usernameLabel = UILabel()
+    private let logoutButton = UIButton()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupProfile()
 
         // 临时写这里
-        let logoutButton = UIButton()
         view.addSubview(logoutButton)
         logoutButton.snp.makeConstraints { make in
             make.bottom.equalTo(-100)
@@ -33,12 +33,30 @@ class UserViewController: SCViewController {
         logoutButton.layer.masksToBounds = true
         logoutButton.layer.borderWidth = 2
         logoutButton.layer.borderColor = UIColor.tintGreen.cgColor
+
+        NotificationCenter.default.addObserver(self, selector: #selector(didGetQQUserInfo(notification:)), name: .getQQUserInfoSuccess, object: nil)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.setNavigationBarHidden(true, animated: true)
+        guard let _ = UserConfigMgr.shared.getValue(of: .token) as? String else {
+            logoutButton.isHidden = true
+            return
+        }
+        logoutButton.isHidden = false
+        if let username = UserConfigMgr.shared.getValue(of: .username) as? String {
+            usernameLabel.text = username
+        }
+        if let imageData = LocalFileManager.shared.getAvatar() {
+            avatarImageView.image = UIImage(data: imageData)
+        } else {
+            avatarImageView.image = "icon-default-avatar".localImage
+        }
+    }
 
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     private func setupProfile() {
@@ -118,6 +136,7 @@ class UserViewController: SCViewController {
             self.usernameLabel.text = "未登录"
             self.avatarImageView.image = "icon-default-avatar".localImage
             UserConfigMgr.shared.logout()
+            self.logoutButton.isHidden = true
         })
         let cancel = UIAlertAction(title: "取消", style: .cancel, handler: nil)
         alert.addAction(ok)
@@ -125,4 +144,22 @@ class UserViewController: SCViewController {
         self.present(alert, animated: true, completion: nil)
     }
 
+    @objc private func didGetQQUserInfo(notification: Notification) {
+        guard let userInfo = notification.userInfo else { return }
+        DispatchQueue.main.async {
+            if let name = userInfo["name"] as? String {
+                self.usernameLabel.text = name
+                UserConfigMgr.shared.saveValue(name, to: .username)
+            }
+            DispatchQueue.global().async {
+                guard let avatarUrl = userInfo["avatarUrl"] as? URL else { return }
+                guard let avatarData = try? Data(contentsOf: avatarUrl) else { return }
+                guard LocalFileManager.shared.isNeedUpdateAvatar(md5: avatarData.md5) else { return }
+                LocalFileManager.shared.saveAvatar(data: avatarData)
+                DispatchQueue.main.async {
+                    self.avatarImageView.image = UIImage(data: avatarData)
+                }
+            }
+        }
+    }
 }

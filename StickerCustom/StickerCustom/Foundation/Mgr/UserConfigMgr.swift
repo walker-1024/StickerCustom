@@ -22,7 +22,6 @@ class UserConfigMgr {
         case accessToken
         case openId
         case expirationDate
-        case placeholder
     }
 
     func getValue(of config: UserConfig) -> Any? {
