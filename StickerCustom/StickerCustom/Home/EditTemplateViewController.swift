@@ -87,7 +87,6 @@ class EditTemplateViewController: SCViewController {
         if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
             let picker = UIImagePickerController()
             picker.sourceType = .photoLibrary
-            picker.allowsEditing = true
             picker.delegate = self
             self.present(picker, animated: true, completion: nil)
         }
@@ -96,7 +95,7 @@ class EditTemplateViewController: SCViewController {
 
 extension EditTemplateViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        if let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage, let imageData = image.pngData() {
+        if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage, let imageData = image.pngData() {
             self.template.cover = imageData
             TemplateMgr.shared.modify(template: self.template)
             self.coverImageView.image = image

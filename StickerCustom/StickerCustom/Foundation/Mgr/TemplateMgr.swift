@@ -149,5 +149,10 @@ class TemplateMgr {
             result[0].isDelete = true
         }
         try? context.save()
+
+        // 删除它所包含的素材
+        for deleteTemplateId in deleteTemplateIds {
+            TemplateAssetMgr.shared.deleteAllAssets(of: deleteTemplateId)
+        }
     }
 }
