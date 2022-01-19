@@ -39,7 +39,11 @@ class SquareTemplateViewController: SCViewController {
             make.width.height.equalTo(200)
             make.centerX.equalToSuperview()
         }
-        imageView.image = UIImage(data: template.cover)
+        if let coverData = template.cover {
+            imageView.image = UIImage(data: coverData)
+        } else {
+            imageView.image = "icon-default-cover".localImage
+        }
         imageView.contentMode = .scaleAspectFit
 
         let tipLabel = UILabel()

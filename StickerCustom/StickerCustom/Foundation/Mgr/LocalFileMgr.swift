@@ -62,6 +62,10 @@ class LocalFileManager {
             completion?(nil, "模板素材不存在")
             return
         }
+        guard let coverData = template.cover else {
+            completion?(nil, "请先设置模板封面")
+            return
+        }
 
         let basePath = templateDirPath + templateId.uuidString + "/"
         try? fileManager.removeItem(atPath: basePath)
@@ -82,8 +86,8 @@ class LocalFileManager {
             assetList.append(dic)
         }
 
-        fileManager.createFile(atPath: basePath + "cover.png", contents: template.cover, attributes: nil)
-        let coverMd5 = template.cover.md5
+        fileManager.createFile(atPath: basePath + "cover.png", contents: coverData, attributes: nil)
+        let coverMd5 = coverData.md5
         let dic: [String : Any] = [
             "templateId": template.templateId.uuidString,
             "title": template.title,

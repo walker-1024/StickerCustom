@@ -168,7 +168,11 @@ class TemplateCodeViewController: SCViewController, UIGestureRecognizerDelegate 
             make.width.height.equalTo(160)
             make.centerY.equalToSuperview()
         }
-        imageView.image = UIImage(data: template.cover)
+        if let coverData = template.cover {
+            imageView.image = UIImage(data: coverData)
+        } else {
+            imageView.image = "icon-default-cover".localImage
+        }
         imageView.contentMode = .scaleAspectFit
         imageView.layer.cornerRadius = 10
         imageView.layer.masksToBounds = true

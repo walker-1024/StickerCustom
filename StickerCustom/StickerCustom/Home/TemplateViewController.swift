@@ -178,7 +178,11 @@ class TemplateViewController: SCViewController {
             if let template = TemplateMgr.shared.getTemplate(withId: self.template.templateId) {
                 DispatchQueue.main.async {
                     self.template = template
-                    self.imageView.image = UIImage(data: template.cover)
+                    if let coverData = template.cover {
+                        self.imageView.image = UIImage(data: coverData)
+                    } else {
+                        self.imageView.image = "icon-default-cover".localImage
+                    }
                 }
             }
         }
@@ -268,8 +272,17 @@ class TemplateViewController: SCViewController {
                     return
                 }
 
+                guard let coverData = self.template.cover else {
+                    DispatchQueue.main.async {
+                        alert.title = "上传失败"
+                        alert.message = "请先设置模板封面"
+                        alert.addAction(UIAlertAction(title: "确定", style: .default, handler: nil))
+                    }
+                    return
+                }
+
                 let paramUploadData = UploadData(key: "param", data: paramData)
-                let coverFile = UploadFile(key: "cover", data: self.template.cover, fileName: "cover", mimeType: "image/png")
+                let coverFile = UploadFile(key: "cover", data: coverData, fileName: "cover", mimeType: "image/png")
                 let archiveFile = UploadFile(key: "file", data: archiveData, fileName: "file", mimeType: "application/zip")
                 NetworkMgr.shared.upload(config: config, parameters: [paramUploadData], files: [coverFile, archiveFile], headers: ["Content-Type": "multipart/form-data"]) { (result: NetworkResult<BackDataWrapper<CommonBackData>>) in
                     DispatchQueue.main.async {

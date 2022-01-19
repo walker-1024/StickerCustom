@@ -111,6 +111,8 @@ class UserViewController: SCViewController {
         tipLabel.textAlignment = .left
         tipLabel.textColor = .tintGreen
         tipLabel.font = UIFont.systemFont(ofSize: 12)
+        // TODO: TODO
+        tipLabel.isHidden = true
     }
 
     @objc private func clickAvatar() {

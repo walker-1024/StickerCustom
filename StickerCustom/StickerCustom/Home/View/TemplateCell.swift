@@ -60,7 +60,11 @@ class TemplateCell: UICollectionViewCell {
     }
 
     func setupData(data: TemplateModel) {
-        coverImageView.image = UIImage(data: data.cover)
+        if let coverData = data.cover {
+            coverImageView.image = UIImage(data: coverData)
+        } else {
+            coverImageView.image = "icon-default-cover".localImage
+        }
         titleLabel.text = data.title
     }
 
