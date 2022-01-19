@@ -18,6 +18,8 @@
 		522FF54C2769C70A002E84F9 /* StickerCustomTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 522FF54B2769C70A002E84F9 /* StickerCustomTests.swift */; };
 		522FF5562769C70A002E84F9 /* StickerCustomUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 522FF5552769C70A002E84F9 /* StickerCustomUITests.swift */; };
 		522FF5582769C70A002E84F9 /* StickerCustomUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 522FF5572769C70A002E84F9 /* StickerCustomUITestsLaunchTests.swift */; };
+		524416392797C610005E428B /* RosParseError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 524416382797C610005E428B /* RosParseError.swift */; };
+		5244163B2797CF2A005E428B /* Documentation.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 5244163A2797CF2A005E428B /* Documentation.pdf */; };
 		5246A780276B58C5005F1BF6 /* UserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5246A77F276B58C5005F1BF6 /* UserViewController.swift */; };
 		5246A782276B8670005F1BF6 /* TemplateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5246A781276B8670005F1BF6 /* TemplateCell.swift */; };
 		5246A785276B86AD005F1BF6 /* TemplateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5246A784276B86AD005F1BF6 /* TemplateModel.swift */; };
@@ -43,7 +45,6 @@
 		52A81DC82794452000E92C44 /* FE806C52-056E-45F4-B7E0-2CC604F4A4F9.zip in Resources */ = {isa = PBXBuildFile; fileRef = 52A81DC72794451F00E92C44 /* FE806C52-056E-45F4-B7E0-2CC604F4A4F9.zip */; };
 		52A81DCA2794452800E92C44 /* E6922DC4-6C37-4EBC-A203-67BEC27BC58E.zip in Resources */ = {isa = PBXBuildFile; fileRef = 52A81DC92794452800E92C44 /* E6922DC4-6C37-4EBC-A203-67BEC27BC58E.zip */; };
 		52A81DCC2794453000E92C44 /* 8E640886-2637-49BC-8C8E-FD96DCC3194D.zip in Resources */ = {isa = PBXBuildFile; fileRef = 52A81DCB2794453000E92C44 /* 8E640886-2637-49BC-8C8E-FD96DCC3194D.zip */; };
-		52B2F9BE2791C3B2000DEE83 /* Documentation.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 52B2F9BD2791C3B2000DEE83 /* Documentation.pdf */; };
 		52B2F9C02792A051000DEE83 /* TencentOpenAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52B2F9BF2792A051000DEE83 /* TencentOpenAPI.framework */; };
 		52BA3ACA2795AB7800B8762E /* VersionLogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52BA3AC92795AB7800B8762E /* VersionLogViewController.swift */; };
 		52BA3ACC2795B2C200B8762E /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52BA3ACB2795B2C200B8762E /* LoginViewController.swift */; };
@@ -99,6 +100,8 @@
 		522FF5512769C70A002E84F9 /* StickerCustomUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StickerCustomUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		522FF5552769C70A002E84F9 /* StickerCustomUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerCustomUITests.swift; sourceTree = "<group>"; };
 		522FF5572769C70A002E84F9 /* StickerCustomUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerCustomUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		524416382797C610005E428B /* RosParseError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RosParseError.swift; sourceTree = "<group>"; };
+		5244163A2797CF2A005E428B /* Documentation.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Documentation.pdf; sourceTree = "<group>"; };
 		5246A77F276B58C5005F1BF6 /* UserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewController.swift; sourceTree = "<group>"; };
 		5246A781276B8670005F1BF6 /* TemplateCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateCell.swift; sourceTree = "<group>"; };
 		5246A784276B86AD005F1BF6 /* TemplateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateModel.swift; sourceTree = "<group>"; };
@@ -126,7 +129,6 @@
 		52A81DC92794452800E92C44 /* E6922DC4-6C37-4EBC-A203-67BEC27BC58E.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = "E6922DC4-6C37-4EBC-A203-67BEC27BC58E.zip"; sourceTree = "<group>"; };
 		52A81DCB2794453000E92C44 /* 8E640886-2637-49BC-8C8E-FD96DCC3194D.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = "8E640886-2637-49BC-8C8E-FD96DCC3194D.zip"; sourceTree = "<group>"; };
 		52B2F9BC279175F4000DEE83 /* StickerCustom.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = StickerCustom.entitlements; sourceTree = "<group>"; };
-		52B2F9BD2791C3B2000DEE83 /* Documentation.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Documentation.pdf; sourceTree = "<group>"; };
 		52B2F9BF2792A051000DEE83 /* TencentOpenAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TencentOpenAPI.framework; sourceTree = "<group>"; };
 		52BA3AC92795AB7800B8762E /* VersionLogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VersionLogViewController.swift; sourceTree = "<group>"; };
 		52BA3ACB2795B2C200B8762E /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -182,6 +184,7 @@
 			isa = PBXGroup;
 			children = (
 				522282FC276CD32900A4031D /* RosParser.swift */,
+				524416382797C610005E428B /* RosParseError.swift */,
 			);
 			path = Ros;
 			sourceTree = "<group>";
@@ -361,8 +364,8 @@
 		52F95F3E27808B54007AA2BA /* resource */ = {
 			isa = PBXGroup;
 			children = (
+				5244163A2797CF2A005E428B /* Documentation.pdf */,
 				52F95F3F27808B80007AA2BA /* WebAPIs.plist */,
-				52B2F9BD2791C3B2000DEE83 /* Documentation.pdf */,
 				52A81DC72794451F00E92C44 /* FE806C52-056E-45F4-B7E0-2CC604F4A4F9.zip */,
 				52A81DC92794452800E92C44 /* E6922DC4-6C37-4EBC-A203-67BEC27BC58E.zip */,
 				52A81DCB2794453000E92C44 /* 8E640886-2637-49BC-8C8E-FD96DCC3194D.zip */,
@@ -503,10 +506,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				52B2F9BE2791C3B2000DEE83 /* Documentation.pdf in Resources */,
 				522FF5412769C709002E84F9 /* LaunchScreen.storyboard in Resources */,
 				522FF53E2769C709002E84F9 /* Assets.xcassets in Resources */,
 				52F95F4027808B80007AA2BA /* WebAPIs.plist in Resources */,
+				5244163B2797CF2A005E428B /* Documentation.pdf in Resources */,
 				522FF5392769C708002E84F9 /* Main.storyboard in Resources */,
 				52A81DCA2794452800E92C44 /* E6922DC4-6C37-4EBC-A203-67BEC27BC58E.zip in Resources */,
 				52A81DCC2794453000E92C44 /* 8E640886-2637-49BC-8C8E-FD96DCC3194D.zip in Resources */,
@@ -677,6 +680,7 @@
 				52A81D672792B8B800E92C44 /* TencentOpenAPITool.swift in Sources */,
 				5269DB83276F7F9D00FD8063 /* TemplateMgr.swift in Sources */,
 				52681020276A4F2E00A8C41D /* WebAPI.swift in Sources */,
+				524416392797C610005E428B /* RosParseError.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

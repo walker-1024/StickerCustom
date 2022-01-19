@@ -350,7 +350,7 @@ class TemplateViewController: SCViewController {
                 let ok = UIAlertAction(title: "确定", style: .default, handler: nil)
                 guard rosError == nil else {
                     alert.title = "生成失败"
-                    alert.message = rosError.debugDescription
+                    alert.message = rosError?.message
                     alert.addAction(ok)
                     return
                 }

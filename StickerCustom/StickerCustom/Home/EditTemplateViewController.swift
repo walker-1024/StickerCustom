@@ -27,7 +27,7 @@ class EditTemplateViewController: SCViewController {
             make.centerX.equalToSuperview()
         }
         coverImageView.image = UIImage(data: template.cover)
-        coverImageView.contentMode = .scaleAspectFill
+        coverImageView.contentMode = .scaleAspectFit
         coverImageView.isUserInteractionEnabled = true
         let ges = UITapGestureRecognizer(target: self, action: #selector(clickChangeCover))
         ges.numberOfTapsRequired = 1
