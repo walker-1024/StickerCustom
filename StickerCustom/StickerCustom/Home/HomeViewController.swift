@@ -82,7 +82,7 @@ class HomeViewController: SCViewController {
             let template = TemplateModel(
                 title: title,
                 code: "// 在这里编辑代码",
-                cover: "icon-default-cover".localImage!.pngData()!,
+                cover: nil,
                 author: "version1.0"
             )
             TemplateMgr.shared.add(template: template)

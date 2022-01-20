@@ -17,6 +17,10 @@ extension Notification.Name {
         return Notification.Name("SCNotification_GetQQUserInfoSuccess")
     }
 
+    static var appleLoginSuccess: Self {
+        return Notification.Name("SCNotification_AppleLoginSuccess")
+    }
+
     static var needRefreshTemplateList: Self {
         return Notification.Name("SCNotification_NeedRefreshTemplateList")
     }

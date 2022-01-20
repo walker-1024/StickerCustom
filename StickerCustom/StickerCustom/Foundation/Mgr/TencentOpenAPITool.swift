@@ -29,6 +29,11 @@ class TencentOpenAPITool: NSObject, TencentSessionDelegate {
         tencentOAuth.expirationDate = expirationDate
     }
 
+    func isSupportQQLogin() -> Bool {
+        // 判断当前手机是否已安装QQ或者TIM
+        return QQApiInterface.isSupportShareToQQ()
+    }
+
     func login() -> Bool {
         /*
          kOPEN_PERMISSION_GET_USER_INFO    获取用户信息
@@ -55,16 +60,13 @@ class TencentOpenAPITool: NSObject, TencentSessionDelegate {
     // MARK: TencentSessionDelegate
 
     func tencentDidLogin() {
-        if let accessToken = tencentOAuth.accessToken {
-            UserConfigMgr.shared.saveValue(accessToken, to: .accessToken)
-        }
-        if let openId = tencentOAuth.openId {
-            UserConfigMgr.shared.saveValue(openId, to: .openId)
-        }
-        if let expirationDate = tencentOAuth.expirationDate {
-            UserConfigMgr.shared.saveValue(expirationDate, to: .expirationDate)
-        }
-        NotificationCenter.default.post(name: .qqLoginSuccess, object: self, userInfo: nil)
+        guard let accessToken = tencentOAuth.accessToken else { return }
+        guard let openId = tencentOAuth.openId else { return }
+        guard let expirationDate = tencentOAuth.expirationDate else { return }
+        UserConfigMgr.shared.saveValue(accessToken, to: .accessToken)
+        UserConfigMgr.shared.saveValue(openId, to: .openId)
+        UserConfigMgr.shared.saveValue(expirationDate, to: .expirationDate)
+        NotificationCenter.default.post(name: .qqLoginSuccess, object: self, userInfo: ["openId": openId])
         tencentOAuth.getUserInfo()
     }
 

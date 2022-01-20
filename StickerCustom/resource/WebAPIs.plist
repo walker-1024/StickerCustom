@@ -33,6 +33,20 @@
 			<key>description</key>
 			<string>用户用UID和密码登录</string>
 		</dict>
+		<key>loginWithApple</key>
+		<dict>
+			<key>path</key>
+			<string>/api/v1/session</string>
+			<key>method</key>
+			<string>POST</string>
+			<key>parameter</key>
+			<array>
+				<string>type</string>
+				<string>userIdentifier</string>
+			</array>
+			<key>description</key>
+			<string>用户通过AppleID登录</string>
+		</dict>
 		<key>info</key>
 		<dict>
 			<key>path</key>

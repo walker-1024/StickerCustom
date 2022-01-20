@@ -12,6 +12,7 @@ class UserViewController: SCViewController {
     private let profileView = UIView()
     private let avatarImageView = UIImageView()
     private let usernameLabel = UILabel()
+    private let uidLabel = UILabel()
     private let logoutButton = UIButton()
 
     override func viewDidLoad() {
@@ -33,6 +34,7 @@ class UserViewController: SCViewController {
         logoutButton.layer.masksToBounds = true
         logoutButton.layer.borderWidth = 2
         logoutButton.layer.borderColor = UIColor.tintGreen.cgColor
+        logoutButton.isHidden = true
 
         NotificationCenter.default.addObserver(self, selector: #selector(didGetQQUserInfo(notification:)), name: .getQQUserInfoSuccess, object: nil)
     }
@@ -40,19 +42,24 @@ class UserViewController: SCViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.setNavigationBarHidden(true, animated: true)
-        guard let _ = UserConfigMgr.shared.getValue(of: .token) as? String else {
-            logoutButton.isHidden = true
-            return
-        }
+        guard let _ = UserConfigMgr.shared.getValue(of: .token) as? String else { return }
         logoutButton.isHidden = false
         if let username = UserConfigMgr.shared.getValue(of: .username) as? String {
             usernameLabel.text = username
+        } else {
+            usernameLabel.text = "未设置昵称"
         }
         if let imageData = LocalFileManager.shared.getAvatar() {
             avatarImageView.image = UIImage(data: imageData)
         } else {
             avatarImageView.image = "icon-default-avatar".localImage
         }
+        if let UID = UserConfigMgr.shared.getValue(of: .UID) as? String {
+            uidLabel.isHidden = false
+            uidLabel.text = "UID:  \(UID)"
+        }
+        refreshProfile()
+        // TODO: 考虑Apple或QQ的登录态失效的情况
     }
 
     deinit {
@@ -98,21 +105,42 @@ class UserViewController: SCViewController {
         usernameLabel.textColor = .tintGreen
         usernameLabel.font = UIFont.systemFont(ofSize: 20)
 
-        let tipLabel = UILabel()
-        profileView.addSubview(tipLabel)
-        tipLabel.translatesAutoresizingMaskIntoConstraints = false
-        tipLabel.snp.makeConstraints { make in
+        profileView.addSubview(uidLabel)
+        uidLabel.translatesAutoresizingMaskIntoConstraints = false
+        uidLabel.snp.makeConstraints { make in
             make.leading.equalTo(usernameLabel)
             make.trailing.equalTo(usernameLabel)
             make.top.equalTo(profileView.snp.centerY).offset(5)
             make.height.equalTo(20)
         }
-        tipLabel.text = "点击头像修改资料"
-        tipLabel.textAlignment = .left
-        tipLabel.textColor = .tintGreen
-        tipLabel.font = UIFont.systemFont(ofSize: 12)
-        // TODO: TODO
-        tipLabel.isHidden = true
+//        uidLabel.text = "点击头像修改资料"
+        uidLabel.textAlignment = .left
+        uidLabel.textColor = .tintGreen
+        uidLabel.font = UIFont.systemFont(ofSize: 15)
+        uidLabel.isHidden = true
+    }
+
+    private func refreshProfile() {
+        let config = WebAPIConfig(subspec: "user", function: "info")
+        NetworkMgr.shared.request(config: config).responseModel { (result: NetworkResult<BackDataWrapper<UserInfoBackData>>) in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let res):
+                    if res.code == 0, let backData = res.data {
+                        print(backData.name, backData.point, backData.identity, backData.UID)
+                        self.uidLabel.isHidden = false
+                        self.uidLabel.text = "UID:  \(backData.UID)"
+                        UserConfigMgr.shared.saveValue(backData.UID, to: .UID)
+                    } else {
+                        // 后端有个小bug，先包一下
+//                        presentAlert(title: res.msg, on: self)
+//                        self.innerLogout()
+                    }
+                case .failure(_):
+                    break
+                }
+            }
+        }
     }
 
     @objc private func clickAvatar() {
@@ -135,15 +163,21 @@ class UserViewController: SCViewController {
         guard let _ = UserConfigMgr.shared.getValue(of: .token) else { return }
         let alert = UIAlertController(title: "退出登录", message: nil, preferredStyle: .alert)
         let ok = UIAlertAction(title: "确定", style: .default, handler: { _ in
-            self.usernameLabel.text = "未登录"
-            self.avatarImageView.image = "icon-default-avatar".localImage
-            UserConfigMgr.shared.logout()
-            self.logoutButton.isHidden = true
+            self.innerLogout()
         })
         let cancel = UIAlertAction(title: "取消", style: .cancel, handler: nil)
         alert.addAction(ok)
         alert.addAction(cancel)
         self.present(alert, animated: true, completion: nil)
+    }
+
+    private func innerLogout() {
+        usernameLabel.text = "未登录"
+        uidLabel.isHidden = true
+        avatarImageView.image = "icon-default-avatar".localImage
+        UserConfigMgr.shared.logout()
+        LocalFileManager.shared.removeAvatar()
+        logoutButton.isHidden = true
     }
 
     @objc private func didGetQQUserInfo(notification: Notification) {
@@ -164,4 +198,11 @@ class UserViewController: SCViewController {
             }
         }
     }
+}
+
+fileprivate struct UserInfoBackData: Codable {
+    var UID: String
+    var name: String
+    var point: Int
+    var identity: Int
 }

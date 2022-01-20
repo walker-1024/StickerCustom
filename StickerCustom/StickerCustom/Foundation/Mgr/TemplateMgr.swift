@@ -52,13 +52,12 @@ class TemplateMgr {
                 guard let templateId = item.templateId else { continue }
                 guard let title = item.title else { continue }
                 guard let code = item.code else { continue }
-                guard let cover = item.cover else { continue }
                 guard let author = item.author else { continue }
                 let template = TemplateModel(
                     templateId: templateId,
                     title: title,
                     code: code,
-                    cover: cover,
+                    cover: item.cover,
                     author: author
                 )
                 models.append(template)
@@ -82,13 +81,12 @@ class TemplateMgr {
         guard let templateId = result[0].templateId else { return nil }
         guard let title = result[0].title else { return nil }
         guard let code = result[0].code else { return nil }
-        guard let cover = result[0].cover else { return nil }
         guard let author = result[0].author else { return nil }
         let template = TemplateModel(
             templateId: templateId,
             title: title,
             code: code,
-            cover: cover,
+            cover: result[0].cover,
             author: author
         )
         return template

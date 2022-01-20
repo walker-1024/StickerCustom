@@ -20,6 +20,7 @@
 		522FF5582769C70A002E84F9 /* StickerCustomUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 522FF5572769C70A002E84F9 /* StickerCustomUITestsLaunchTests.swift */; };
 		524416392797C610005E428B /* RosParseError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 524416382797C610005E428B /* RosParseError.swift */; };
 		5244163B2797CF2A005E428B /* Documentation.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 5244163A2797CF2A005E428B /* Documentation.pdf */; };
+		5244163D27995454005E428B /* AppleLoginTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5244163C27995454005E428B /* AppleLoginTool.swift */; };
 		5246A780276B58C5005F1BF6 /* UserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5246A77F276B58C5005F1BF6 /* UserViewController.swift */; };
 		5246A782276B8670005F1BF6 /* TemplateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5246A781276B8670005F1BF6 /* TemplateCell.swift */; };
 		5246A785276B86AD005F1BF6 /* TemplateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5246A784276B86AD005F1BF6 /* TemplateModel.swift */; };
@@ -102,6 +103,7 @@
 		522FF5572769C70A002E84F9 /* StickerCustomUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerCustomUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		524416382797C610005E428B /* RosParseError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RosParseError.swift; sourceTree = "<group>"; };
 		5244163A2797CF2A005E428B /* Documentation.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Documentation.pdf; sourceTree = "<group>"; };
+		5244163C27995454005E428B /* AppleLoginTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginTool.swift; sourceTree = "<group>"; };
 		5246A77F276B58C5005F1BF6 /* UserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewController.swift; sourceTree = "<group>"; };
 		5246A781276B8670005F1BF6 /* TemplateCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateCell.swift; sourceTree = "<group>"; };
 		5246A784276B86AD005F1BF6 /* TemplateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateModel.swift; sourceTree = "<group>"; };
@@ -327,6 +329,7 @@
 				52E26E89277572FE003FFBF7 /* LocalFileMgr.swift */,
 				52DCF0292783248500F08D7A /* GifProcessor.swift */,
 				52A81D662792B8B800E92C44 /* TencentOpenAPITool.swift */,
+				5244163C27995454005E428B /* AppleLoginTool.swift */,
 			);
 			path = Mgr;
 			sourceTree = "<group>";
@@ -650,6 +653,7 @@
 				522FF5362769C708002E84F9 /* HomeViewController.swift in Sources */,
 				52DCF02A2783248500F08D7A /* GifProcessor.swift in Sources */,
 				5268100E276A469F00A8C41D /* UIImageUtil.swift in Sources */,
+				5244163D27995454005E428B /* AppleLoginTool.swift in Sources */,
 				52E26E8E27758A46003FFBF7 /* TemplateAssetMgr.swift in Sources */,
 				522FF5322769C708002E84F9 /* AppDelegate.swift in Sources */,
 				5268101A276A475500A8C41D /* UserConfigMgr.swift in Sources */,
@@ -860,7 +864,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = StickerCustom/StickerCustom.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.1.0.2;
+				CURRENT_PROJECT_VERSION = 1.1.0.5;
 				DEVELOPMENT_TEAM = R8VSR434DY;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -919,7 +923,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = StickerCustom/StickerCustom.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.1.0.2;
+				CURRENT_PROJECT_VERSION = 1.1.0.5;
 				DEVELOPMENT_TEAM = R8VSR434DY;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

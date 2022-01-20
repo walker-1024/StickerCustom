@@ -18,10 +18,13 @@ class UserConfigMgr {
     enum UserConfig: String {
         case token
         case username
+        case UID
         // TencentOpenAPI 相关
         case accessToken
         case openId
         case expirationDate
+        // Apple ID 登录相关
+        case userIdentifier
     }
 
     func getValue(of config: UserConfig) -> Any? {
@@ -39,8 +42,10 @@ class UserConfigMgr {
     func logout() {
         removeValue(of: .token)
         removeValue(of: .username)
+        removeValue(of: .UID)
         removeValue(of: .accessToken)
         removeValue(of: .openId)
         removeValue(of: .expirationDate)
+        removeValue(of: .userIdentifier)
     }
 }

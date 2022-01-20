@@ -41,6 +41,10 @@ class LocalFileManager {
         return data
     }
 
+    func removeAvatar() {
+        try? fileManager.removeItem(atPath: avatarPath)
+    }
+
     func isNeedUpdateAvatar(md5: String) -> Bool {
         if md5.count == 0 { return false }
         let data = try? Data(contentsOf: URL(fileURLWithPath: avatarPath))
