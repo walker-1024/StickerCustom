@@ -34,7 +34,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //        userNav.tabBarItem.image = "icon-me".localImage?.resizeImage(size: CGSize(width: 30, height: 30))
 
         let tab = UITabBarController()
-        tab.viewControllers = [homeNav, squareNav, documentNav, userNav]
+        tab.viewControllers = [homeNav, squareNav, documentNav]
         tab.tabBar.tintColor = .tintGreen
 
         let tabBarAppearance = UITabBarAppearance()
