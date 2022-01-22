@@ -9,7 +9,7 @@ import UIKit
 
 class SquareTemplateViewController: SCViewController {
 
-    var template: TemplateModel!
+    var template: SquareTemplateModel!
 
     private let imageView = UIImageView()
 
@@ -39,10 +39,18 @@ class SquareTemplateViewController: SCViewController {
             make.width.height.equalTo(200)
             make.centerX.equalToSuperview()
         }
-        if let coverData = template.cover {
+        if let coverData = LocalFileManager.shared.getCover(name: template.templateId.uuidString) {
             imageView.image = UIImage(data: coverData)
         } else {
-            imageView.image = "icon-default-cover".localImage
+            imageView.image = "icon-loading-cover".localImage
+            guard let url = template.coverUrl else { return }
+            DispatchQueue.global().async {
+                guard let imgData = try? Data(contentsOf: url) else { return }
+                DispatchQueue.main.async {
+                    self.imageView.image = UIImage(data: imgData)
+                }
+                LocalFileManager.shared.saveCover(data: imgData, name: self.template.templateId.uuidString)
+            }
         }
         imageView.contentMode = .scaleAspectFit
 

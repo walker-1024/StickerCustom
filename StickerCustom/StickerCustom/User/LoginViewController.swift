@@ -193,29 +193,8 @@ class LoginViewController: SCViewController {
     private func setupThirdLoginButton_2() {
         let buttonDiameter: CGFloat = 60
 
-        let qqLoginButton = UIButton()
-        view.addSubview(qqLoginButton)
-        qqLoginButton.snp.makeConstraints { make in
-            make.bottom.equalTo(-70)
-            make.trailing.equalTo(view.snp.centerX).offset(-30)
-            make.width.height.equalTo(buttonDiameter)
-        }
-        qqLoginButton.backgroundColor = UIColor(red: 26, green: 86, blue: 209)
-        qqLoginButton.setImage("icon-qq-white".localImage, for: .normal)
-        qqLoginButton.imageEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
-        qqLoginButton.addTarget(self, action: #selector(clickQQLogin), for: .touchUpInside)
-        qqLoginButton.layer.cornerRadius = buttonDiameter / 2
-        qqLoginButton.layer.masksToBounds = true
-        qqLoginButton.layer.borderWidth = 1
-        qqLoginButton.layer.borderColor = UIColor.white.cgColor
-
         let appleLoginButton = UIButton()
         view.addSubview(appleLoginButton)
-        appleLoginButton.snp.makeConstraints { make in
-            make.bottom.equalTo(qqLoginButton)
-            make.leading.equalTo(view.snp.centerX).offset(30)
-            make.width.height.equalTo(buttonDiameter)
-        }
         appleLoginButton.backgroundColor = .black
         appleLoginButton.setImage("icon-apple-white".localImage, for: .normal)
         appleLoginButton.imageEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
@@ -225,11 +204,44 @@ class LoginViewController: SCViewController {
         appleLoginButton.layer.borderWidth = 1
         appleLoginButton.layer.borderColor = UIColor.white.cgColor
 
+        // 创死 Apple ！！！
+        // 破防了，因为QQ登录拒绝两次了
+        // 如果用户手机没安装QQ，就不显示QQ登录的按钮
+        if TencentOpenAPITool.shared.isSupportQQLogin() {
+            appleLoginButton.snp.makeConstraints { make in
+                make.bottom.equalTo(-70)
+                make.leading.equalTo(view.snp.centerX).offset(30)
+                make.width.height.equalTo(buttonDiameter)
+            }
+
+            let qqLoginButton = UIButton()
+            view.addSubview(qqLoginButton)
+            qqLoginButton.snp.makeConstraints { make in
+                make.bottom.equalTo(appleLoginButton)
+                make.trailing.equalTo(view.snp.centerX).offset(-30)
+                make.width.height.equalTo(buttonDiameter)
+            }
+            qqLoginButton.backgroundColor = UIColor(red: 26, green: 86, blue: 209)
+            qqLoginButton.setImage("icon-qq-white".localImage, for: .normal)
+            qqLoginButton.imageEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+            qqLoginButton.addTarget(self, action: #selector(clickQQLogin), for: .touchUpInside)
+            qqLoginButton.layer.cornerRadius = buttonDiameter / 2
+            qqLoginButton.layer.masksToBounds = true
+            qqLoginButton.layer.borderWidth = 1
+            qqLoginButton.layer.borderColor = UIColor.white.cgColor
+        } else {
+            appleLoginButton.snp.makeConstraints { make in
+                make.bottom.equalTo(-70)
+                make.centerX.equalToSuperview()
+                make.width.height.equalTo(buttonDiameter)
+            }
+        }
+
         let tipLabel = UILabel()
         view.addSubview(tipLabel)
         tipLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.bottom.equalTo(qqLoginButton.snp.top).offset(-10)
+            make.bottom.equalTo(appleLoginButton.snp.top).offset(-10)
             make.height.equalTo(30)
         }
         tipLabel.text = "其它登录方式"
