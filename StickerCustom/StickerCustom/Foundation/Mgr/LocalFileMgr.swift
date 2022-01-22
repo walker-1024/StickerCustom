@@ -52,9 +52,20 @@ class LocalFileManager {
         return true
     }
 
-    func getTempPath() -> String {
+    func saveCover(data: Data, name: String) {
+        let path = coverDirPath + name + ".pic"
+        fileManager.createFile(atPath: path, contents: data, attributes: nil)
+    }
+
+    func getCover(name: String) -> Data? {
+        let path = coverDirPath + name + ".pic"
+        let data = try? Data(contentsOf: URL(fileURLWithPath: path))
+        return data
+    }
+
+    func getTempPath(suffix: String) -> String {
         let now = Date().timeIntervalSince1970
-        return tempImageDirPath + "\(now)"
+        return tempImageDirPath + "\(now)." + suffix
     }
 
     func archiveTemplate(withId templateId: UUID, completion: ((Data?, String?) -> Void)?) {

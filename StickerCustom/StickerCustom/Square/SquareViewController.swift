@@ -11,7 +11,7 @@ fileprivate let TemplateCellIdentifier = "SquareTemplateCellIdentifier"
 
 class SquareViewController: SCViewController {
 
-    private var cellData: [TemplateModel] = []
+    private var cellData: [SquareTemplateModel] = []
 
     private var collectionView: UICollectionView!
     private var refreshControl: UIRefreshControl!
@@ -58,21 +58,18 @@ class SquareViewController: SCViewController {
             switch result {
             case .success(let model):
                 if model.code == 0, let backTemplates = model.data?.templates {
-                    var allTemplates: [TemplateModel] = []
+                    var allTemplates: [SquareTemplateModel] = []
                     for item in backTemplates {
-                        // TODO: TODO
-                        if item.author == "nil" { continue }
                         guard let templateId = UUID(uuidString: item.templateID) else { continue }
 //                        guard let coverUrl = URL(string: item.cover) else { continue }
                         // 使用 COS，快一些
                         // TODO: 后端
-                        guard let coverUrl = URL(string: "https://sc-1302727559.cos.ap-guangzhou.myqcloud.com/cover/\(item.templateID).png") else { continue }
-                        guard let coverData = try? Data(contentsOf: coverUrl) else { continue }
-                        let template = TemplateModel(
+                        let coverUrl = URL(string: "https://sc-1302727559.cos.ap-guangzhou.myqcloud.com/cover/\(item.templateID).png")
+                        let template = SquareTemplateModel(
                             templateId: templateId,
                             title: item.title,
                             code: item.code,
-                            cover: coverData,
+                            coverUrl: coverUrl,
                             author: item.author,
                             downloadUrl: URL(string: item.file)
                         )

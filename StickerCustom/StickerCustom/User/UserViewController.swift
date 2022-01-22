@@ -100,7 +100,7 @@ class UserViewController: SCViewController {
             make.height.equalTo(30)
             make.trailing.equalTo(-10)
         }
-        usernameLabel.text = "未登录"
+        usernameLabel.text = "点击登录"
         usernameLabel.textAlignment = .left
         usernameLabel.textColor = .tintGreen
         usernameLabel.font = UIFont.systemFont(ofSize: 20)
@@ -172,7 +172,7 @@ class UserViewController: SCViewController {
     }
 
     private func innerLogout() {
-        usernameLabel.text = "未登录"
+        usernameLabel.text = "点击登录"
         uidLabel.isHidden = true
         avatarImageView.image = "icon-default-avatar".localImage
         UserConfigMgr.shared.logout()

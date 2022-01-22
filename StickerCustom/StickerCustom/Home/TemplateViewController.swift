@@ -192,7 +192,7 @@ class TemplateViewController: SCViewController {
         guard let image = imageView.image else { return }
         if let allImages = image.images {
             PHPhotoLibrary.shared().performChanges {
-                let gifPath = LocalFileManager.shared.getTempPath() + ".gif"
+                let gifPath = LocalFileManager.shared.getTempPath(suffix: "gif")
                 let eachDuration = image.duration / Double(allImages.count)
                 GifProcessor.shared.createGif(with: allImages, eachDuration: eachDuration, savePath: gifPath)
 
