@@ -169,7 +169,7 @@ class TemplateCodeViewController: SCViewController, UIGestureRecognizerDelegate 
             make.centerY.equalToSuperview()
         }
         if let coverData = template.cover {
-            imageView.image = UIImage(data: coverData)
+            imageView.image = GifProcessor.shared.getImage(from: coverData)
         } else {
             imageView.image = "icon-default-cover".localImage
         }
@@ -394,7 +394,8 @@ extension TemplateCodeViewController: UICollectionViewDelegate, UICollectionView
 
 extension TemplateCodeViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        if let imageData = (info[UIImagePickerController.InfoKey.originalImage] as? UIImage)?.pngData() {
+        // TODO: 支持导入gif
+        if let imageData = (info[.originalImage] as? UIImage)?.pngData() {
             for i in 0...cellData.count {
                 if !cellData.contains(where: { $0.name == "图片\(i)" }) {
                     let asset = TemplateAssetModel(templateId: template.templateId, name: "图片\(i)", data: imageData, assetType: .png)

@@ -74,22 +74,41 @@ class TemplateCell: UICollectionViewCell {
     func setupData(data: SquareTemplateModel) {
         templateId = data.templateId
         titleLabel.text = data.title
-        if let coverData = LocalFileManager.shared.getCover(name: data.templateId.uuidString) {
+        if let gifCoverData = LocalFileManager.shared.getGifCover(name: data.templateId.uuidString) {
+            DispatchQueue.global().async {
+                guard let image = GifProcessor.shared.getImage(from: gifCoverData) else { return }
+                DispatchQueue.main.async {
+                    // 保证封面确实是当前cell的，而不是已经被复用了的cell的
+                    if self.templateId == data.templateId {
+                        self.coverImageView.image = image
+                    }
+                }
+            }
+        } else if let coverData = LocalFileManager.shared.getCover(name: data.templateId.uuidString) {
             coverImageView.image = UIImage(data: coverData)
         } else {
             coverImageView.image = "icon-loading-cover".localImage
-            guard let url = data.coverUrl else { return }
             DispatchQueue.global().async {
                 // 如果cell已经被复用了，就先不用加载它的封面了
                 guard self.templateId == data.templateId else { return }
-                guard let imgData = try? Data(contentsOf: url) else { return }
-                DispatchQueue.main.async {
-                    // 再次检验，保证封面确实是当前cell的，而不是已经被复用了的cell的
-                    if self.templateId == data.templateId {
-                        self.coverImageView.image = UIImage(data: imgData)
+                if let url = data.gifCoverUrl, let gifData = try? Data(contentsOf: url) {
+                    guard let image = GifProcessor.shared.getImage(from: gifData) else { return }
+                    DispatchQueue.main.async {
+                        // 保证封面确实是当前cell的，而不是已经被复用了的cell的
+                        if self.templateId == data.templateId {
+                            self.coverImageView.image = image
+                        }
                     }
+                    LocalFileManager.shared.saveGifCover(data: gifData, name: data.templateId.uuidString)
+                } else if let url = data.coverUrl, let imgData = try? Data(contentsOf: url) {
+                    DispatchQueue.main.async {
+                        // 保证封面确实是当前cell的，而不是已经被复用了的cell的
+                        if self.templateId == data.templateId {
+                            self.coverImageView.image = UIImage(data: imgData)
+                        }
+                    }
+                    LocalFileManager.shared.saveCover(data: imgData, name: data.templateId.uuidString)
                 }
-                LocalFileManager.shared.saveCover(data: imgData, name: data.templateId.uuidString)
             }
         }
     }

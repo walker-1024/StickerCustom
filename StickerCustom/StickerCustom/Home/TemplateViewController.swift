@@ -179,7 +179,7 @@ class TemplateViewController: SCViewController {
                 DispatchQueue.main.async {
                     self.template = template
                     if let coverData = template.cover {
-                        self.imageView.image = UIImage(data: coverData)
+                        self.imageView.image = GifProcessor.shared.getImage(from: coverData)
                     } else {
                         self.imageView.image = "icon-default-cover".localImage
                     }
@@ -282,6 +282,9 @@ class TemplateViewController: SCViewController {
                 }
 
                 let paramUploadData = UploadData(key: "param", data: paramData)
+                // TODO: 如果封面是动图，则必现上传失败，报错为connection was lost
+                // 目前猜测是后端不支持传 gif Data 导致
+                // 如果需要用此接口，可以先把下一行的 coverData 换成 Data() 即可正常请求
                 let coverFile = UploadFile(key: "cover", data: coverData, fileName: "cover", mimeType: "image/png")
                 let archiveFile = UploadFile(key: "file", data: archiveData, fileName: "file", mimeType: "application/zip")
                 NetworkMgr.shared.upload(config: config, parameters: [paramUploadData], files: [coverFile, archiveFile], headers: ["Content-Type": "multipart/form-data"]) { (result: NetworkResult<BackDataWrapper<CommonBackData>>) in
@@ -388,20 +391,5 @@ extension TemplateViewController: UITextFieldDelegate {
 
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         return string.isIntNumber || string.count == 0
-    }
-}
-
-extension TemplateViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        if let imageData = (info[UIImagePickerController.InfoKey.originalImage] as? UIImage)?.pngData() {
-            self.template.cover = imageData
-            TemplateMgr.shared.modify(template: self.template)
-            self.imageView.image = UIImage(data: imageData)
-        }
-        picker.dismiss(animated: true, completion: nil)
-    }
-
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        picker.dismiss(animated: true, completion: nil)
     }
 }
