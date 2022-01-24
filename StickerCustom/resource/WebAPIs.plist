@@ -4,104 +4,53 @@
 <dict>
 	<key>user</key>
 	<dict>
-		<key>getVisitor</key>
-		<dict>
-			<key>path</key>
-			<string>/api/v2/user/visitor</string>
-			<key>method</key>
-			<string>POST</string>
-			<key>parameter</key>
-			<array/>
-			<key>description</key>
-			<string>申请访客账号</string>
-		</dict>
-		<key>send_code</key>
-		<dict>
-			<key>path</key>
-			<string>/api/v2/verificationCode</string>
-			<key>method</key>
-			<string>GET</string>
-			<key>parameter</key>
-			<array>
-				<string>email</string>
-			</array>
-			<key>description</key>
-			<string>请求发送验证码</string>
-		</dict>
-		<key>register</key>
-		<dict>
-			<key>path</key>
-			<string>/api/v2/user</string>
-			<key>method</key>
-			<string>POST</string>
-			<key>parameter</key>
-			<array>
-				<string>email</string>
-				<string>password</string>
-				<string>verificationCode</string>
-			</array>
-			<key>description</key>
-			<string>用户注册</string>
-		</dict>
 		<key>login</key>
 		<dict>
 			<key>path</key>
-			<string>/api/v2/session</string>
+			<string>/api/v1/session</string>
 			<key>method</key>
 			<string>POST</string>
 			<key>parameter</key>
 			<array>
-				<string>email</string>
+				<string>type</string>
+				<string>openID</string>
+			</array>
+			<key>description</key>
+			<string>用户用QQ登录</string>
+		</dict>
+		<key>loginWithPassword</key>
+		<dict>
+			<key>path</key>
+			<string>/api/v1/session</string>
+			<key>method</key>
+			<string>POST</string>
+			<key>parameter</key>
+			<array>
+				<string>type</string>
+				<string>UID</string>
 				<string>password</string>
 			</array>
 			<key>description</key>
-			<string>用户登录</string>
+			<string>用户用UID和密码登录</string>
 		</dict>
-		<key>resetUsername</key>
+		<key>loginWithApple</key>
 		<dict>
 			<key>path</key>
-			<string>/api/v2/user/name</string>
+			<string>/api/v1/session</string>
 			<key>method</key>
-			<string>PATCH</string>
+			<string>POST</string>
 			<key>parameter</key>
 			<array>
-				<string>name</string>
+				<string>type</string>
+				<string>userIdentifier</string>
 			</array>
 			<key>description</key>
-			<string>用户重置用户名</string>
-		</dict>
-		<key>resetPassword</key>
-		<dict>
-			<key>path</key>
-			<string>/api/v2/user/password</string>
-			<key>method</key>
-			<string>PATCH</string>
-			<key>parameter</key>
-			<array>
-				<string>email</string>
-				<string>password</string>
-				<string>verificationCode</string>
-			</array>
-			<key>description</key>
-			<string>用户重置密码</string>
-		</dict>
-		<key>resetAvatar</key>
-		<dict>
-			<key>path</key>
-			<string>/api/v2/user/avatar</string>
-			<key>method</key>
-			<string>PATCH</string>
-			<key>parameter</key>
-			<array>
-				<string>avatar</string>
-			</array>
-			<key>description</key>
-			<string>用户修改头像</string>
+			<string>用户通过AppleID登录</string>
 		</dict>
 		<key>info</key>
 		<dict>
 			<key>path</key>
-			<string>/api/v2/user</string>
+			<string>/api/v1/user</string>
 			<key>method</key>
 			<string>GET</string>
 			<key>parameter</key>
@@ -112,7 +61,7 @@
 		<key>sign</key>
 		<dict>
 			<key>path</key>
-			<string>/api/v2/user/sign</string>
+			<string>/api/v1/user/sign</string>
 			<key>method</key>
 			<string>POST</string>
 			<key>parameter</key>
@@ -123,7 +72,7 @@
 		<key>charge</key>
 		<dict>
 			<key>path</key>
-			<string>/api/v2/user/point</string>
+			<string>/api/v1/user/point</string>
 			<key>method</key>
 			<string>PATCH</string>
 			<key>parameter</key>
@@ -132,20 +81,6 @@
 			</array>
 			<key>description</key>
 			<string>用户充值</string>
-		</dict>
-		<key>feedback</key>
-		<dict>
-			<key>path</key>
-			<string>/api/v2/user/feedback</string>
-			<key>method</key>
-			<string>POST</string>
-			<key>parameter</key>
-			<array>
-				<string>feedback</string>
-				<string>email</string>
-			</array>
-			<key>description</key>
-			<string>用户意见反馈</string>
 		</dict>
 	</dict>
 	<key>template</key>
@@ -161,7 +96,6 @@
 				<string>templateID</string>
 				<string>title</string>
 				<string>code</string>
-				<string>author</string>
 				<string>cover</string>
 				<string>file</string>
 			</array>
@@ -190,7 +124,6 @@
 				<string>templateID</string>
 				<string>title</string>
 				<string>code</string>
-				<string>author</string>
 				<string>cover</string>
 				<string>file</string>
 			</array>

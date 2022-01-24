@@ -16,18 +16,19 @@ class UserConfigMgr {
     private init() { }
 
     enum UserConfig: String {
-        case token = "token"
-        case email = "email"
-        case password = "password"
-        case username = "username"
-        case visitor = "visitor"
-        case visitorEmail = "visitor-email"
-        case visitorPassword = "visitor-password"
-        case placeholder
+        case token
+        case username
+        case UID
+        // TencentOpenAPI 相关
+        case accessToken
+        case openId
+        case expirationDate
+        // Apple ID 登录相关
+        case userIdentifier
     }
 
-    func getValue(of config: UserConfig) -> Any {
-        return ud.value(forKey: config.rawValue) as Any
+    func getValue(of config: UserConfig) -> Any? {
+        return ud.value(forKey: config.rawValue)
     }
 
     func saveValue(_ value: Any, to config: UserConfig) {
@@ -36,5 +37,15 @@ class UserConfigMgr {
 
     func removeValue(of config: UserConfig) {
         ud.removeObject(forKey: config.rawValue)
+    }
+
+    func logout() {
+        removeValue(of: .token)
+        removeValue(of: .username)
+        removeValue(of: .UID)
+        removeValue(of: .accessToken)
+        removeValue(of: .openId)
+        removeValue(of: .expirationDate)
+        removeValue(of: .userIdentifier)
     }
 }

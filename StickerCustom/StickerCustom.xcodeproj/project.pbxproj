@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5206DE0B279C2EC700C11A73 /* SquareTemplateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5206DE0A279C2EC700C11A73 /* SquareTemplateModel.swift */; };
 		522282FD276CD32900A4031D /* RosParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 522282FC276CD32900A4031D /* RosParser.swift */; };
 		522FF5322769C708002E84F9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 522FF5312769C708002E84F9 /* AppDelegate.swift */; };
 		522FF5342769C708002E84F9 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 522FF5332769C708002E84F9 /* SceneDelegate.swift */; };
@@ -18,6 +19,9 @@
 		522FF54C2769C70A002E84F9 /* StickerCustomTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 522FF54B2769C70A002E84F9 /* StickerCustomTests.swift */; };
 		522FF5562769C70A002E84F9 /* StickerCustomUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 522FF5552769C70A002E84F9 /* StickerCustomUITests.swift */; };
 		522FF5582769C70A002E84F9 /* StickerCustomUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 522FF5572769C70A002E84F9 /* StickerCustomUITestsLaunchTests.swift */; };
+		524416392797C610005E428B /* RosParseError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 524416382797C610005E428B /* RosParseError.swift */; };
+		5244163B2797CF2A005E428B /* Documentation.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 5244163A2797CF2A005E428B /* Documentation.pdf */; };
+		5244163D27995454005E428B /* AppleLoginTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5244163C27995454005E428B /* AppleLoginTool.swift */; };
 		5246A780276B58C5005F1BF6 /* UserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5246A77F276B58C5005F1BF6 /* UserViewController.swift */; };
 		5246A782276B8670005F1BF6 /* TemplateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5246A781276B8670005F1BF6 /* TemplateCell.swift */; };
 		5246A785276B86AD005F1BF6 /* TemplateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5246A784276B86AD005F1BF6 /* TemplateModel.swift */; };
@@ -43,8 +47,9 @@
 		52A81DC82794452000E92C44 /* FE806C52-056E-45F4-B7E0-2CC604F4A4F9.zip in Resources */ = {isa = PBXBuildFile; fileRef = 52A81DC72794451F00E92C44 /* FE806C52-056E-45F4-B7E0-2CC604F4A4F9.zip */; };
 		52A81DCA2794452800E92C44 /* E6922DC4-6C37-4EBC-A203-67BEC27BC58E.zip in Resources */ = {isa = PBXBuildFile; fileRef = 52A81DC92794452800E92C44 /* E6922DC4-6C37-4EBC-A203-67BEC27BC58E.zip */; };
 		52A81DCC2794453000E92C44 /* 8E640886-2637-49BC-8C8E-FD96DCC3194D.zip in Resources */ = {isa = PBXBuildFile; fileRef = 52A81DCB2794453000E92C44 /* 8E640886-2637-49BC-8C8E-FD96DCC3194D.zip */; };
-		52B2F9BE2791C3B2000DEE83 /* Documentation.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 52B2F9BD2791C3B2000DEE83 /* Documentation.pdf */; };
 		52B2F9C02792A051000DEE83 /* TencentOpenAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52B2F9BF2792A051000DEE83 /* TencentOpenAPI.framework */; };
+		52BA3ACA2795AB7800B8762E /* VersionLogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52BA3AC92795AB7800B8762E /* VersionLogViewController.swift */; };
+		52BA3ACC2795B2C200B8762E /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52BA3ACB2795B2C200B8762E /* LoginViewController.swift */; };
 		52DCF0242781909E00F08D7A /* SquareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52DCF0232781909E00F08D7A /* SquareViewController.swift */; };
 		52DCF0262781BA2600F08D7A /* EditTemplateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52DCF0252781BA2600F08D7A /* EditTemplateViewController.swift */; };
 		52DCF0282781F45B00F08D7A /* SquareTemplateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52DCF0272781F45B00F08D7A /* SquareTemplateViewController.swift */; };
@@ -82,6 +87,7 @@
 		0E6D225568BA26C03D4BC00F /* Pods_StickerCustom.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StickerCustom.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		324DCEE076B2165E51E96B1C /* Pods-StickerCustomTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StickerCustomTests.debug.xcconfig"; path = "Target Support Files/Pods-StickerCustomTests/Pods-StickerCustomTests.debug.xcconfig"; sourceTree = "<group>"; };
 		3C206AB2DC7EABDE408F5FCB /* Pods_StickerCustom_StickerCustomUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StickerCustom_StickerCustomUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5206DE0A279C2EC700C11A73 /* SquareTemplateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SquareTemplateModel.swift; sourceTree = "<group>"; };
 		522282FC276CD32900A4031D /* RosParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RosParser.swift; sourceTree = "<group>"; };
 		522FF52E2769C708002E84F9 /* StickerCustom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StickerCustom.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		522FF5312769C708002E84F9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -97,6 +103,9 @@
 		522FF5512769C70A002E84F9 /* StickerCustomUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StickerCustomUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		522FF5552769C70A002E84F9 /* StickerCustomUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerCustomUITests.swift; sourceTree = "<group>"; };
 		522FF5572769C70A002E84F9 /* StickerCustomUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerCustomUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		524416382797C610005E428B /* RosParseError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RosParseError.swift; sourceTree = "<group>"; };
+		5244163A2797CF2A005E428B /* Documentation.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Documentation.pdf; sourceTree = "<group>"; };
+		5244163C27995454005E428B /* AppleLoginTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginTool.swift; sourceTree = "<group>"; };
 		5246A77F276B58C5005F1BF6 /* UserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewController.swift; sourceTree = "<group>"; };
 		5246A781276B8670005F1BF6 /* TemplateCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateCell.swift; sourceTree = "<group>"; };
 		5246A784276B86AD005F1BF6 /* TemplateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateModel.swift; sourceTree = "<group>"; };
@@ -124,8 +133,9 @@
 		52A81DC92794452800E92C44 /* E6922DC4-6C37-4EBC-A203-67BEC27BC58E.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = "E6922DC4-6C37-4EBC-A203-67BEC27BC58E.zip"; sourceTree = "<group>"; };
 		52A81DCB2794453000E92C44 /* 8E640886-2637-49BC-8C8E-FD96DCC3194D.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = "8E640886-2637-49BC-8C8E-FD96DCC3194D.zip"; sourceTree = "<group>"; };
 		52B2F9BC279175F4000DEE83 /* StickerCustom.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = StickerCustom.entitlements; sourceTree = "<group>"; };
-		52B2F9BD2791C3B2000DEE83 /* Documentation.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Documentation.pdf; sourceTree = "<group>"; };
 		52B2F9BF2792A051000DEE83 /* TencentOpenAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TencentOpenAPI.framework; sourceTree = "<group>"; };
+		52BA3AC92795AB7800B8762E /* VersionLogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VersionLogViewController.swift; sourceTree = "<group>"; };
+		52BA3ACB2795B2C200B8762E /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		52DCF0232781909E00F08D7A /* SquareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SquareViewController.swift; sourceTree = "<group>"; };
 		52DCF0252781BA2600F08D7A /* EditTemplateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTemplateViewController.swift; sourceTree = "<group>"; };
 		52DCF0272781F45B00F08D7A /* SquareTemplateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SquareTemplateViewController.swift; sourceTree = "<group>"; };
@@ -178,6 +188,7 @@
 			isa = PBXGroup;
 			children = (
 				522282FC276CD32900A4031D /* RosParser.swift */,
+				524416382797C610005E428B /* RosParseError.swift */,
 			);
 			path = Ros;
 			sourceTree = "<group>";
@@ -246,6 +257,8 @@
 			isa = PBXGroup;
 			children = (
 				5246A77F276B58C5005F1BF6 /* UserViewController.swift */,
+				52BA3ACB2795B2C200B8762E /* LoginViewController.swift */,
+				52BA3AC92795AB7800B8762E /* VersionLogViewController.swift */,
 			);
 			path = User;
 			sourceTree = "<group>";
@@ -268,6 +281,7 @@
 			children = (
 				5246A784276B86AD005F1BF6 /* TemplateModel.swift */,
 				52E26E8B277587F1003FFBF7 /* TemplateAssetModel.swift */,
+				5206DE0A279C2EC700C11A73 /* SquareTemplateModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -318,6 +332,7 @@
 				52E26E89277572FE003FFBF7 /* LocalFileMgr.swift */,
 				52DCF0292783248500F08D7A /* GifProcessor.swift */,
 				52A81D662792B8B800E92C44 /* TencentOpenAPITool.swift */,
+				5244163C27995454005E428B /* AppleLoginTool.swift */,
 			);
 			path = Mgr;
 			sourceTree = "<group>";
@@ -355,8 +370,8 @@
 		52F95F3E27808B54007AA2BA /* resource */ = {
 			isa = PBXGroup;
 			children = (
+				5244163A2797CF2A005E428B /* Documentation.pdf */,
 				52F95F3F27808B80007AA2BA /* WebAPIs.plist */,
-				52B2F9BD2791C3B2000DEE83 /* Documentation.pdf */,
 				52A81DC72794451F00E92C44 /* FE806C52-056E-45F4-B7E0-2CC604F4A4F9.zip */,
 				52A81DC92794452800E92C44 /* E6922DC4-6C37-4EBC-A203-67BEC27BC58E.zip */,
 				52A81DCB2794453000E92C44 /* 8E640886-2637-49BC-8C8E-FD96DCC3194D.zip */,
@@ -497,10 +512,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				52B2F9BE2791C3B2000DEE83 /* Documentation.pdf in Resources */,
 				522FF5412769C709002E84F9 /* LaunchScreen.storyboard in Resources */,
 				522FF53E2769C709002E84F9 /* Assets.xcassets in Resources */,
 				52F95F4027808B80007AA2BA /* WebAPIs.plist in Resources */,
+				5244163B2797CF2A005E428B /* Documentation.pdf in Resources */,
 				522FF5392769C708002E84F9 /* Main.storyboard in Resources */,
 				52A81DCA2794452800E92C44 /* E6922DC4-6C37-4EBC-A203-67BEC27BC58E.zip in Resources */,
 				52A81DCC2794453000E92C44 /* 8E640886-2637-49BC-8C8E-FD96DCC3194D.zip in Resources */,
@@ -641,6 +656,7 @@
 				522FF5362769C708002E84F9 /* HomeViewController.swift in Sources */,
 				52DCF02A2783248500F08D7A /* GifProcessor.swift in Sources */,
 				5268100E276A469F00A8C41D /* UIImageUtil.swift in Sources */,
+				5244163D27995454005E428B /* AppleLoginTool.swift in Sources */,
 				52E26E8E27758A46003FFBF7 /* TemplateAssetMgr.swift in Sources */,
 				522FF5322769C708002E84F9 /* AppDelegate.swift in Sources */,
 				5268101A276A475500A8C41D /* UserConfigMgr.swift in Sources */,
@@ -656,8 +672,10 @@
 				52681022276A4F5200A8C41D /* Network.swift in Sources */,
 				52681024276A4F5B00A8C41D /* NetworkMgr.swift in Sources */,
 				52A04529277CBFCF005CEC46 /* DocumentViewController.swift in Sources */,
+				52BA3ACC2795B2C200B8762E /* LoginViewController.swift in Sources */,
 				52681010276A46B700A8C41D /* DateUtil.swift in Sources */,
 				52DCF0262781BA2600F08D7A /* EditTemplateViewController.swift in Sources */,
+				52BA3ACA2795AB7800B8762E /* VersionLogViewController.swift in Sources */,
 				52DCF0282781F45B00F08D7A /* SquareTemplateViewController.swift in Sources */,
 				52E26E8C277587F1003FFBF7 /* TemplateAssetModel.swift in Sources */,
 				52681014276A46F300A8C41D /* PlistReader.swift in Sources */,
@@ -667,8 +685,10 @@
 				52E26E8827756358003FFBF7 /* TemplateAssetsCell.swift in Sources */,
 				5268100A276A468200A8C41D /* UIColorUtil.swift in Sources */,
 				52A81D672792B8B800E92C44 /* TencentOpenAPITool.swift in Sources */,
+				5206DE0B279C2EC700C11A73 /* SquareTemplateModel.swift in Sources */,
 				5269DB83276F7F9D00FD8063 /* TemplateMgr.swift in Sources */,
 				52681020276A4F2E00A8C41D /* WebAPI.swift in Sources */,
+				524416392797C610005E428B /* RosParseError.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -848,7 +868,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = StickerCustom/StickerCustom.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.0.0.1;
+				CURRENT_PROJECT_VERSION = 1.1.1.0;
 				DEVELOPMENT_TEAM = R8VSR434DY;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -871,7 +891,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 1.1.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-l\"iconv\"",
@@ -907,7 +927,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = StickerCustom/StickerCustom.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.0.0.1;
+				CURRENT_PROJECT_VERSION = 1.1.1.0;
 				DEVELOPMENT_TEAM = R8VSR434DY;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -930,7 +950,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 1.1.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-l\"iconv\"",

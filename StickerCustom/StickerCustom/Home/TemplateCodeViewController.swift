@@ -47,6 +47,8 @@ class TemplateCodeViewController: SCViewController, UIGestureRecognizerDelegate 
         setupCodeView()
         // 实现在状态栏隐藏的情况下能够右划返回
         // self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -59,6 +61,10 @@ class TemplateCodeViewController: SCViewController, UIGestureRecognizerDelegate 
         super.touchesEnded(touches, with: event)
         qqTextField.resignFirstResponder()
         codeTextView.resignFirstResponder()
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     private func setupTopbar() {
@@ -162,7 +168,11 @@ class TemplateCodeViewController: SCViewController, UIGestureRecognizerDelegate 
             make.width.height.equalTo(160)
             make.centerY.equalToSuperview()
         }
-        imageView.image = UIImage(data: template.cover)
+        if let coverData = template.cover {
+            imageView.image = GifProcessor.shared.getImage(from: coverData)
+        } else {
+            imageView.image = "icon-default-cover".localImage
+        }
         imageView.contentMode = .scaleAspectFit
         imageView.layer.cornerRadius = 10
         imageView.layer.masksToBounds = true
@@ -208,7 +218,7 @@ class TemplateCodeViewController: SCViewController, UIGestureRecognizerDelegate 
         view.addSubview(codeTextView)
         codeTextView.snp.makeConstraints { make in
             make.leading.trailing.equalTo(assetsCollectionView)
-            make.top.equalTo(assetsCollectionView.snp.bottom).offset(20)
+            make.top.equalTo(assetsCollectionView.snp.bottom).offset(10)
             make.bottom.equalTo(-20)
         }
         codeTextView.backgroundColor = .clear
@@ -254,7 +264,7 @@ class TemplateCodeViewController: SCViewController, UIGestureRecognizerDelegate 
                 let ok = UIAlertAction(title: "确定", style: .default, handler: nil)
                 guard rosError == nil else {
                     alert.title = "生成失败"
-                    alert.message = rosError.debugDescription
+                    alert.message = rosError?.message
                     alert.addAction(ok)
                     return
                 }
@@ -329,6 +339,19 @@ class TemplateCodeViewController: SCViewController, UIGestureRecognizerDelegate 
         qqTextField.resignFirstResponder()
         codeTextView.resignFirstResponder()
     }
+
+    @objc func keyboardWillShow(notification: Notification) {
+        guard let keyBoardHeight = notification.getKeyBoardHeight() else { return }
+        codeTextView.snp.updateConstraints { make in
+            make.bottom.equalTo(-keyBoardHeight)
+        }
+    }
+
+    @objc func keyboardWillHide(notification: Notification) {
+        codeTextView.snp.updateConstraints { make in
+            make.bottom.equalTo(-20)
+        }
+    }
 }
 
 extension TemplateCodeViewController: UICollectionViewDelegate, UICollectionViewDataSource {
@@ -371,7 +394,8 @@ extension TemplateCodeViewController: UICollectionViewDelegate, UICollectionView
 
 extension TemplateCodeViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        if let imageData = (info[UIImagePickerController.InfoKey.originalImage] as? UIImage)?.pngData() {
+        // TODO: 支持导入gif
+        if let imageData = (info[.originalImage] as? UIImage)?.pngData() {
             for i in 0...cellData.count {
                 if !cellData.contains(where: { $0.name == "图片\(i)" }) {
                     let asset = TemplateAssetModel(templateId: template.templateId, name: "图片\(i)", data: imageData, assetType: .png)

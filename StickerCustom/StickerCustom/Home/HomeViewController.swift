@@ -25,11 +25,6 @@ class HomeViewController: SCViewController {
         TemplateMgr.shared
         TemplateAssetMgr.shared
 
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-//            let permissions = [kOPEN_PERMISSION_GET_USER_INFO, kOPEN_PERMISSION_GET_SIMPLE_USER_INFO]
-//            TencentOpenAPITool.shared.tencentOAuth.authorize(permissions)
-//        }
-
         guard let url = URL(string: "http://q1.qlogo.cn/g?b=qq&nk=2064023354&s=640") else { return }
         DispatchQueue.global().async {
             let _ = try? Data(contentsOf: url)
@@ -39,6 +34,10 @@ class HomeViewController: SCViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         refresh()
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     private func setup() {
@@ -83,7 +82,7 @@ class HomeViewController: SCViewController {
             let template = TemplateModel(
                 title: title,
                 code: "// 在这里编辑代码",
-                cover: "icon-default-cover".localImage!.pngData()!,
+                cover: nil,
                 author: "version1.0"
             )
             TemplateMgr.shared.add(template: template)

@@ -29,12 +29,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         documentNav.tabBarItem.title = "文档"
 //        historyNav.tabBarItem.image = "icon-file".localImage?.resizeImage(size: CGSize(width: 30, height: 30))
 
-//        let userNav = UINavigationController(rootViewController: UserViewController())
-//        userNav.tabBarItem.title = "我的"
+        let userNav = UINavigationController(rootViewController: UserViewController())
+        userNav.tabBarItem.title = "我的"
 //        userNav.tabBarItem.image = "icon-me".localImage?.resizeImage(size: CGSize(width: 30, height: 30))
 
         let tab = UITabBarController()
-        tab.viewControllers = [homeNav, squareNav, documentNav]
+        tab.viewControllers = [homeNav, squareNav, documentNav, userNav]
         tab.tabBar.tintColor = .tintGreen
 
         let tabBarAppearance = UITabBarAppearance()

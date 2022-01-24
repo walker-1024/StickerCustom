@@ -9,7 +9,7 @@ import UIKit
 
 class SquareTemplateViewController: SCViewController {
 
-    var template: TemplateModel!
+    var template: SquareTemplateModel!
 
     private let imageView = UIImageView()
 
@@ -39,7 +39,32 @@ class SquareTemplateViewController: SCViewController {
             make.width.height.equalTo(200)
             make.centerX.equalToSuperview()
         }
-        imageView.image = UIImage(data: template.cover)
+        if let gifCoverData = LocalFileManager.shared.getGifCover(name: template.templateId.uuidString) {
+            DispatchQueue.global().async {
+                guard let image = GifProcessor.shared.getImage(from: gifCoverData) else { return }
+                DispatchQueue.main.async {
+                    self.imageView.image = image
+                }
+            }
+        } else if let coverData = LocalFileManager.shared.getCover(name: template.templateId.uuidString) {
+            imageView.image = UIImage(data: coverData)
+        } else {
+            imageView.image = "icon-loading-cover".localImage
+            DispatchQueue.global().async {
+                if let url = self.template.gifCoverUrl, let gifData = try? Data(contentsOf: url) {
+                    guard let image = GifProcessor.shared.getImage(from: gifData) else { return }
+                    DispatchQueue.main.async {
+                        self.imageView.image = image
+                    }
+                    LocalFileManager.shared.saveGifCover(data: gifData, name: self.template.templateId.uuidString)
+                } else if let url = self.template.coverUrl, let imgData = try? Data(contentsOf: url) {
+                    DispatchQueue.main.async {
+                        self.imageView.image = UIImage(data: imgData)
+                    }
+                    LocalFileManager.shared.saveCover(data: imgData, name: self.template.templateId.uuidString)
+                }
+            }
+        }
         imageView.contentMode = .scaleAspectFit
 
         let tipLabel = UILabel()

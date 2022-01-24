@@ -98,4 +98,18 @@ class TemplateAssetMgr {
         context.delete(result[0])
         try? context.save()
     }
+
+    func deleteAllAssets(of templateId: UUID) {
+        guard let context = context else {
+            return
+        }
+        let fetchRequest = NSFetchRequest<TemplateAssetEntity>(entityName: "TemplateAssetEntity")
+        let predicate = NSPredicate(format: "templateId == \"\(templateId)\"")
+        fetchRequest.predicate = predicate
+        guard let result = try? context.fetch(fetchRequest) else { return }
+        for item in result {
+            context.delete(item)
+        }
+        try? context.save()
+    }
 }

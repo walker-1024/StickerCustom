@@ -43,8 +43,9 @@ class RosParser {
                 if let image = result as? UIImage {
                     completion?(image, nil)
                 } else if let result = result as? [UIImage] {
-                    let eachDuration = env.getVarValue("_Ros_gifFrameDuration") as? Double ?? 0.1
-                    if let image = UIImage.animatedImage(with: result, duration: eachDuration * Double(result.count)) {
+                    // 注意这里拿到的整数的单位是毫秒
+                    let eachDuration = env.getVarValue("_Ros_gifFrameDuration") as? Int ?? 100
+                    if let image = UIImage.animatedImage(with: result, duration: Double(eachDuration * result.count) / 1000) {
                         completion?(image, nil)
                     } else {
                         completion?(nil, RosParseError.createGifFail)
@@ -406,6 +407,9 @@ fileprivate class RosSentence {
             guard let gifFrames = self.env?.getVarValue("_Ros_gifFrames") as? [UIImage] else {
                 throw RosParseError.getGifFramesFail
             }
+            guard gifFrames.count > 0 else {
+                throw RosParseError.noFrameInGif
+            }
             self.env?.setVarValue("_Ros_finalResult", value: gifFrames)
             return gifFrames
 
@@ -429,7 +433,7 @@ fileprivate class RosSentence {
             if paras.count > 1 { throw RosParseError.paramRedundant }
             let duration = try RosSentence(code: paras[0], env: self.env).evaluate()
 
-            guard let duration = getDouble(from: duration) else {
+            guard let duration = getInt(from: duration) else {
                 throw RosParseError.paramTypeMismatch
             }
             self.env?.setVarValue("_Ros_gifFrameDuration", value: duration)
@@ -464,73 +468,4 @@ fileprivate class RosSentence {
         }
         return nil
     }
-}
-
-/// 语法处理的错误类型
-enum RosParseError: Error {
-    /// 获取QQ头像失败
-    ///
-    ///
-    case fetchQQAvatarFail
-    /// 左右大括号数量不匹配
-    ///
-    ///
-    case wrongSentence
-    /// 函数名为空
-    ///
-    /// 
-    case functionNameNull
-    /// 函数不存在
-    ///
-    /// 此函数名不在函数字典里
-    case funcNameNotExist
-    /// 参数类型不匹配
-    ///
-    /// 一个函数传入的某个参数的类型无法被转换成所需要的类型
-    case paramTypeMismatch
-    /// 参数大小不合法
-    ///
-    /// 比如取颜色函数的前三个参数要求是 0 ~ 255，而用户传入了此范围之外的数字
-    case paramIllegal
-    /// 参数缺失
-    ///
-    /// 一个函数传入的参数数量少于所需数量
-    case paramMissing
-    /// 参数多余
-    ///
-    /// 一个函数传入的参数数量多于所需数量
-    case paramRedundant
-    /// 参数数量不匹配
-    ///
-    /// 比如一个函数需要 3 个或 5 个参数，但用户给了 4 个
-    case paramNumMismatch
-    /// 「画图片」等函数没有写在「新建画板」内
-    ///
-    /// 直接原因是在「画图片」时获取 context 失败
-    case drawBeforeCreateDrawBoard
-    /// 「创建动图」时最终没能获取到帧集合
-    ///
-    /// 可能是子语句把「创建动图」写入环境的那个数组变量搞坏了或者搞没了，一般情况不会出现此问题
-    case getGifFramesFail
-    /// 「添加帧」函数没有放在「创建动图」函数里
-    ///
-    /// 直接原因是在「添加帧」时获取 gifFrames 失败
-    case appendFrameBeforeCreateGif
-    /// 未获取到结果
-    ///
-    /// 用户没有进行任何「新建画板」或「创建动图」的操作
-    case noResult
-    /// 「创建动图」里没有添加任何帧
-    ///
-    ///
-    case noFrameInGif
-    /// 使用 UIImage 数组创建 gif 失败了
-    ///
-    /// 一般不会出现此问题
-    case createGifFail
-    /// 变量不存在
-    ///
-    /// 用户使用 {xxx} 的方式去获取一个不存在的变量的值
-    case varNameNotExist
-    case placeholder
 }

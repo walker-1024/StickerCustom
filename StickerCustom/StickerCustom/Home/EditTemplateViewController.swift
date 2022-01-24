@@ -26,8 +26,12 @@ class EditTemplateViewController: SCViewController {
             make.width.height.equalTo(150)
             make.centerX.equalToSuperview()
         }
-        coverImageView.image = UIImage(data: template.cover)
-        coverImageView.contentMode = .scaleAspectFill
+        if let coverData = template.cover {
+            coverImageView.image = GifProcessor.shared.getImage(from: coverData)
+        } else {
+            coverImageView.image = "icon-default-cover".localImage
+        }
+        coverImageView.contentMode = .scaleAspectFit
         coverImageView.isUserInteractionEnabled = true
         let ges = UITapGestureRecognizer(target: self, action: #selector(clickChangeCover))
         ges.numberOfTapsRequired = 1
@@ -83,7 +87,6 @@ class EditTemplateViewController: SCViewController {
         if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
             let picker = UIImagePickerController()
             picker.sourceType = .photoLibrary
-            picker.allowsEditing = true
             picker.delegate = self
             self.present(picker, animated: true, completion: nil)
         }
@@ -92,10 +95,10 @@ class EditTemplateViewController: SCViewController {
 
 extension EditTemplateViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        if let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage, let imageData = image.pngData() {
+        if let imageUrl = info[.imageURL] as? URL, let imageData = try? Data(contentsOf: imageUrl) {
             self.template.cover = imageData
             TemplateMgr.shared.modify(template: self.template)
-            self.coverImageView.image = image
+            self.coverImageView.image = GifProcessor.shared.getImage(from: imageData)
         }
         picker.dismiss(animated: true, completion: nil)
     }

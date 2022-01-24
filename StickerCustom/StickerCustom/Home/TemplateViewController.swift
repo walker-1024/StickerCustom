@@ -178,7 +178,11 @@ class TemplateViewController: SCViewController {
             if let template = TemplateMgr.shared.getTemplate(withId: self.template.templateId) {
                 DispatchQueue.main.async {
                     self.template = template
-                    self.imageView.image = UIImage(data: template.cover)
+                    if let coverData = template.cover {
+                        self.imageView.image = GifProcessor.shared.getImage(from: coverData)
+                    } else {
+                        self.imageView.image = "icon-default-cover".localImage
+                    }
                 }
             }
         }
@@ -188,7 +192,7 @@ class TemplateViewController: SCViewController {
         guard let image = imageView.image else { return }
         if let allImages = image.images {
             PHPhotoLibrary.shared().performChanges {
-                let gifPath = LocalFileManager.shared.getTempPath() + ".gif"
+                let gifPath = LocalFileManager.shared.getTempPath(suffix: "gif")
                 let eachDuration = image.duration / Double(allImages.count)
                 GifProcessor.shared.createGif(with: allImages, eachDuration: eachDuration, savePath: gifPath)
 
@@ -257,8 +261,7 @@ class TemplateViewController: SCViewController {
                 let param = [
                     "templateID": self.template.templateId.uuidString,
                     "title": self.template.title,
-                    "code": self.template.code,
-                    "author": self.template.author
+                    "code": self.template.code
                 ]
                 guard let paramData = try? JSONEncoder().encode(param) else {
                     DispatchQueue.main.async {
@@ -269,8 +272,20 @@ class TemplateViewController: SCViewController {
                     return
                 }
 
+                guard let coverData = self.template.cover else {
+                    DispatchQueue.main.async {
+                        alert.title = "上传失败"
+                        alert.message = "请先设置模板封面"
+                        alert.addAction(UIAlertAction(title: "确定", style: .default, handler: nil))
+                    }
+                    return
+                }
+
                 let paramUploadData = UploadData(key: "param", data: paramData)
-                let coverFile = UploadFile(key: "cover", data: self.template.cover, fileName: "cover", mimeType: "image/png")
+                // TODO: 如果封面是动图，则必现上传失败，报错为connection was lost
+                // 目前猜测是后端不支持传 gif Data 导致
+                // 如果需要用此接口，可以先把下一行的 coverData 换成 Data() 即可正常请求
+                let coverFile = UploadFile(key: "cover", data: coverData, fileName: "cover", mimeType: "image/png")
                 let archiveFile = UploadFile(key: "file", data: archiveData, fileName: "file", mimeType: "application/zip")
                 NetworkMgr.shared.upload(config: config, parameters: [paramUploadData], files: [coverFile, archiveFile], headers: ["Content-Type": "multipart/form-data"]) { (result: NetworkResult<BackDataWrapper<CommonBackData>>) in
                     DispatchQueue.main.async {
@@ -351,7 +366,7 @@ class TemplateViewController: SCViewController {
                 let ok = UIAlertAction(title: "确定", style: .default, handler: nil)
                 guard rosError == nil else {
                     alert.title = "生成失败"
-                    alert.message = rosError.debugDescription
+                    alert.message = rosError?.message
                     alert.addAction(ok)
                     return
                 }
@@ -376,20 +391,5 @@ extension TemplateViewController: UITextFieldDelegate {
 
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         return string.isIntNumber || string.count == 0
-    }
-}
-
-extension TemplateViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        if let imageData = (info[UIImagePickerController.InfoKey.originalImage] as? UIImage)?.pngData() {
-            self.template.cover = imageData
-            TemplateMgr.shared.modify(template: self.template)
-            self.imageView.image = UIImage(data: imageData)
-        }
-        picker.dismiss(animated: true, completion: nil)
-    }
-
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        picker.dismiss(animated: true, completion: nil)
     }
 }
