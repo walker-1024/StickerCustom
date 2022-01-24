@@ -63,6 +63,52 @@ class LocalFileManager {
         return data
     }
 
+    func saveGifCover(data: Data, name: String) {
+        let path = coverDirPath + name + ".gif"
+        fileManager.createFile(atPath: path, contents: data, attributes: nil)
+    }
+
+    func getGifCover(name: String) -> Data? {
+        let path = coverDirPath + name + ".gif"
+        let data = try? Data(contentsOf: URL(fileURLWithPath: path))
+        return data
+    }
+
+    func clearCache() {
+        // 删除封面图片
+        let files = try? fileManager.contentsOfDirectory(atPath: coverDirPath)
+        for file in files ?? [] {
+            try? fileManager.removeItem(atPath: coverDirPath + file)
+        }
+        // 删除分享的临时文件
+        let files2 = try? fileManager.contentsOfDirectory(atPath: shareFileDirPath)
+        for file in files2 ?? [] {
+            try? fileManager.removeItem(atPath: shareFileDirPath + file)
+        }
+        // 删除模板包文件
+        let files3 = try? fileManager.contentsOfDirectory(atPath: templateDirPath)
+        for file in files3 ?? [] {
+            try? fileManager.removeItem(atPath: templateDirPath + file)
+        }
+        let files4 = try? fileManager.contentsOfDirectory(atPath: templateZipDirPath)
+        for file in files4 ?? [] {
+            try? fileManager.removeItem(atPath: templateZipDirPath + file)
+        }
+        // 删除保存图片的临时文件
+        let files5 = try? fileManager.contentsOfDirectory(atPath: tempImageDirPath)
+        for file in files5 ?? [] {
+            try? fileManager.removeItem(atPath: tempImageDirPath + file)
+        }
+        // 删除 tmp 中的非目录文件
+        let tmpPath = NSHomeDirectory() + "/tmp/"
+        let files6 = try? fileManager.contentsOfDirectory(atPath: tmpPath)
+        for file in files6 ?? [] {
+            if file.contains(".") {
+                try? fileManager.removeItem(atPath: tmpPath + file)
+            }
+        }
+    }
+
     func getTempPath(suffix: String) -> String {
         let now = Date().timeIntervalSince1970
         return tempImageDirPath + "\(now)." + suffix
@@ -101,14 +147,14 @@ class LocalFileManager {
             assetList.append(dic)
         }
 
+        // 封面图片可能是动图可能是静图，这里用png作后缀只是历史遗留问题，是防止影响线上已有模板而没改
         fileManager.createFile(atPath: basePath + "cover.png", contents: coverData, attributes: nil)
-        let coverMd5 = coverData.md5
         let dic: [String : Any] = [
             "templateId": template.templateId.uuidString,
             "title": template.title,
             "code": template.code,
             "author": template.author,
-            "coverMd5": coverMd5,
+            "coverMd5": coverData.md5,
             "assetList": assetList
         ]
 
@@ -182,6 +228,7 @@ class LocalFileManager {
             return
         }
 
+        // 封面图片可能是动图可能是静图，这里用png作后缀只是历史遗留问题，是防止影响线上已有模板而没改
         guard let coverData = try? Data(contentsOf: URL(fileURLWithPath: contentDirPath + "cover.png")) else {
             completion?(nil, "读文件失败")
             return

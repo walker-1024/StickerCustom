@@ -65,11 +65,13 @@ class SquareViewController: SCViewController {
                         // 使用 COS，快一些
                         // TODO: 后端
                         let coverUrl = URL(string: "https://sc-1302727559.cos.ap-guangzhou.myqcloud.com/cover/\(item.templateID).png")
+                        let coverGifUrl = URL(string: "https://sc-1302727559.cos.ap-guangzhou.myqcloud.com/gifcover/\(item.templateID).gif")
                         let template = SquareTemplateModel(
                             templateId: templateId,
                             title: item.title,
                             code: item.code,
                             coverUrl: coverUrl,
+                            gifCoverUrl: coverGifUrl,
                             author: item.author,
                             downloadUrl: URL(string: item.file)
                         )

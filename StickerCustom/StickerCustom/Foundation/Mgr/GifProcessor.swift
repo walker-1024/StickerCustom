@@ -15,8 +15,22 @@ class GifProcessor {
 
     private init() { }
 
+    // 传入图片数据，返回动图或静图
+    func getImage(from data: Data) -> UIImage? {
+        let (frames, duration) = getGifMessage(from: data)
+        if let frames = frames, duration > 0 {
+            return UIImage.animatedImage(with: frames, duration: duration)
+        } else {
+            return UIImage(data: data)
+        }
+    }
+
     func getGifMessage(from gifPath: String) -> (images: [UIImage]?, duration: Double) {
         guard let gifData = try? Data(contentsOf: URL(fileURLWithPath: gifPath)) else { return (nil, -1) }
+        return getGifMessage(from: gifData)
+    }
+
+    func getGifMessage(from gifData: Data) -> (images: [UIImage]?, duration: Double) {
         guard let gifImageSource = CGImageSourceCreateWithData(gifData as CFData, nil) else { return (nil, -1) }
         let gifImageCount = CGImageSourceGetCount(gifImageSource)
         if gifImageCount == 0 { return (nil, -1) }

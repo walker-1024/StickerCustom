@@ -27,7 +27,7 @@ class EditTemplateViewController: SCViewController {
             make.centerX.equalToSuperview()
         }
         if let coverData = template.cover {
-            coverImageView.image = UIImage(data: coverData)
+            coverImageView.image = GifProcessor.shared.getImage(from: coverData)
         } else {
             coverImageView.image = "icon-default-cover".localImage
         }
@@ -95,10 +95,10 @@ class EditTemplateViewController: SCViewController {
 
 extension EditTemplateViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage, let imageData = image.pngData() {
+        if let imageUrl = info[.imageURL] as? URL, let imageData = try? Data(contentsOf: imageUrl) {
             self.template.cover = imageData
             TemplateMgr.shared.modify(template: self.template)
-            self.coverImageView.image = image
+            self.coverImageView.image = GifProcessor.shared.getImage(from: imageData)
         }
         picker.dismiss(animated: true, completion: nil)
     }
