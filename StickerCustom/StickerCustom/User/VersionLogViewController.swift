@@ -23,9 +23,13 @@ class VersionLogViewController: SCViewController {
         textView.isEditable = false
         textView.isSelectable = false
         textView.text = """
-        Ver 1.1.1
+        Ver 1.1.2
+        1. 将记录输入的QQ号避免重复输入，退出应用时清除。
+        2. 主页支持动图封面。
+        3. 修复特定情况下广场动图封面不会动的问题。
+        Ver 1.1.1 -- 2022-01-25
         1. 广场支持动图封面。
-        Ver 1.1.0
+        Ver 1.1.0 -- 2022-01-23
         1. 代码执行的报错信息人性化处理。
         2. 「设置帧延迟」函数的参数的类型改为整数，单位改为毫秒。
         3. 编辑代码时，键盘不会再挡代码。

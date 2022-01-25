@@ -37,7 +37,7 @@ class RosParser {
                 }
             }
             do {
-                let trueCode = "{\(code)}"
+                let trueCode = "{\n\(code)\n}"
                 try RosSentence(code: trueCode, env: env).evaluate()
                 let result = env.getVarValue("_Ros_finalResult")
                 if let image = result as? UIImage {

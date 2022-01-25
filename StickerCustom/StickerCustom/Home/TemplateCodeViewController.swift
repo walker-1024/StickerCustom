@@ -184,6 +184,9 @@ class TemplateCodeViewController: SCViewController, UIGestureRecognizerDelegate 
             make.top.equalTo(imageView)
             make.bottom.equalTo(imageView.snp.centerY).offset(-10)
         }
+        if let qqNum = UserConfigMgr.shared.getValue(of: .qqNum) {
+            qqTextField.text = "\(qqNum)"
+        }
         qqTextField.attributedPlaceholder = NSAttributedString(string: "输入QQ号", attributes: [.foregroundColor: UIColor.tintGreen])
         qqTextField.textColor = UIColor.tintGreen
         qqTextField.textAlignment = .center
@@ -256,6 +259,7 @@ class TemplateCodeViewController: SCViewController, UIGestureRecognizerDelegate 
             presentAlert(title: "请输入正确的QQ号", message: nil, on: self)
             return
         }
+        UserConfigMgr.shared.saveValue(qq, to: .qqNum)
 
         let alert = UIAlertController(title: "正在生成", message: nil, preferredStyle: .alert)
         self.present(alert, animated: true, completion: nil)

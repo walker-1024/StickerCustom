@@ -76,6 +76,9 @@ class TemplateViewController: SCViewController {
             make.height.equalTo(60)
             make.top.equalTo(tipLabel.snp.bottom).offset(30)
         }
+        if let qqNum = UserConfigMgr.shared.getValue(of: .qqNum) {
+            qqTextField.text = "\(qqNum)"
+        }
         qqTextField.attributedPlaceholder = NSAttributedString(string: "输入QQ号", attributes: [.foregroundColor: UIColor.tintGreen])
         qqTextField.textColor = UIColor.tintGreen
         qqTextField.textAlignment = .center
@@ -347,6 +350,12 @@ class TemplateViewController: SCViewController {
             self.navigationController?.popViewController(animated: true)
         }
         let cancel = UIAlertAction(title: "取消", style: .cancel, handler: nil)
+//        let tmp = UIAlertAction(title: "tmp", style: .default) { _ in
+//            NetworkMgr.shared.request(API: WebAPI(path: "http://139.196.90.131:8500/api/v1/templates/\(self.template.templateId.uuidString)", method: .delete, parameter: [])).responseString { str in
+//                print(str)
+//            }
+//        }
+//        alert.addAction(tmp)
         alert.addAction(ok)
         alert.addAction(cancel)
         self.present(alert, animated: true, completion: nil)
@@ -358,6 +367,7 @@ class TemplateViewController: SCViewController {
             presentAlert(title: "请输入正确的QQ号", message: nil, on: self)
             return
         }
+        UserConfigMgr.shared.saveValue(qq, to: .qqNum)
 
         let alert = UIAlertController(title: "正在生成", message: nil, preferredStyle: .alert)
         self.present(alert, animated: true, completion: nil)

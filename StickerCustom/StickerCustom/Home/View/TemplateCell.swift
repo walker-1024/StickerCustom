@@ -65,7 +65,14 @@ class TemplateCell: UICollectionViewCell {
         templateId = data.templateId
         titleLabel.text = data.title
         if let coverData = data.cover {
-            coverImageView.image = UIImage(data: coverData)
+            DispatchQueue.global().async {
+                guard let image = GifProcessor.shared.getImage(from: coverData) else { return }
+                DispatchQueue.main.async {
+                    if self.templateId == data.templateId {
+                        self.coverImageView.image = image
+                    }
+                }
+            }
         } else {
             coverImageView.image = "icon-default-cover".localImage
         }
@@ -86,6 +93,18 @@ class TemplateCell: UICollectionViewCell {
             }
         } else if let coverData = LocalFileManager.shared.getCover(name: data.templateId.uuidString) {
             coverImageView.image = UIImage(data: coverData)
+            DispatchQueue.global().async {
+                guard self.templateId == data.templateId else { return }
+                if let url = data.gifCoverUrl, let gifData = try? Data(contentsOf: url) {
+                    guard let image = GifProcessor.shared.getImage(from: gifData) else { return }
+                    DispatchQueue.main.async {
+                        if self.templateId == data.templateId {
+                            self.coverImageView.image = image
+                        }
+                    }
+                    LocalFileManager.shared.saveGifCover(data: gifData, name: data.templateId.uuidString)
+                }
+            }
         } else {
             coverImageView.image = "icon-loading-cover".localImage
             DispatchQueue.global().async {

@@ -48,4 +48,22 @@ class UserConfigMgr {
         removeValue(of: .expirationDate)
         removeValue(of: .userIdentifier)
     }
+
+    private var globalValue: [String: Any] = [:]
+
+    enum GlobalKey: String {
+        case qqNum
+    }
+
+    func getValue(of key: GlobalKey) -> Any? {
+        return globalValue[key.rawValue]
+    }
+
+    func saveValue(_ value: Any, to key: GlobalKey) {
+        globalValue[key.rawValue] = value
+    }
+
+    func removeValue(of key: GlobalKey) {
+        globalValue.removeValue(forKey: key.rawValue)
+    }
 }
