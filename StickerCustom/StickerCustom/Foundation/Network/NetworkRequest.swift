@@ -7,25 +7,22 @@
 
 import Foundation
 
-class NetworkRequest {
+protocol NetworkRequest {
+    func responseDict(completion: @escaping (NetworkResult<[String: Any]>) -> Void)
+    func responseString(completion: @escaping (NetworkResult<String>) -> Void)
+    func responseData(completion: @escaping (NetworkResult<Data>) -> Void)
+    func responseModel<Model: Codable>(completion: @escaping (NetworkResult<Model>) -> Void)
+}
 
-    var isBadConfig: Bool = false
+class CommonNetworkRequest: NetworkRequest {
+
     var urlRequest: URLRequest!
-
-    init(isBadConfig: Bool) {
-        self.isBadConfig = true
-    }
 
     init(urlRequest: URLRequest) {
         self.urlRequest = urlRequest
     }
 
     func responseDict(completion: @escaping (NetworkResult<[String: Any]>) -> Void) {
-        if isBadConfig {
-            completion(.failure(.badConfig))
-            return
-        }
-
         let session = URLSession(configuration: .default)
         let dataTask = session.dataTask(with: urlRequest) { (data, response, error) in
             if error == nil, let data = data {
@@ -46,11 +43,6 @@ class NetworkRequest {
     }
 
     func responseString(completion: @escaping (NetworkResult<String>) -> Void) {
-        if isBadConfig {
-            completion(.failure(.badConfig))
-            return
-        }
-
         let session = URLSession(configuration: .default)
         let dataTask = session.dataTask(with: urlRequest) { (data, response, error) in
             if error == nil, let data = data {
@@ -67,11 +59,6 @@ class NetworkRequest {
     }
 
     func responseData(completion: @escaping (NetworkResult<Data>) -> Void) {
-        if isBadConfig {
-            completion(.failure(.badConfig))
-            return
-        }
-
         let session = URLSession(configuration: .default)
         let dataTask = session.dataTask(with: urlRequest) { (data, response, error) in
             if error == nil, let data = data {
@@ -84,11 +71,6 @@ class NetworkRequest {
     }
 
     func responseModel<Model: Codable>(completion: @escaping (NetworkResult<Model>) -> Void) {
-        if isBadConfig {
-            completion(.failure(.badConfig))
-            return
-        }
-
         let session = URLSession(configuration: .default)
         let dataTask = session.dataTask(with: urlRequest) { (data, response, error) in
             if error == nil, let data = data {
@@ -104,4 +86,29 @@ class NetworkRequest {
         dataTask.resume()
     }
 
+}
+
+class FailNetworkRequest: NetworkRequest {
+
+    var networkError: NetworkError!
+
+    init(_ networkError: NetworkError) {
+        self.networkError = networkError
+    }
+
+    func responseDict(completion: @escaping (NetworkResult<[String : Any]>) -> Void) {
+        completion(.failure(networkError))
+    }
+
+    func responseString(completion: @escaping (NetworkResult<String>) -> Void) {
+        completion(.failure(networkError))
+    }
+
+    func responseData(completion: @escaping (NetworkResult<Data>) -> Void) {
+        completion(.failure(networkError))
+    }
+
+    func responseModel<Model: Codable>(completion: @escaping (NetworkResult<Model>) -> Void) {
+        completion(.failure(networkError))
+    }
 }

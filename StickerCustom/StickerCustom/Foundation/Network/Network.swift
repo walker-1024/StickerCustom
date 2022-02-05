@@ -9,6 +9,10 @@ import Foundation
 
 /// 网络请求返回状态
 enum NetworkError : Error{
+    /// 请求拼接参数缺少
+    ///
+    /// 此错误仅出现在当请求链接存在占位参数时，例如 {id}
+    case urlParameterNotEnough
     /// 读取API的配置错误
     ///
     /// subspec或者function错误，导致无法读取到API

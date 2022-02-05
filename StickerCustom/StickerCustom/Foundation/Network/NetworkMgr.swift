@@ -14,8 +14,10 @@ class NetworkMgr {
 
     private init() { }
 
-    func request(API: WebAPI, parameters: [String: String]? = nil, headers: [String: String]? = nil) -> NetworkRequest {
-        let url = API.path
+    func request(API: WebAPI, placeholders: [String: String]? = nil, parameters: [String: String]? = nil, headers: [String: String]? = nil) -> NetworkRequest {
+        guard let url = getTruePath(API: API, providePlaceholders: placeholders) else {
+            return FailNetworkRequest(.urlParameterNotEnough)
+        }
         let method = API.method
         var urlRequest: URLRequest!
         if method == .get {
@@ -33,18 +35,20 @@ class NetworkMgr {
                 urlRequest.httpBody = paraData
             }
         }
-        return NetworkRequest(urlRequest: urlRequest)
+        return CommonNetworkRequest(urlRequest: urlRequest)
     }
 
-    func request(config: WebAPIConfig, parameters: [String: String]? = nil, headers: [String: String]? = nil) -> NetworkRequest {
+    func request(config: WebAPIConfig, placeholders: [String: String]? = nil, parameters: [String: String]? = nil, headers: [String: String]? = nil) -> NetworkRequest {
         guard let API = WebAPIMgr.shared.getAPI(in: config.subspec, for: config.function) else {
-            return NetworkRequest(isBadConfig: true)
+            return FailNetworkRequest(.badConfig)
         }
-        return request(API: API, parameters: parameters, headers: headers)
+        return request(API: API, placeholders: placeholders, parameters: parameters, headers: headers)
     }
 
-    func request<Paras: Codable>(API: WebAPI, parameters: Paras? = nil, headers: [String: String]? = nil) -> NetworkRequest {
-        let url = API.path
+    func request<Paras: Codable>(API: WebAPI, placeholders: [String: String]? = nil, parameters: Paras? = nil, headers: [String: String]? = nil) -> NetworkRequest {
+        guard let url = getTruePath(API: API, providePlaceholders: placeholders) else {
+            return FailNetworkRequest(.urlParameterNotEnough)
+        }
         let method = API.method
         var urlRequest: URLRequest!
         if method == .get {
@@ -64,14 +68,14 @@ class NetworkMgr {
                 urlRequest.httpBody = paraData
             }
         }
-        return NetworkRequest(urlRequest: urlRequest)
+        return CommonNetworkRequest(urlRequest: urlRequest)
     }
 
-    func request<Paras: Codable>(config: WebAPIConfig, parameters: Paras? = nil, headers: [String: String]? = nil) -> NetworkRequest {
+    func request<Paras: Codable>(config: WebAPIConfig, placeholders: [String: String]? = nil, parameters: Paras? = nil, headers: [String: String]? = nil) -> NetworkRequest {
         guard let API = WebAPIMgr.shared.getAPI(in: config.subspec, for: config.function) else {
-            return NetworkRequest(isBadConfig: true)
+            return FailNetworkRequest(.badConfig)
         }
-        return request(API: API, parameters: parameters, headers: headers)
+        return request(API: API, placeholders: placeholders, parameters: parameters, headers: headers)
     }
 
     // 故意把传的类型分为了 UploadData 和 UploadFile，因为文件的 fileName 不能设 nil，否则会请求失败
@@ -108,6 +112,24 @@ class NetworkMgr {
             return
         }
         upload(API: API, parameters: parameters, files: files, headers: headers, completion: completion)
+    }
+
+    // 获取填充了 path 中所需字段后的 path
+    private func getTruePath(API: WebAPI, providePlaceholders: [String: String]?) -> String? {
+        guard var needPlaceholders = API.placeholders, needPlaceholders.count > 0 else { return API.path }
+        guard let providePlaceholders = providePlaceholders, providePlaceholders.count > 0 else { return nil }
+
+        var output = API.path
+        for (key, value) in providePlaceholders {
+            let theKey = "{\(key)}"
+            if needPlaceholders.contains(theKey) {
+                output = output.replacingOccurrences(of: theKey, with: value)
+                needPlaceholders.removeAll(where: { $0 == theKey })
+            }
+        }
+
+        if needPlaceholders.count > 0 { return nil }
+        return output
     }
 }
 

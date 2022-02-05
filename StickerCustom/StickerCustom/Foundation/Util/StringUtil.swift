@@ -39,6 +39,17 @@ extension String {
         return scanner.scanFloat() != nil && scanner.isAtEnd
     }
 
+    func regexFind(with pattern: String) -> [String]? {
+        guard let regex = try? NSRegularExpression(pattern: pattern, options: NSRegularExpression.Options.caseInsensitive) else { return nil }
+        let result = regex.matches(in: self, options: NSRegularExpression.MatchingOptions(rawValue: 0), range: NSMakeRange(0, self.count))
+        var output: [String] = []
+        for item in result {
+            guard let range = Range(item.range, in: self) else { continue }
+            output.append(String(self[range]))
+        }
+        return output
+    }
+
     func firstIndex(of string: String) -> Int {
         guard self.count > 0, string.count > 0 else { return -1 }
         guard self.count >= string.count else { return -1 }

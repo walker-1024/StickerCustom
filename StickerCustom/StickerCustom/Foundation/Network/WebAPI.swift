@@ -11,7 +11,8 @@ import Alamofire
 struct WebAPI {
     var path: String
     var method: HTTPMethod
-    var parameter: [String]
+    var placeholders: [String]?
+    var parameter: [String]?
 }
 
 /// 本地读取API的路径配置
@@ -44,9 +45,10 @@ class WebAPIMgr {
 
         guard let path = rawAPI["path"] as? String else { return nil }
         guard let method = rawAPI["method"] as? String else { return nil }
-        guard let parameter = rawAPI["parameter"] as? [String] else { return nil }
+        let parameter = rawAPI["parameter"] as? [String]
+        let placeholders = path.regexFind(with: "\\{[^\\}]+\\}")
 
-        return WebAPI(path: domain + path, method: HTTPMethod(rawValue: method), parameter: parameter)
+        return WebAPI(path: domain + path, method: HTTPMethod(rawValue: method), placeholders: placeholders, parameter: parameter)
     }
 
 }

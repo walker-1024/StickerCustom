@@ -351,7 +351,8 @@ class TemplateViewController: SCViewController {
         }
         let cancel = UIAlertAction(title: "取消", style: .cancel, handler: nil)
 //        let tmp = UIAlertAction(title: "tmp", style: .default) { _ in
-//            NetworkMgr.shared.request(API: WebAPI(path: "http://139.196.90.131:8500/api/v1/templates/\(self.template.templateId.uuidString)", method: .delete, parameter: [])).responseString { str in
+//            let config = WebAPIConfig(subspec: "template", function: "deleteTemplate")
+//            NetworkMgr.shared.request(config: config, placeholders: ["uuid": self.template.templateId.uuidString]).responseString { str in
 //                print(str)
 //            }
 //        }

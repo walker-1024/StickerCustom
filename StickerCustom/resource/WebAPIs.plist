@@ -130,6 +130,17 @@
 			<key>description</key>
 			<string>用户修改上传过的模板</string>
 		</dict>
+		<key>deleteTemplate</key>
+		<dict>
+			<key>path</key>
+			<string>/api/v1/templates/{uuid}</string>
+			<key>method</key>
+			<string>DELETE</string>
+			<key>parameter</key>
+			<array/>
+			<key>description</key>
+			<string>用户删除一个上传过的模板</string>
+		</dict>
 	</dict>
 </dict>
 </plist>
