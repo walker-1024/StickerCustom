@@ -22,13 +22,8 @@ class HomeViewController: SCViewController {
 
         NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: .needRefreshTemplateList, object: nil)
 
-        TemplateMgr.shared
+        TemplateMgr.shared.addBuiltInTemplatesIfNeeded()
         TemplateAssetMgr.shared
-
-        guard let url = URL(string: "http://q1.qlogo.cn/g?b=qq&nk=2064023354&s=640") else { return }
-        DispatchQueue.global().async {
-            let _ = try? Data(contentsOf: url)
-        }
     }
 
     override func viewWillAppear(_ animated: Bool) {

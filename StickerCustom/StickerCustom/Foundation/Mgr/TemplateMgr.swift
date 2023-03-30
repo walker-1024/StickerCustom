@@ -15,7 +15,9 @@ class TemplateMgr {
 
     private let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext
 
-    private init() {
+    private init() { }
+
+    func addBuiltInTemplatesIfNeeded() {
         guard let context = context else {
             return
         }
@@ -24,9 +26,21 @@ class TemplateMgr {
         if result.count == 0 {
             DispatchQueue.global().async {
                 for item in [
-                    "FE806C52-056E-45F4-B7E0-2CC604F4A4F9",
-                    "E6922DC4-6C37-4EBC-A203-67BEC27BC58E",
+                    "30BCEFAD-393B-4A70-9BCA-DA90F37F9952",
+                    "3484FFCA-9DF0-42E9-95D8-EAE1FA8B761F",
+                    "3D0F7574-A88D-43C2-AC70-1566C88C3681",
+                    "42DD8909-5E50-45D8-8786-110D159A22DA",
+                    "659A231A-10CF-4927-AB85-0866D0E0A99C",
+                    "72A01443-458F-4B59-9A0B-62D8D1C28F8F",
+                    "8CCAFD73-D198-4D83-A9BA-1505C7059730",
+                    "8D817BCB-C0C6-4406-BD6C-B3338DD8136E",
                     "8E640886-2637-49BC-8C8E-FD96DCC3194D",
+                    "B1716698-80D4-48DB-B1C6-84FCC1611569",
+                    "D74C8598-46C9-4D3E-B5F1-E0C9A683CB76",
+                    "E582BAA9-37E8-4CE9-882B-FDD4949DF2B2",
+                    "E6922DC4-6C37-4EBC-A203-67BEC27BC58E",
+                    "FC85B389-1674-4CA5-AAB2-E9148CD7DA45",
+                    "FE806C52-056E-45F4-B7E0-2CC604F4A4F9",
                 ] {
                     guard let templateId = UUID(uuidString: item) else { continue }
                     guard let path = Bundle.main.path(forResource: item, ofType: "zip") else { continue }
