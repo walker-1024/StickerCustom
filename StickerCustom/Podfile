@@ -8,7 +8,6 @@ target 'StickerCustom' do
   # Pods for StickerCustom
   pod 'SnapKit', '~> 5.0.0'
   pod 'Alamofire', '~> 5.5'
-  pod 'SwiftyStoreKit'
   pod 'SSZipArchive'
 
   target 'StickerCustomTests' do
